@@ -21,8 +21,10 @@ export default function Modal({
   return (
     <Dialog open onOpenChange={(open) => !open && router.back()}>
       <DialogContent
-        // Full-bleed rather than shadcn's centered panel.
-        className="inset-0 top-0 left-0 block h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 overflow-y-auto bg-paper p-0 ring-0"
+        // Full-bleed rather than shadcn's centered panel. sm:max-w-full is
+        // required: the base class list caps width at sm:max-w-sm, and cn()
+        // cannot merge that away with an unprefixed max-w-full.
+        className="inset-0 top-0 left-0 block h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 overflow-y-auto bg-paper p-0 ring-0 sm:max-w-full"
       >
         <DialogTitle className="sr-only">{title}</DialogTitle>
         {children}
