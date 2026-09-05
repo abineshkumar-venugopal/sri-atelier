@@ -10,18 +10,18 @@ const WORDMARK = "FORMA";
 const MIN_VISIBLE_MS = 1600;
 /** Never hold the page hostage if something is slow to load. */
 const MAX_VISIBLE_MS = 4000;
-/** Must match the curtain's transition duration below. */
+/** Must match the fade-out duration below. */
 const EXIT_MS = 800;
 
 type Phase = "visible" | "exiting" | "done";
 
 /**
- * Brand curtain shown on first paint. Mounted in the root layout, so it runs
+ * Brand overlay shown on first paint. Mounted in the root layout, so it runs
  * once per full page load and not on client-side navigation.
  *
  * While it is up, `data-loading` on <html> pauses the page's own entrance
  * animations (see globals.css) — otherwise the hero's staggered reveal would
- * play out behind the curtain and be over before anyone saw it.
+ * play out behind the overlay and be over before anyone saw it.
  */
 export default function PageLoader() {
   const [phase, setPhase] = useState<Phase>("visible");
@@ -35,8 +35,8 @@ export default function PageLoader() {
 
     const startExit = () => {
       setPhase("exiting");
-      // Release the page's animations as the curtain starts to lift, so the
-      // hero is already moving by the time it clears.
+      // Release the page's animations as the fade begins, so the hero is
+      // already moving by the time the overlay clears.
       delete root.dataset.loading;
       doneTimer = window.setTimeout(() => setPhase("done"), EXIT_MS);
     };
@@ -75,16 +75,12 @@ export default function PageLoader() {
       className={cn(
         // Above the nav (1000) and overlays (2000), below the cursor (9998+).
         "fixed inset-0 z-[3000] flex flex-col items-center justify-center bg-ink",
-        "transition-transform duration-800 ease-forma",
-        exiting && "-translate-y-full"
+        "transition-opacity duration-800 ease-forma",
+        // pointer-events-none so the fading panel doesn't swallow clicks.
+        exiting && "pointer-events-none opacity-0"
       )}
     >
-      <div
-        className={cn(
-          "flex flex-col items-center transition-all duration-500 ease-forma",
-          exiting && "-translate-y-3 opacity-0"
-        )}
-      >
+      <div className="flex flex-col items-center">
         {/* Trailing letter-spacing would push the word off-centre. */}
         <div className="flex -me-[0.22em] overflow-hidden">
           {WORDMARK.split("").map((letter, i) => (

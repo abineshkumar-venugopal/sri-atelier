@@ -21,8 +21,7 @@ const contact = [
   { href: "/quote", label: "Get a Quote" },
 ];
 
-const columnTitle =
-  "mb-5 text-eyebrow uppercase tracking-[0.2em] text-brass";
+const columnTitle = "mb-5 text-eyebrow uppercase tracking-[0.2em] text-brass";
 const linkClass =
   "text-[0.82rem] text-ash transition-colors duration-300 hover:text-paper";
 
@@ -35,8 +34,8 @@ export default function Footer() {
             FORMA
           </div>
           <p className="max-w-65 text-[0.82rem] leading-[1.8] text-ash">
-            Architecture &amp; Interior Design Studio. Crafting spaces where beauty and
-            purpose meet.
+            Architecture &amp; Interior Design Studio. Crafting spaces where
+            beauty and purpose meet.
           </p>
         </div>
 
