@@ -40,7 +40,10 @@ markup** — there is no stylesheet of component classes to keep in sync.
   `ash` is the secondary text grey; it is not called `slate` (collides with
   Tailwind's own scale) or `muted` (owned by shadcn).
 - Type — `font-display` (Cormorant), `font-sans` (DM Sans), and the micro scale
-  `text-micro` / `text-eyebrow` / `text-label`.
+  `text-micro` / `text-eyebrow` / `text-label`. **Adding a new `--text-*` token
+  means registering it in `lib/utils.ts`** — otherwise `cn()` cannot tell the
+  size `text-label` from the colour `text-ink`, treats them as one group, and
+  silently drops one.
 - Motion — `ease-forma` is the site's easing curve; `animate-fade-up`,
   `animate-fade-in`, `animate-scroll-pulse`.
 
