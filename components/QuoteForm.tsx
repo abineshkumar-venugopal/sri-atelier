@@ -1,55 +1,97 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const projectTypes = [
+  "Interior Design",
+  "Exterior Design",
+  "Construction",
+  "Full Project",
+];
+
+const budgetRanges = [
+  "Under ₹25 Lakhs",
+  "₹25 – ₹75 Lakhs",
+  "₹75 Lakhs – ₹2 Crore",
+  "₹2 Crore+",
+];
+
 export default function QuoteForm() {
   return (
-    <div className="quote-form">
-      <div className="form-row">
-        <div className="form-group">
-          <label className="form-label">Full Name</label>
-          <input type="text" className="form-input" placeholder="Your name" />
+    <div className="w-full max-w-150 bg-paper p-8 md:p-15">
+      <div className="grid gap-8 md:grid-cols-2">
+        <div>
+          <Label htmlFor="quote-name">Full Name</Label>
+          <Input id="quote-name" type="text" placeholder="Your name" />
         </div>
-        <div className="form-group">
-          <label className="form-label">Phone</label>
-          <input type="tel" className="form-input" placeholder="+91 00000 00000" />
-        </div>
-      </div>
-      <div className="form-group">
-        <label className="form-label">Email Address</label>
-        <input type="email" className="form-input" placeholder="you@email.com" />
-      </div>
-      <div className="form-row">
-        <div className="form-group">
-          <label className="form-label">Project Type</label>
-          <select className="form-select" defaultValue="">
-            <option value="">Select type</option>
-            <option>Interior Design</option>
-            <option>Exterior Design</option>
-            <option>Construction</option>
-            <option>Full Project</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Budget Range</label>
-          <select className="form-select" defaultValue="">
-            <option value="">Select range</option>
-            <option>Under ₹25 Lakhs</option>
-            <option>₹25 – ₹75 Lakhs</option>
-            <option>₹75 Lakhs – ₹2 Crore</option>
-            <option>₹2 Crore+</option>
-          </select>
+        <div>
+          <Label htmlFor="quote-phone">Phone</Label>
+          <Input id="quote-phone" type="tel" placeholder="+91 00000 00000" />
         </div>
       </div>
-      <div className="form-group">
-        <label className="form-label">Project Details</label>
-        <textarea
-          className="form-textarea"
-          style={{ height: 150 }}
+
+      <div className="mt-8">
+        <Label htmlFor="quote-email">Email Address</Label>
+        <Input id="quote-email" type="email" placeholder="you@email.com" />
+      </div>
+
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        <div>
+          <Label>Project Type</Label>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              {projectTypes.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label>Budget Range</Label>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select range" />
+            </SelectTrigger>
+            <SelectContent>
+              {budgetRanges.map((range) => (
+                <SelectItem key={range} value={range}>
+                  {range}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <Label htmlFor="quote-details">Project Details</Label>
+        <Textarea
+          id="quote-details"
+          className="h-37.5"
           placeholder="Describe your space, timeline, and any specific requirements…"
         />
       </div>
-      <div className="form-submit-wrap">
-        <button className="btn btn-dark" style={{ padding: "18px 56px", fontSize: ".78rem" }}>
+
+      <div className="mt-10 text-center">
+        <Button variant="dark" size="lg">
           Request Quote
-        </button>
-        <p className="quote-note">We respond to all enquiries within one business day.</p>
+        </Button>
+        <p className="mt-7 text-[0.78rem] tracking-[0.05em] text-ash">
+          We respond to all enquiries within one business day.
+        </p>
       </div>
     </div>
   );

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
 import Reveal from "@/components/Reveal";
 import ValueCard from "@/components/ValueCard";
 import TeamCard from "@/components/TeamCard";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 import { values, team } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -19,7 +23,7 @@ const teamDelays = [undefined, 1, 2, 3] as const;
 export default function AboutPage() {
   return (
     <>
-      <div className="about-hero">
+      <div className="relative flex h-[70vh] min-h-125 items-end overflow-hidden px-6 pb-20 md:px-15">
         <Image
           src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1800&q=80&fit=crop"
           alt="Architecture studio"
@@ -28,25 +32,32 @@ export default function AboutPage() {
           sizes="100vw"
           preload
         />
-        <div className="about-hero-overlay" />
-        <div className="about-hero-content">
-          <p className="about-hero-label">Who We Are</p>
-          <h1 className="about-hero-title">
+        <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[rgb(5_5_5/72%)] from-40% to-[rgb(5_5_5/25%)]" />
+        <div className="relative z-[2]">
+          <p className="mb-5 text-eyebrow uppercase tracking-[0.25em] text-brass">
+            Who We Are
+          </p>
+          <h1 className="font-display text-[clamp(3.5rem,8vw,8rem)] font-light leading-[0.9] tracking-[-0.02em] text-paper">
             About
             <br />
-            <em>Forma</em>
+            <em className="italic text-brass">Forma</em>
           </h1>
         </div>
       </div>
 
-      <div className="about-story">
-        <div className="about-story-year">2008</div>
-        <div className="about-story-text">
-          <Reveal as="p">
+      <div className="grid items-start gap-20 px-6 py-25 md:grid-cols-[1fr_2fr] md:px-15">
+        <div className="sticky top-30 font-display text-[5rem] font-light leading-none text-fog">
+          2008
+        </div>
+        <div>
+          <Reveal
+            as="p"
+            className="mb-8 font-display text-2xl font-light leading-[1.7] text-ink"
+          >
             We founded Forma with a single belief: that great architecture is not about
             spectacle, but about the quiet intelligence of well-considered space.
           </Reveal>
-          <Reveal as="p" delay={1}>
+          <Reveal as="p" className="mb-8 text-base leading-[1.9] text-ash" delay={1}>
             Over sixteen years and across sixty-four projects, we have worked with
             homeowners, developers, and institutions across South India — each commission
             approached as a singular opportunity to create something that will outlast the
@@ -55,46 +66,48 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="values-section">
-        <p className="section-label">Our Principles</p>
-        <Reveal as="h2" className="section-title section-title-invert">
+      <div className="bg-ink px-6 py-20 md:px-15">
+        <p className={eyebrowClass}>Our Principles</p>
+        <Reveal as="h2" className={cn(sectionTitleClass, "text-paper")}>
           What we
           <br />
           believe in
         </Reveal>
-        <div className="values-grid">
+        <div className="mt-13 grid grid-cols-2 md:grid-cols-4">
           {values.map((value, i) => (
             <ValueCard key={value.num} value={value} delay={valueDelays[i]} />
           ))}
         </div>
       </div>
 
-      <div className="team-section">
-        <Reveal as="p" className="section-label">
+      <div className="px-6 py-25 md:px-15">
+        <Reveal as="p" className={eyebrowClass}>
           The People
         </Reveal>
-        <Reveal as="h2" className="section-title" delay={1}>
+        <Reveal as="h2" className={sectionTitleClass} delay={1}>
           Our Team
         </Reveal>
-        <div className="team-grid">
+        <div className="mt-13 grid grid-cols-2 gap-0.5 md:grid-cols-4">
           {team.map((member, i) => (
             <TeamCard key={member.name} member={member} delay={teamDelays[i]} />
           ))}
         </div>
       </div>
 
-      <div className="about-cta-section">
-        <div className="about-cta-text">
-          <h2>
+      <div className="flex flex-col items-center justify-between gap-8 bg-mist px-6 py-25 md:flex-row md:gap-0 md:px-15">
+        <div>
+          <h2 className="mb-3 font-display text-[clamp(2.5rem,4vw,4rem)] font-light italic">
             Work
             <br />
             <em>With Us</em>
           </h2>
-          <p>Every great space starts with a conversation.</p>
+          <p className="text-[0.9rem] text-ash">
+            Every great space starts with a conversation.
+          </p>
         </div>
-        <Link href="/contact" className="btn btn-dark">
-          Get In Touch →
-        </Link>
+        <Button asChild variant="dark">
+          <Link href="/contact">Get In Touch →</Link>
+        </Button>
       </div>
 
       <Footer />

@@ -13,7 +13,7 @@ export default async function InterceptedProjectModal({
   if (!project) notFound();
 
   return (
-    <Modal>
+    <Modal title={project.name}>
       <ProjectDetail project={project} />
     </Modal>
   );

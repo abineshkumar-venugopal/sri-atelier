@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef } from "react";
+
+import { cn } from "@/lib/utils";
 import { useRevealVisible, revealClassName } from "@/lib/useReveal";
 import type { Value } from "@/lib/data";
 
@@ -14,10 +16,22 @@ export default function ValueCard({
   const ref = useRef<HTMLDivElement>(null);
   const visible = useRevealVisible(ref);
   return (
-    <div ref={ref} className={`value-card ${revealClassName(visible, delay)}`}>
-      <div className="value-num">{value.num}</div>
-      <div className="value-name">{value.name}</div>
-      <div className="value-desc">{value.description}</div>
+    <div
+      ref={ref}
+      className={cn(
+        "border-l border-white/8 px-9 py-12 first:border-l-0",
+        revealClassName(visible, delay)
+      )}
+    >
+      <div className="mb-5 font-display text-5xl font-light leading-none text-white/10">
+        {value.num}
+      </div>
+      <div className="mb-3 font-display text-[1.3rem] font-light text-paper">
+        {value.name}
+      </div>
+      <div className="text-[0.82rem] leading-[1.8] text-ash">
+        {value.description}
+      </div>
     </div>
   );
 }

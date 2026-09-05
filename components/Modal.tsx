@@ -1,28 +1,32 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
-export default function Modal({ children }: { children: React.ReactNode }) {
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+
+/**
+ * Wraps the intercepted /projects/[slug] route. Radix handles the focus trap,
+ * Escape, and body scroll lock, so this only has to translate "closed" into
+ * navigating back to the grid.
+ */
+export default function Modal({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   const router = useRouter();
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
   return (
-    <div className="proj-detail-overlay">
-      <button
-        className="proj-detail-close"
-        onClick={() => router.back()}
-        aria-label="Close project detail"
+    <Dialog open onOpenChange={(open) => !open && router.back()}>
+      <DialogContent
+        // Full-bleed rather than shadcn's centered panel.
+        className="inset-0 top-0 left-0 block h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 overflow-y-auto bg-paper p-0 ring-0"
       >
-        ✕
-      </button>
-      {children}
-    </div>
+        <DialogTitle className="sr-only">{title}</DialogTitle>
+        {children}
+      </DialogContent>
+    </Dialog>
   );
 }
