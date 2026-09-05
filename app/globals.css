@@ -1,15 +1,48 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* FORMA has no dark theme. Scoping `dark:` to a `.dark` ancestor that never
+   exists keeps shadcn's built-in dark: classes compiling, but always inert. */
+@custom-variant dark (&:is(.dark *));
 
 @theme {
+  /* Palette. `ash` is the secondary text grey — not named `slate` or `muted`,
+     which would collide with Tailwind's slate-* scale and shadcn's --muted. */
   --color-ink: #0a0a0a;
   --color-paper: #fafaf8;
   --color-mist: #f0efec;
   --color-fog: #c8c5be;
-  --color-slate: #6b6860;
+  --color-ash: #6b6860;
   --color-brass: #b5a58a;
   --color-brass-dark: #8a7a64;
+
+  /* Type */
   --font-display: var(--font-cormorant), Georgia, serif;
   --font-sans: var(--font-dmsans), sans-serif;
+  --text-micro: 0.65rem;
+  --text-eyebrow: 0.68rem;
+  --text-label: 0.72rem;
+
+  /* Motion. This easing carries nearly every transition on the site. */
+  --ease-forma: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --animate-fade-up: fade-up 1s var(--ease-forma) forwards;
+  --animate-fade-in: fade-in 1s forwards;
+  --animate-scroll-pulse: scroll-pulse 2s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scroll-pulse {
+    0%, 100% { transform: scaleY(1);   opacity: 1; }
+    50%      { transform: scaleY(0.6); opacity: 0.4; }
+  }
 }
 
 @layer base {
@@ -17,16 +50,26 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    @apply border-border outline-ring/50;
   }
   html {
     scroll-behavior: smooth;
+    @apply font-sans;
   }
   body {
-    background: var(--color-paper);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
     font-weight: 300;
     overflow-x: hidden;
+    @apply bg-background text-foreground;
+  }
+  /* Preflight and shadcn both set cursors on interactive elements; the custom
+     cursor (components/CustomCursor.tsx) needs every one of them suppressed. */
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
     cursor: none;
   }
 }
@@ -133,7 +176,7 @@
     transform-origin: left;
   }
   .site-nav.is-scrolled .nav-links a {
-    color: var(--color-slate);
+    color: var(--color-ash);
   }
   .site-nav.is-scrolled .nav-links a:hover {
     color: var(--color-ink);
@@ -341,7 +384,7 @@
     font-size: 0.68rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--color-slate);
+    color: var(--color-ash);
     margin-bottom: 16px;
   }
   .section-title {
@@ -472,7 +515,7 @@
   .about-preview-text p {
     font-size: 1.05rem;
     line-height: 1.9;
-    color: var(--color-slate);
+    color: var(--color-ash);
     margin-bottom: 20px;
   }
 
@@ -526,7 +569,7 @@
   }
   .service-desc {
     font-size: 0.85rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     line-height: 1.8;
   }
 
@@ -681,7 +724,7 @@
   }
   .process-step-desc {
     font-size: 0.8rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     line-height: 1.8;
   }
 
@@ -772,7 +815,7 @@
   }
   .footer-tagline {
     font-size: 0.82rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     line-height: 1.8;
     max-width: 260px;
   }
@@ -791,7 +834,7 @@
   }
   .footer-links a {
     font-size: 0.82rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     text-decoration: none;
     transition: color 0.3s;
   }
@@ -805,14 +848,14 @@
     padding-top: 32px;
     border-top: 1px solid rgb(255 255 255 / 6%);
     font-size: 0.72rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
   }
   .footer-social {
     display: flex;
     gap: 20px;
   }
   .footer-social a {
-    color: var(--color-slate);
+    color: var(--color-ash);
     text-decoration: none;
     font-size: 0.72rem;
     letter-spacing: 0.1em;
@@ -889,7 +932,7 @@
   }
   .about-story-text p:last-child {
     font-size: 1rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     font-family: var(--font-sans);
     line-height: 1.9;
   }
@@ -927,7 +970,7 @@
   }
   .value-desc {
     font-size: 0.82rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     line-height: 1.8;
   }
 
@@ -964,7 +1007,7 @@
     font-size: 0.75rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-slate);
+    color: var(--color-ash);
     margin-top: 4px;
   }
 
@@ -984,7 +1027,7 @@
   }
   .about-cta-text p {
     font-size: 0.9rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
   }
 
   /* ── PROJECTS PAGE ── */
@@ -1006,7 +1049,7 @@
     font-size: 0.75rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--color-slate);
+    color: var(--color-ash);
     align-self: flex-end;
     padding-bottom: 12px;
   }
@@ -1022,7 +1065,7 @@
     text-transform: uppercase;
     border: none;
     background: transparent;
-    color: var(--color-slate);
+    color: var(--color-ash);
     cursor: none;
     transition: all 0.3s;
     position: relative;
@@ -1149,7 +1192,7 @@
     font-size: 0.65rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-slate);
+    color: var(--color-ash);
     display: block;
     margin-bottom: 6px;
   }
@@ -1162,7 +1205,7 @@
     font-size: 1.3rem;
     font-weight: 300;
     line-height: 1.7;
-    color: var(--color-slate);
+    color: var(--color-ash);
     max-width: 680px;
   }
 
@@ -1203,7 +1246,7 @@
     font-size: 0.68rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-slate);
+    color: var(--color-ash);
     margin-bottom: 10px;
   }
   .form-input,
@@ -1294,7 +1337,7 @@
   }
   .quote-sub {
     font-size: 0.9rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
   }
   .quote-form {
     width: 100%;
@@ -1315,7 +1358,7 @@
     margin-top: 28px;
     text-align: center;
     font-size: 0.78rem;
-    color: var(--color-slate);
+    color: var(--color-ash);
     letter-spacing: 0.05em;
   }
 
@@ -1411,4 +1454,65 @@
   .proj-detail-meta {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* ── shadcn bridge ────────────────────────────────────────────────────────
+   shadcn's generated components in components/ui reference these semantic
+   tokens. Pointing them at FORMA's palette means every component we add
+   inherits the brand automatically, instead of shipping shadcn's neutrals. */
+
+@theme inline {
+  --font-heading: var(--font-display);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* FORMA is sharp-cornered throughout. This single line strips the rounding
+     off every shadcn component at once — no need to edit each generated file. */
+  --radius: 0rem;
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-paper);
+  --secondary: var(--color-mist);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-mist);
+  --muted-foreground: var(--color-ash);
+  --accent: var(--color-brass);
+  --accent-foreground: var(--color-paper);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-fog);
+  --input: var(--color-fog);
+  --ring: var(--color-brass);
 }

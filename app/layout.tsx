@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import Nav from "@/components/Nav";
+import { cn } from "@/lib/utils";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
+      className={cn(cormorant.variable, dmSans.variable, "h-full antialiased")}
     >
       <body className="min-h-full flex flex-col">
         <CustomCursor />
