@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, type ElementType, type ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 import { useRevealVisible, revealClassName } from "@/lib/useReveal";
 
 export default function Reveal({
@@ -19,7 +21,7 @@ export default function Reveal({
   const ref = useRef<any>(null);
   const visible = useRevealVisible(ref);
   return (
-    <Tag ref={ref} className={`${revealClassName(visible, delay)} ${className}`}>
+    <Tag ref={ref} className={cn(revealClassName(visible, delay), className)}>
       {children}
     </Tag>
   );

@@ -83,7 +83,7 @@ export default function HomePage() {
       </section>
 
       <div className="about-preview">
-        <div className="about-preview-visual reveal is-visible">
+        <div className="about-preview-visual">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80&fit=crop"
             alt="Forma studio"

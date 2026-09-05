@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type RefObject } from "react";
 
+import { cn } from "@/lib/utils";
+
 export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
   const [visible, setVisible] = useState(false);
 
@@ -26,7 +28,22 @@ export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
   return visible;
 }
 
+/** Staggers a group of revealing elements; each step is 150ms. */
+const DELAY_CLASSNAMES = {
+  1: "delay-150",
+  2: "delay-300",
+  3: "delay-450",
+  4: "delay-600",
+} as const;
+
+/**
+ * Fade-and-rise on scroll. Pair with `useRevealVisible` so the element
+ * animates once, the first time it enters the viewport.
+ */
 export function revealClassName(visible: boolean, delay?: 1 | 2 | 3 | 4) {
-  const delayClass = delay ? ` reveal-delay-${delay}` : "";
-  return `reveal${visible ? " is-visible" : ""}${delayClass}`;
+  return cn(
+    "transition-[opacity,transform] duration-800 ease-forma",
+    visible ? "translate-y-0 opacity-100" : "translate-y-[30px] opacity-0",
+    delay && DELAY_CLASSNAMES[delay]
+  );
 }

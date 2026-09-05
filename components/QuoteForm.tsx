@@ -1,6 +1,6 @@
 export default function QuoteForm() {
   return (
-    <div className="quote-form reveal reveal-delay-2 is-visible">
+    <div className="quote-form">
       <div className="form-row">
         <div className="form-group">
           <label className="form-label">Full Name</label>
