@@ -9,6 +9,7 @@ import ProcessStepCard from "@/components/ProcessStepCard";
 import Reveal from "@/components/Reveal";
 import Footer from "@/components/Footer";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import Stats from "@/components/Stats";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import {
   homeCarouselSlugs,
   homeFeaturedSlugs,
   testimonials,
+  stats,
 } from "@/lib/data";
 
 const carouselItems = homeCarouselSlugs
@@ -155,6 +157,8 @@ export default function HomePage() {
           </Reveal>
         </div>
       </div>
+
+      <Stats items={stats} />
 
       <section className={cn(sectionPadding, "bg-paper")}>
         <Reveal as="div" className={eyebrowClass}>

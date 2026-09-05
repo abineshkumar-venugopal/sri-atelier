@@ -322,3 +322,22 @@ export const testimonials: Testimonial[] = [
       "https://test-videos.co.uk/vids/jellyfish/mp4/h264/720/Jellyfish_720_10s_1MB.mp4",
   },
 ];
+
+export interface Stat {
+  /** Counted up to from zero when the band scrolls into view. */
+  value: number;
+  suffix?: string;
+  label: string;
+}
+
+/**
+ * Years and project count follow the copy elsewhere on the site ("over sixteen
+ * years", "across sixty-four projects"). The floor area and city count are
+ * placeholders — confirm them before this goes live.
+ */
+export const stats: Stat[] = [
+  { value: 16, label: "Years of Practice" },
+  { value: 64, suffix: "+", label: "Projects Delivered" },
+  { value: 1200000, suffix: "+", label: "Sq Ft Designed" },
+  { value: 9, label: "Cities Across South India" },
+];
