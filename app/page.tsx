@@ -46,6 +46,7 @@ export default function HomePage() {
           factor={0.38}
           preload
           imgClassName="object-[center_30%]"
+          video={{ webm: "/hero.webm", mp4: "/hero.mp4" }}
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[rgb(5_5_5/38%)] to-[rgb(5_5_5/62%)]" />
 
