@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import PageLoader from "@/components/PageLoader";
 import Nav from "@/components/Nav";
 import { cn } from "@/lib/utils";
 
@@ -31,9 +32,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // Set here rather than only from PageLoader's effect, so the page's
+      // entrance animations are held from first paint instead of starting and
+      // then pausing once React hydrates. PageLoader clears it.
+      data-loading="true"
       className={cn(cormorant.variable, dmSans.variable, "h-full antialiased")}
     >
+      <head>
+        {/* Without JS the loader can never lift itself, so reveal the page. */}
+        <noscript>
+          <style>{`[data-page-loader]{display:none!important}html[data-loading="true"] body{overflow:visible!important}html[data-loading="true"] *{animation-play-state:running!important}`}</style>
+        </noscript>
+      </head>
       <body className="min-h-full flex flex-col">
+        <PageLoader />
         <CustomCursor />
         <Nav />
         {children}

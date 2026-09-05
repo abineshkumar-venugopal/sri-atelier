@@ -62,7 +62,8 @@ export default function HomePage() {
             lives.
           </h1>
           <p className="mb-14 animate-fade-up text-[0.9rem] font-light tracking-[0.05em] text-paper/70 opacity-0 [animation-delay:0.75s]">
-            We craft architecture that stands at the intersection of beauty and purpose.
+            We craft architecture that stands at the intersection of beauty and
+            purpose.
           </p>
           <div className="flex animate-fade-up justify-center gap-4 opacity-0 [animation-delay:1s]">
             <Button asChild variant="light">
@@ -75,7 +76,7 @@ export default function HomePage() {
         </div>
 
         <div className="absolute bottom-10 left-1/2 z-[2] flex -translate-x-1/2 animate-fade-in flex-col items-center gap-2.5 text-micro uppercase tracking-[0.2em] text-paper/50 opacity-0 [animation-delay:1.5s]">
-          <span>Scroll</span>
+          {/* <span>Scroll</span> */}
           <div className="h-12.5 w-px animate-scroll-pulse bg-gradient-to-b from-paper/50 to-transparent" />
         </div>
       </section>
@@ -123,15 +124,23 @@ export default function HomePage() {
             <br />
             civilization.
           </Reveal>
-          <Reveal as="p" className="mb-5 text-[1.05rem] leading-[1.9] text-ash" delay={2}>
-            We are a Chennai-based architecture and design studio with over sixteen years
-            of practice. Our work spans residential, commercial, and cultural projects,
-            each defined by restraint, material honesty, and a deep understanding of
-            place.
+          <Reveal
+            as="p"
+            className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
+            delay={2}
+          >
+            We are a Chennai-based architecture and design studio with over
+            sixteen years of practice. Our work spans residential, commercial,
+            and cultural projects, each defined by restraint, material honesty,
+            and a deep understanding of place.
           </Reveal>
-          <Reveal as="p" className="mb-5 text-[1.05rem] leading-[1.9] text-ash" delay={3}>
-            Every project begins with listening — to the site, the client, the light, and
-            the land.
+          <Reveal
+            as="p"
+            className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
+            delay={3}
+          >
+            Every project begins with listening — to the site, the client, the
+            light, and the land.
           </Reveal>
           <Reveal as="div" delay={4}>
             <Link
@@ -153,7 +162,11 @@ export default function HomePage() {
         </Reveal>
         <div className="mt-14 grid grid-cols-2 gap-0.5 md:grid-cols-3">
           {services.map((service, i) => (
-            <ServiceCard key={service.name} service={service} delay={serviceDelays[i]} />
+            <ServiceCard
+              key={service.name}
+              service={service}
+              delay={serviceDelays[i]}
+            />
           ))}
         </div>
       </section>
@@ -167,7 +180,10 @@ export default function HomePage() {
           factor={0.22}
         />
         <div className="absolute inset-0 z-[1] bg-[rgb(8_8_8/65%)]" />
-        <Reveal as="div" className="relative z-[2] px-10 text-center text-paper">
+        <Reveal
+          as="div"
+          className="relative z-[2] px-10 text-center text-paper"
+        >
           <blockquote className="max-w-200 font-display text-[clamp(2rem,4vw,3.5rem)] font-light italic leading-[1.3]">
             &ldquo;Architecture is the art of how to waste space.&rdquo;
           </blockquote>
@@ -188,7 +204,11 @@ export default function HomePage() {
         </Reveal>
         <div className="mt-14 grid grid-cols-2 gap-0.5 md:grid-cols-3">
           {featuredItems.map((project, i) => (
-            <ProjectCard key={project.slug} project={project} delay={featuredDelays[i]} />
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              delay={featuredDelays[i]}
+            />
           ))}
         </div>
       </section>
@@ -207,7 +227,11 @@ export default function HomePage() {
             className="absolute inset-x-[10%] top-7 h-px bg-fog"
           />
           {processSteps.map((step, i) => (
-            <ProcessStepCard key={step.num} step={step} delay={processDelays[i]} />
+            <ProcessStepCard
+              key={step.num}
+              step={step}
+              delay={processDelays[i]}
+            />
           ))}
         </div>
       </section>
@@ -218,8 +242,8 @@ export default function HomePage() {
           as="blockquote"
           className="mx-auto mb-8 max-w-195 font-display text-[clamp(1.5rem,3vw,2.5rem)] font-light italic leading-[1.5] text-ink"
         >
-          &ldquo;Forma transformed not just our home, but the way we live in it. Every
-          corner holds intention.&rdquo;
+          &ldquo;Forma transformed not just our home, but the way we live in it.
+          Every corner holds intention.&rdquo;
         </Reveal>
         <Reveal
           as="p"

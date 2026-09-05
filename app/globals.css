@@ -30,6 +30,7 @@
   --animate-fade-up: fade-up 1s var(--ease-forma) forwards;
   --animate-fade-in: fade-in 1s forwards;
   --animate-scroll-pulse: scroll-pulse 2s ease-in-out infinite;
+  --animate-line-draw: line-draw 1.1s var(--ease-forma) 0.35s forwards;
 
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(24px); }
@@ -42,6 +43,10 @@
   @keyframes scroll-pulse {
     0%, 100% { transform: scaleY(1);   opacity: 1; }
     50%      { transform: scaleY(0.6); opacity: 0.4; }
+  }
+  @keyframes line-draw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
   }
 }
 
@@ -69,6 +74,16 @@
   select,
   [role="button"] {
     cursor: none;
+  }
+
+  /* While the preloader is up, hold the page's own entrance animations so the
+     hero's staggered reveal isn't spent behind the curtain. PageLoader sets
+     and clears this attribute. The loader itself is exempt. */
+  html[data-loading="true"] *:not([data-page-loader] *):not([data-page-loader]) {
+    animation-play-state: paused;
+  }
+  html[data-loading="true"] body {
+    overflow: hidden;
   }
 }
 
