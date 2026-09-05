@@ -8,6 +8,7 @@ import ProjectCard from "@/components/ProjectCard";
 import ProcessStepCard from "@/components/ProcessStepCard";
 import Reveal from "@/components/Reveal";
 import Footer from "@/components/Footer";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ import {
   processSteps,
   homeCarouselSlugs,
   homeFeaturedSlugs,
+  testimonials,
 } from "@/lib/data";
 
 const carouselItems = homeCarouselSlugs
@@ -237,22 +239,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-paper px-6 py-30 text-center md:px-15">
-        <div className="mx-auto mb-10 h-px w-10 bg-brass" />
-        <Reveal
-          as="blockquote"
-          className="mx-auto mb-8 max-w-195 font-display text-[clamp(1.5rem,3vw,2.5rem)] font-light italic leading-[1.5] text-ink"
-        >
-          &ldquo;Forma transformed not just our home, but the way we live in it.
-          Every corner holds intention.&rdquo;
+      <section className="bg-paper px-6 py-30 md:px-15">
+        <Reveal as="p" className={eyebrowClass}>
+          In Their Words
         </Reveal>
-        <Reveal
-          as="p"
-          className="text-label uppercase tracking-[0.2em] text-brass"
-          delay={1}
-        >
-          Priya &amp; Arjun Mehta — Meridian House, Chennai
+        <Reveal as="h2" className={sectionTitleClass} delay={1}>
+          Client
+          <br />
+          Stories
         </Reveal>
+        <TestimonialCarousel items={testimonials} />
       </section>
 
       <div className="relative overflow-hidden bg-ink px-6 py-30 text-center md:px-15">

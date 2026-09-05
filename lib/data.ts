@@ -276,3 +276,49 @@ export const team: TeamMember[] = [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&fit=crop&crop=face",
   },
 ];
+
+export interface Testimonial {
+  quote: string;
+  author: string;
+  /** Project and city, shown under the author's name. */
+  project: string;
+  /** Still shown before playback. */
+  poster: string;
+  /**
+   * PLACEHOLDER. Stock clips standing in until the real client interviews are
+   * filmed — swap these for self-hosted files under /public and add a WebM
+   * source alongside each MP4.
+   */
+  video: string;
+}
+
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Forma transformed not just our home, but the way we live in it. Every corner holds intention.",
+    author: "Priya & Arjun Mehta",
+    project: "Meridian House, Chennai",
+    poster:
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80&fit=crop",
+    video: "https://mdn.github.io/shared-assets/videos/flower.mp4",
+  },
+  {
+    quote:
+      "They listened before they drew. What came back was the brief we could not articulate ourselves.",
+    author: "Kavitha Raghavan",
+    project: "The Loft Collection, Bengaluru",
+    poster:
+      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1200&q=80&fit=crop",
+    video: "https://mdn.github.io/shared-assets/videos/friday.mp4",
+  },
+  {
+    quote:
+      "Sixteen months, no surprises. The detailing is what we notice now — and it still surprises us.",
+    author: "Sanjay Nair",
+    project: "Studio Norte, Kochi",
+    poster:
+      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1200&q=80&fit=crop",
+    video:
+      "https://test-videos.co.uk/vids/jellyfish/mp4/h264/720/Jellyfish_720_10s_1MB.mp4",
+  },
+];
