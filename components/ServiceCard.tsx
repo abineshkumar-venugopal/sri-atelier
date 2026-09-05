@@ -37,7 +37,11 @@ export default function ServiceCard({
   const ref = useRef<HTMLDivElement>(null);
   const visible = useRevealVisible(ref);
   return (
-    <div ref={ref} className={`service-card ${revealClassName(visible, delay)}`}>
+    <div
+      ref={ref}
+      data-cursor="hover"
+      className={`service-card ${revealClassName(visible, delay)}`}
+    >
       <svg
         className="service-icon"
         viewBox="0 0 44 44"

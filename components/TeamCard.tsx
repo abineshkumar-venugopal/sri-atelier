@@ -15,7 +15,11 @@ export default function TeamCard({
   const ref = useRef<HTMLDivElement>(null);
   const visible = useRevealVisible(ref);
   return (
-    <div ref={ref} className={`team-card ${revealClassName(visible, delay)}`}>
+    <div
+      ref={ref}
+      data-cursor="hover"
+      className={`team-card ${revealClassName(visible, delay)}`}
+    >
       <div className="team-photo">
         <Image
           src={member.photo}

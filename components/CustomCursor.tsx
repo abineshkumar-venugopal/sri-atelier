@@ -2,8 +2,12 @@
 
 import { useEffect, useRef } from "react";
 
-const HOVER_SELECTOR =
-  "a, button, .carousel-item, .project-card, .proj-item, .service-card, .process-step, .team-card";
+/**
+ * What the cursor grows over. Cards opt in with `data-cursor="hover"` rather
+ * than being listed here by class name, so restyling a card can't silently
+ * break the cursor.
+ */
+const HOVER_SELECTOR = 'a, button, [data-cursor="hover"]';
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -25,6 +29,8 @@ export default function CustomCursor() {
       mouseY = e.clientY;
     };
 
+    // Position is written straight to the DOM every frame; routing it through
+    // React state would re-render the tree 60 times a second.
     const tick = () => {
       ringX += (mouseX - ringX) * 0.18;
       ringY += (mouseY - ringY) * 0.18;
@@ -35,18 +41,19 @@ export default function CustomCursor() {
       frame = requestAnimationFrame(tick);
     };
 
+    const setHovering = (hovering: boolean) => {
+      dot.dataset.hovering = String(hovering);
+      ring.dataset.hovering = String(hovering);
+    };
+
     const handleMouseOver = (e: MouseEvent) => {
-      if ((e.target as Element)?.closest?.(HOVER_SELECTOR)) {
-        dot.classList.add("is-hovering");
-        ring.classList.add("is-hovering");
-      }
+      if ((e.target as Element)?.closest?.(HOVER_SELECTOR)) setHovering(true);
     };
 
     const handleMouseOut = (e: MouseEvent) => {
       const related = e.relatedTarget as Element | null;
       if (related?.closest?.(HOVER_SELECTOR)) return;
-      dot.classList.remove("is-hovering");
-      ring.classList.remove("is-hovering");
+      setHovering(false);
     };
 
     document.addEventListener("mousemove", handleMouseMove);
@@ -64,8 +71,16 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={ringRef} className="cursor-ring" />
+      <div
+        ref={dotRef}
+        data-hovering="false"
+        className="pointer-events-none fixed z-[9999] size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink transition-[width,height,background-color] duration-300 ease-forma data-[hovering=true]:size-4 data-[hovering=true]:bg-brass"
+      />
+      <div
+        ref={ringRef}
+        data-hovering="false"
+        className="pointer-events-none fixed z-[9998] size-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/30 transition-[width,height,border-color] duration-400 ease-forma data-[hovering=true]:size-14 data-[hovering=true]:border-brass"
+      />
     </>
   );
 }

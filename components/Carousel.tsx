@@ -40,7 +40,7 @@ export default function Carousel({ items }: { items: Project[] }) {
       <div className="carousel-track-wrap">
         <div className="carousel-track" ref={trackRef}>
           {items.map((project) => (
-            <div className="carousel-item" key={project.slug}>
+            <div className="carousel-item" data-cursor="hover" key={project.slug}>
               <Image
                 src={project.thumb}
                 alt={project.name}
