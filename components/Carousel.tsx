@@ -1,78 +1,51 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+
+import {
+  Carousel as CarouselRoot,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import type { Project } from "@/lib/data";
 
 export default function Carousel({ items }: { items: Project[] }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
-  const maxIndex = Math.max(items.length - 2, 0);
-
-  const applyTransform = useCallback((i: number) => {
-    const track = trackRef.current;
-    const item = track?.querySelector<HTMLElement>(".carousel-item");
-    const itemWidth = item ? item.offsetWidth + 2 : 0;
-    if (track) {
-      track.style.transform = `translateX(-${i * itemWidth}px)`;
-    }
-  }, []);
-
-  const goTo = (i: number) => {
-    const clamped = Math.min(Math.max(i, 0), maxIndex);
-    setIndex(clamped);
-    applyTransform(clamped);
-  };
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((prev) => {
-        const next = prev >= maxIndex ? 0 : prev + 1;
-        applyTransform(next);
-        return next;
-      });
-    }, 4500);
-    return () => clearInterval(id);
-  }, [maxIndex, applyTransform]);
-
   return (
-    <>
-      <div className="carousel-track-wrap">
-        <div className="carousel-track" ref={trackRef}>
-          {items.map((project) => (
-            <div className="carousel-item" data-cursor="hover" key={project.slug}>
-              <Image
-                src={project.thumb}
-                alt={project.name}
-                fill
-                className="object-cover"
-                sizes="38vw"
-              />
-              <div className="carousel-overlay">
-                <div className="carousel-overlay-text">{project.name}</div>
+    <CarouselRoot
+      opts={{ align: "start" }}
+      plugins={[Autoplay({ delay: 4500, stopOnInteraction: false })]}
+    >
+      {/* 2px gutter: the track pulls back by half and each slide pads by half. */}
+      <CarouselContent className="-ml-0.5">
+        {items.map((project) => (
+          <CarouselItem
+            key={project.slug}
+            data-cursor="hover"
+            className="group relative h-[52vh] min-h-85 basis-4/5 overflow-hidden pl-0.5 md:basis-[38vw]"
+          >
+            <Image
+              src={project.thumb}
+              alt={project.name}
+              fill
+              className="object-cover transition-transform duration-800 ease-forma group-hover:scale-[1.04]"
+              sizes="(max-width: 768px) 80vw, 38vw"
+            />
+            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-ink/72 from-0% to-transparent to-55% p-8 opacity-0 transition-opacity duration-500 ease-forma group-hover:opacity-100">
+              <div className="translate-y-2 font-display text-2xl font-light text-paper transition-transform duration-400 ease-forma group-hover:translate-y-0">
+                {project.name}
               </div>
             </div>
-          ))}
-        </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      <div className="flex items-center gap-3 px-6 pt-8 md:px-15">
+        <CarouselPrevious />
+        <CarouselNext />
       </div>
-      <div className="carousel-controls">
-        <button
-          className="carousel-btn"
-          onClick={() => goTo(index - 1)}
-          disabled={index === 0}
-          aria-label="Previous project"
-        >
-          ←
-        </button>
-        <button
-          className="carousel-btn"
-          onClick={() => goTo(index + 1)}
-          disabled={index === maxIndex}
-          aria-label="Next project"
-        >
-          →
-        </button>
-      </div>
-    </>
+    </CarouselRoot>
   );
 }
