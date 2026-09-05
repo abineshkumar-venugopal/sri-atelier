@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import SocialLinks from "@/components/SocialLinks";
+
 const navigate = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
@@ -81,17 +83,7 @@ export default function Footer() {
 
       <div className="flex items-center justify-between border-t border-white/6 pt-8 text-label text-ash">
         <span>© 2024 Forma Architecture Studio</span>
-        <div className="flex gap-5">
-          {["Instagram", "Behance", "LinkedIn"].map((social) => (
-            <a
-              key={social}
-              href="#"
-              className="text-label uppercase tracking-[0.1em] text-ash transition-colors duration-300 hover:text-brass"
-            >
-              {social}
-            </a>
-          ))}
-        </div>
+        <SocialLinks />
       </div>
     </footer>
   );
