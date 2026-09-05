@@ -71,15 +71,19 @@ export default function CustomCursor() {
 
   return (
     <>
+      {/* mix-blend-difference inverts the cursor against whatever is behind it,
+          so it stays visible over both the paper pages and the ink bands
+          (final CTA, footers, values) without tagging any of them. On hover it
+          switches to a normal brass fill, which reads on light and dark alike. */}
       <div
         ref={dotRef}
         data-hovering="false"
-        className="pointer-events-none fixed z-[9999] size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink transition-[width,height,background-color] duration-300 ease-forma data-[hovering=true]:size-4 data-[hovering=true]:bg-brass"
+        className="pointer-events-none fixed z-[9999] size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-paper mix-blend-difference transition-[width,height,background-color] duration-300 ease-forma data-[hovering=true]:size-4 data-[hovering=true]:bg-brass data-[hovering=true]:mix-blend-normal"
       />
       <div
         ref={ringRef}
         data-hovering="false"
-        className="pointer-events-none fixed z-[9998] size-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ink/30 transition-[width,height,border-color] duration-400 ease-forma data-[hovering=true]:size-14 data-[hovering=true]:border-brass"
+        className="pointer-events-none fixed z-[9998] size-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-paper/60 mix-blend-difference transition-[width,height,border-color] duration-400 ease-forma data-[hovering=true]:size-14 data-[hovering=true]:border-brass data-[hovering=true]:mix-blend-normal"
       />
     </>
   );
