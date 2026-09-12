@@ -10,6 +10,11 @@ interface ParallaxProps {
   src: string;
   alt: string;
   mode: "scroll" | "center";
+  /**
+   * In "center" mode this is the share of the section's height the image
+   * travels each way. Give the element the same share as vertical overhang
+   * (e.g. factor 0.35 with -inset-y-[35%]) and an edge can never come in.
+   */
   factor: number;
   className: string;
   preload?: boolean;
@@ -48,8 +53,18 @@ export default function Parallax({
       } else {
         const rect = el.parentElement?.getBoundingClientRect();
         if (rect) {
-          const offset = (window.innerHeight / 2 - rect.top - rect.height / 2) * factor;
-          el.style.transform = `translateY(${offset}px)`;
+          // Normalised: -1 as the section enters from below, 0 when centred,
+          // +1 as it leaves the top. Travel is then a fixed share of the
+          // section's height rather than a raw pixel distance, so the movement
+          // is strongest while the section is on screen instead of petering
+          // out to nothing exactly when it is most visible.
+          const span = (window.innerHeight + rect.height) / 2;
+          const middle = rect.top + rect.height / 2;
+          const progress = Math.max(
+            -1,
+            Math.min(1, (window.innerHeight / 2 - middle) / span)
+          );
+          el.style.transform = `translateY(${progress * rect.height * factor}px)`;
         }
       }
     };

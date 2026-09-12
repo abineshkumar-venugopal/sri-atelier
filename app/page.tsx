@@ -185,11 +185,12 @@ export default function HomePage() {
 
       <div className="relative flex h-[60vh] min-h-100 items-center justify-center overflow-hidden">
         <Parallax
-          className="absolute -inset-[20%] will-change-transform"
+          // Overhang matches the factor below, so the image always covers.
+          className="absolute inset-x-0 -inset-y-[50%] will-change-transform"
           src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1800&q=80&fit=crop"
           alt="Architecture detail"
           mode="center"
-          factor={0.22}
+          factor={0.5}
         />
         <div className="absolute inset-0 z-[1] bg-[rgb(8_8_8/65%)]" />
         <Reveal
