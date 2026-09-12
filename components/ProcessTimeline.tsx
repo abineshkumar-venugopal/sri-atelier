@@ -5,24 +5,34 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { ProcessStep } from "@/lib/data";
 
-/** Vertical room each step gets inside the SVG's own coordinate space. */
-const STEP_UNITS = 260;
-/** How far the curve leans off the spine, as a percentage of width. 50 is
- *  dead straight; raise it for a more pronounced weave. */
-const BOW = 64;
+/** How far the curve leans off the spine, as a fraction of width. */
+const BOW = 0.14;
+/** Used until the container has been measured, so first paint is sensible. */
+const FALLBACK = { width: 1000, rowHeight: 256 };
 
 type Segment =
   | { kind: "line"; y0: number; y1: number }
-  | { kind: "cubic"; y0: number; y1: number; c1y: number; c2y: number; bow: number };
+  | {
+      kind: "cubic";
+      y0: number;
+      y1: number;
+      c1y: number;
+      c2y: number;
+      bow: number;
+    };
 
 /**
- * The connector, as data rather than only a `d` string, so the pointer's
- * position can be solved directly instead of measured off the rendered SVG.
- * Nodes sit on the spine; the line leans to alternating sides between them.
+ * The connector, built in the container's own pixel space.
+ *
+ * Everything here — the path, the dash maths and the marker — has to agree on
+ * one coordinate space. The svg viewBox is set to the measured size so a user
+ * unit is a CSS pixel. That keeps the geometry undistorted, and means the dash
+ * lengths the browser computes and the table below are measuring the same
+ * thing. Stretching the viewBox instead put the marker well off the line.
  */
-function buildSegments(count: number) {
-  const height = count * STEP_UNITS;
-  const nodeY = (i: number) => (i + 0.5) * STEP_UNITS;
+function buildSegments(count: number, width: number, height: number) {
+  const spine = width / 2;
+  const nodeY = (i: number) => ((i + 0.5) * height) / count;
   const segments: Segment[] = [{ kind: "line", y0: 0, y1: nodeY(0) }];
 
   for (let i = 0; i < count - 1; i++) {
@@ -34,21 +44,21 @@ function buildSegments(count: number) {
       y1,
       c1y: y0 + (y1 - y0) * 0.35,
       c2y: y0 + (y1 - y0) * 0.65,
-      bow: i % 2 === 0 ? BOW : 100 - BOW,
+      bow: spine + (i % 2 === 0 ? 1 : -1) * width * BOW,
     });
   }
 
   segments.push({ kind: "line", y0: nodeY(count - 1), y1: height });
-  return { segments, height };
+  return segments;
 }
 
-function toPathData(segments: Segment[]) {
-  let d = `M 50 ${segments[0].y0}`;
+function toPathData(segments: Segment[], spine: number) {
+  let d = `M ${spine} ${segments[0].y0}`;
   for (const segment of segments) {
     d +=
       segment.kind === "line"
-        ? ` L 50 ${segment.y1}`
-        : ` C ${segment.bow} ${segment.c1y}, ${segment.bow} ${segment.c2y}, 50 ${segment.y1}`;
+        ? ` L ${spine} ${segment.y1}`
+        : ` C ${segment.bow} ${segment.c1y}, ${segment.bow} ${segment.c2y}, ${spine} ${segment.y1}`;
   }
   return d;
 }
@@ -58,31 +68,27 @@ const cubic = (a: number, b: number, c: number, d: number, t: number) => {
   return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
 };
 
-const pointOn = (segment: Segment, t: number) => ({
-  x: segment.kind === "line" ? 50 : cubic(50, segment.bow, segment.bow, 50, t),
+const pointOn = (segment: Segment, spine: number, t: number) => ({
+  x:
+    segment.kind === "line"
+      ? spine
+      : cubic(spine, segment.bow, segment.bow, spine, t),
   y:
     segment.kind === "line"
       ? segment.y0 + (segment.y1 - segment.y0) * t
       : cubic(segment.y0, segment.c1y, segment.c2y, segment.y1, t),
 });
 
-/**
- * Flattens the connector into points carrying their running arc length.
- *
- * The drawn line is revealed by stroke-dashoffset, which measures arc length,
- * so the marker has to be placed the same way. Positioning it by vertical
- * position instead leaves it running ahead of the line's end through every
- * curve, where the path covers more distance than it descends.
- */
-function buildLengthTable(segments: Segment[]) {
-  let previous = pointOn(segments[0], 0);
+/** Flattens the connector into points carrying their running arc length. */
+function buildLengthTable(segments: Segment[], spine: number) {
+  let previous = pointOn(segments[0], spine, 0);
   let length = 0;
   const table = [{ ...previous, length }];
 
   for (const segment of segments) {
-    const steps = segment.kind === "line" ? 1 : 64;
+    const steps = segment.kind === "line" ? 1 : 96;
     for (let i = 1; i <= steps; i++) {
-      const point = pointOn(segment, i / steps);
+      const point = pointOn(segment, spine, i / steps);
       length += Math.hypot(point.x - previous.x, point.y - previous.y);
       table.push({ ...point, length });
       previous = point;
@@ -93,7 +99,7 @@ function buildLengthTable(segments: Segment[]) {
 
 type LengthTable = ReturnType<typeof buildLengthTable>;
 
-/** Point at `fraction` (0-1) of the connector's arc length, in viewBox units. */
+/** Point at `fraction` (0-1) of the connector arc length, in pixels. */
 export function pointAtFraction(table: LengthTable, fraction: number) {
   const total = table[table.length - 1].length;
   const target = Math.min(1, Math.max(0, fraction)) * total;
@@ -118,13 +124,35 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
   const pathRef = useRef<SVGPathElement>(null);
   const pointerRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [size, setSize] = useState({
+    width: FALLBACK.width,
+    height: steps.length * FALLBACK.rowHeight,
+  });
 
-  const { segments, height } = useMemo(
-    () => buildSegments(steps.length),
-    [steps.length]
-  );
-  const table = useMemo(() => buildLengthTable(segments), [segments]);
-  const d = toPathData(segments);
+  const { table, d } = useMemo(() => {
+    const spine = size.width / 2;
+    const segments = buildSegments(steps.length, size.width, size.height);
+    return {
+      table: buildLengthTable(segments, spine),
+      d: toPathData(segments, spine),
+    };
+  }, [steps.length, size.width, size.height]);
+
+  // Keep the viewBox matched to the rendered box, so one unit stays one pixel.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      setSize((prev) =>
+        Math.abs(prev.width - width) < 1 && Math.abs(prev.height - height) < 1
+          ? prev
+          : { width, height }
+      );
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -140,19 +168,21 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       const startLine = viewport * 0.8;
       const endLine = viewport * 0.4;
       const distance = rect.height + (startLine - endLine);
-      const progress = Math.min(1, Math.max(0, (startLine - rect.top) / distance));
+      const progress = Math.min(
+        1,
+        Math.max(0, (startLine - rect.top) / distance)
+      );
 
       if (pathRef.current) {
         pathRef.current.style.strokeDashoffset = String(1 - progress);
       }
 
-      // Same fraction the dash uses, so the marker sits exactly on the end of
-      // the drawn line. viewBox x spans 0-100 and y spans 0-height, and the svg
-      // stretches to the container, so these convert to percentage offsets.
+      // Same fraction the dash uses, in the same units, so the marker lands on
+      // the end of the drawn line.
       const point = pointAtFraction(table, progress);
       if (pointerRef.current) {
-        pointerRef.current.style.left = `${point.x}%`;
-        pointerRef.current.style.top = `${(point.y / height) * 100}%`;
+        pointerRef.current.style.left = `${point.x}px`;
+        pointerRef.current.style.top = `${point.y}px`;
       }
 
       const reached = Math.floor(progress * steps.length + 0.15) - 1;
@@ -172,26 +202,24 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [steps.length, table, height]);
+  }, [steps.length, table]);
 
   return (
     <div ref={containerRef} className="relative mt-16">
       <svg
         aria-hidden="true"
-        viewBox={`0 0 100 ${height}`}
-        preserveAspectRatio="none"
+        viewBox={`0 0 ${size.width} ${size.height}`}
         className="pointer-events-none absolute inset-0 size-full"
       >
         {/* Dotted track, then the brass line drawn over it. pathLength=1 makes
-            the dash maths a plain 0-1 fraction of the curve. */}
+            the dash a plain 0-1 fraction of the curve. */}
         <path
           d={d}
           fill="none"
           stroke="var(--color-fog)"
           strokeWidth={2}
-          strokeDasharray="1 9"
+          strokeDasharray="2 10"
           strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
         />
         <path
           ref={pathRef}
@@ -200,7 +228,6 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
           stroke="var(--color-brass)"
           strokeWidth={2}
           strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
           pathLength={1}
           strokeDasharray={1}
           strokeDashoffset={1}
@@ -213,7 +240,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       <span
         ref={pointerRef}
         aria-hidden="true"
-        className="absolute top-0 left-1/2 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass ring-4 ring-brass/25"
+        className="absolute top-0 left-0 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass ring-4 ring-brass/25"
       />
 
       {steps.map((step, i) => {
