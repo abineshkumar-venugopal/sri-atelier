@@ -183,6 +183,9 @@ export interface ProcessStep {
   num: string;
   name: string;
   description: string;
+  /** Shown opposite the heading on the process timeline. */
+  image: string;
+  imageAlt: string;
 }
 
 export const processSteps: ProcessStep[] = [
@@ -190,25 +193,37 @@ export const processSteps: ProcessStep[] = [
     num: "01",
     name: "Consultation",
     description:
-      "We listen deeply to understand your vision, needs, and the story of the space.",
+      "We begin by listening. Site visits, long conversations, and a careful read of how you actually live or work — the light you wake up to, the rooms you avoid, the way a family or a team moves through a day. Nothing is drawn until the brief has been earned.",
+    image:
+      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900&q=80&fit=crop",
+    imageAlt: "Studio consultation over drawings and material samples",
   },
   {
     num: "02",
     name: "Design",
     description:
-      "Concepts are developed, refined, and tested against light, form, and function.",
+      "Concepts take shape as sketches, models, and material boards, then are tested against sun path, structure, and budget. We work through several schemes rather than defending the first, refining plan and section until the idea holds from the street down to a door handle.",
+    image:
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80&fit=crop",
+    imageAlt: "Interior scheme with layered light and material detail",
   },
   {
     num: "03",
     name: "Build",
     description:
-      "Construction is managed with precision, material care, and site presence.",
+      "Drawings become a building. We stay on site through the work, coordinating contractors, checking every pour and joint, and resolving the details that only reveal themselves once the structure is standing. Material honesty is protected here or it is lost.",
+    image:
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=80&fit=crop",
+    imageAlt: "Structure under construction, framing and openings",
   },
   {
     num: "04",
     name: "Deliver",
     description:
-      "The finished space is handed over — complete, considered, and yours.",
+      "Snagging, finishes, and a full handover — every system explained, every drawing archived. We return after the first season to see how the space has settled and how you have made it your own, because a building is only finished once it is lived in.",
+    image:
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80&fit=crop",
+    imageAlt: "Completed interior, furnished and in use",
   },
 ];
 

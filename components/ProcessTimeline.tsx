@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import type { ProcessStep } from "@/lib/data";
@@ -9,8 +10,10 @@ import type { ProcessStep } from "@/lib/data";
 const BOW = 0.14;
 /** The lead in and out span half a row, so they lean proportionately less. */
 const LEAD_BOW = BOW * 0.55;
+/** Below this the spine moves left and the layout becomes a single column. */
+const WIDE_AT = 768;
 /** Used until the container has been measured, so first paint is sensible. */
-const FALLBACK = { width: 1000, rowHeight: 256 };
+const FALLBACK = { width: 1000, rowHeight: 384 };
 
 /** Every segment is a cubic — the connector has no straight runs. */
 type Segment = {
@@ -42,8 +45,12 @@ const segment = (y0: number, y1: number, bow: number): Segment => ({
  * neighbouring curve, so the weave carries through rather than starting and
  * ending on a straight.
  */
-function buildSegments(count: number, width: number, height: number) {
-  const spine = width / 2;
+function buildSegments(
+  count: number,
+  width: number,
+  height: number,
+  spine: number
+) {
   const nodeY = (i: number) => ((i + 0.5) * height) / count;
   const amplitude = width * BOW;
   const leadAmplitude = width * LEAD_BOW;
@@ -55,17 +62,11 @@ function buildSegments(count: number, width: number, height: number) {
   ];
 
   for (let i = 0; i < count - 1; i++) {
-    segments.push(
-      segment(nodeY(i), nodeY(i + 1), spine + side(i) * amplitude)
-    );
+    segments.push(segment(nodeY(i), nodeY(i + 1), spine + side(i) * amplitude));
   }
 
   segments.push(
-    segment(
-      nodeY(count - 1),
-      height,
-      spine - side(count - 2) * leadAmplitude
-    )
+    segment(nodeY(count - 1), height, spine - side(count - 2) * leadAmplitude)
   );
 
   return segments;
@@ -97,7 +98,11 @@ const pointOn = (s: Segment, spine: number, t: number) => ({
  * reaches its number: both are measured against the same arc length, so there
  * is nothing to approximate.
  */
-function buildLengthTable(segments: Segment[], spine: number, nodeCount: number) {
+function buildLengthTable(
+  segments: Segment[],
+  spine: number,
+  nodeCount: number
+) {
   let previous = pointOn(segments[0], spine, 0);
   let length = 0;
   const table = [{ ...previous, length }];
@@ -150,16 +155,24 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
     height: steps.length * FALLBACK.rowHeight,
   });
 
+  // Centred where there is room for content either side; tucked left once the
+  // rows collapse to a single column.
+  const spine = size.width * (size.width >= WIDE_AT ? 0.5 : 0.12);
+
   const { table, nodeFractions, d } = useMemo(() => {
-    const spine = size.width / 2;
-    const segments = buildSegments(steps.length, size.width, size.height);
+    const segments = buildSegments(
+      steps.length,
+      size.width,
+      size.height,
+      spine
+    );
     const { table, nodeFractions } = buildLengthTable(
       segments,
       spine,
       steps.length
     );
     return { table, nodeFractions, d: toPathData(segments, spine) };
-  }, [steps.length, size.width, size.height]);
+  }, [steps.length, size.width, size.height, spine]);
 
   // Keep the viewBox matched to the rendered box, so one unit stays one pixel.
   useEffect(() => {
@@ -232,7 +245,11 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
   }, [table, nodeFractions]);
 
   return (
-    <div ref={containerRef} className="relative mt-16">
+    <div
+      ref={containerRef}
+      className="relative mt-16"
+      style={{ "--spine": `${spine}px` } as React.CSSProperties}
+    >
       <svg
         aria-hidden="true"
         viewBox={`0 0 ${size.width} ${size.height}`}
@@ -278,31 +295,54 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
           <div
             key={step.num}
             data-cursor="hover"
-            className="relative flex h-56 items-center md:h-64"
+            // Rows are a fixed height on purpose: the nodes are placed at even
+            // fractions of the container, so uneven rows would drift off the
+            // curve. Copy is written to sit inside it.
+            className="relative grid h-[30rem] grid-cols-1 items-center pr-2 pl-[calc(var(--spine)+2.75rem)] md:h-96 md:grid-cols-2 md:gap-x-24 md:px-0"
           >
             <span
               aria-hidden="true"
               data-reached={reached}
-              className="absolute top-1/2 left-1/2 z-[1] flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-fog bg-mist font-display text-[1.05rem] font-light text-ash transition-all duration-500 ease-forma data-[reached=true]:border-ink data-[reached=true]:bg-ink data-[reached=true]:text-paper"
+              style={{ left: "var(--spine)" }}
+              className="absolute top-1/2 z-[1] flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-fog bg-mist font-display text-[1.05rem] font-light text-ash transition-all duration-500 ease-forma data-[reached=true]:border-ink data-[reached=true]:bg-ink data-[reached=true]:text-paper"
             >
               {step.num}
             </span>
 
             <div
               className={cn(
-                "w-[calc(50%-3rem)] transition-all duration-700 ease-forma",
-                onLeft ? "pr-4 text-right" : "ml-auto pl-4",
+                "transition-all duration-700 ease-forma",
+                onLeft ? "md:col-start-1 md:text-right" : "md:col-start-2",
                 reached
                   ? "translate-x-0 opacity-100"
                   : cn("opacity-0", onLeft ? "-translate-x-8" : "translate-x-8")
               )}
             >
-              <h3 className="mb-2.5 font-display text-[1.35rem] font-normal">
+              <h3 className="mb-3 font-display text-[1.5rem] font-normal">
                 {step.name}
               </h3>
-              <p className="text-[0.9rem] leading-[1.8] text-ash">
+              <p className="text-[0.9rem] leading-[1.9] text-ash">
                 {step.description}
               </p>
+            </div>
+
+            {/* Opposite the heading, and entering from the opposite side. */}
+            <div
+              className={cn(
+                "relative hidden h-72 overflow-hidden transition-all delay-100 duration-700 ease-forma md:block",
+                onLeft ? "md:col-start-2" : "md:col-start-1",
+                reached
+                  ? "translate-x-0 opacity-100"
+                  : cn("opacity-0", onLeft ? "translate-x-8" : "-translate-x-8")
+              )}
+            >
+              <Image
+                src={step.image}
+                alt={step.imageAlt}
+                fill
+                sizes="(max-width: 768px) 0px, 40vw"
+                className="object-cover"
+              />
             </div>
           </div>
         );
