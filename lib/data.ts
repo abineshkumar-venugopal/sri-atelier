@@ -152,30 +152,64 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
 
+export type ServiceIcon =
+  | "architecture"
+  | "interior"
+  | "landscape"
+  | "construction"
+  | "planning"
+  | "visualisation";
+
 export interface Service {
+  /** Shown above the card, as in the numbered grid. */
+  num: string;
   name: string;
   description: string;
-  icon: "interior" | "exterior" | "construction";
+  icon: ServiceIcon;
 }
 
 export const services: Service[] = [
   {
+    num: "01",
+    name: "Architectural Design",
+    description:
+      "Buildings that earn their place — sited to the light and the street, planned around how people actually move, and detailed so they age well. We work across private homes, workplaces, and cultural and institutional projects, from first sketch to the drawings a contractor builds from.",
+    icon: "architecture",
+  },
+  {
+    num: "02",
     name: "Interior Design",
     description:
-      "Spaces crafted for the way you truly live — thoughtful, functional, and quietly beautiful.",
+      "Rooms resolved to the same standard as the shell that holds them. Layout, light, materials, joinery and furniture are drawn together rather than applied afterwards, so the interior reads as part of the architecture and not a layer added at the end.",
     icon: "interior",
   },
   {
-    name: "Exterior Design",
+    num: "03",
+    name: "Landscape Design",
     description:
-      "Architecture that responds to context — honest materials, deliberate form, lasting presence.",
-    icon: "exterior",
+      "Ground, planting and water treated as architecture rather than decoration. Courtyards, terraces and thresholds are shaped to soften a building against the South Indian climate — shade where it is needed, breeze drawn through, and planting chosen to thrive locally.",
+    icon: "landscape",
   },
   {
-    name: "Construction",
+    num: "04",
+    name: "Turnkey Construction",
     description:
-      "End-to-end project delivery with precision, transparency, and uncompromising craft.",
+      "Design and delivery under one roof. We tender, appoint and coordinate the trades, hold the programme and the budget, and stay on site through the work — so responsibility for what gets built sits with the people who drew it.",
     icon: "construction",
+  },
+  {
+    num: "05",
+    name: "Planning & Feasibility",
+    description:
+      "The work before the design. Site appraisal, massing studies, regulatory review and honest cost and programme advice, so a brief is tested against what the site, the approvals and the budget will genuinely allow before commitments are made.",
+    icon: "planning",
+  },
+  {
+    num: "06",
+    name: "Visualisation",
+    description:
+      "Photoreal images, walkthroughs and physical models made during design, not after it. Seeing a scheme in material and daylight is how clients make confident decisions — and how we catch what a plan and section alone will not reveal.",
+    icon: "visualisation",
   },
 ];
 

@@ -33,7 +33,7 @@ const featuredItems = homeFeaturedSlugs
   .map((slug) => projects.find((p) => p.slug === slug))
   .filter((p): p is (typeof projects)[number] => Boolean(p));
 
-const serviceDelays = [undefined, 1, 2] as const;
+const serviceDelays = [undefined, 1, 2, undefined, 1, 2] as const;
 const featuredDelays = [undefined, 1, 2, 3, undefined, 1] as const;
 
 /** Section padding shared by most bands on this page. */
@@ -163,14 +163,16 @@ export default function HomePage() {
 
       <LogoMarquee items={clients} />
 
-      <section className={cn(sectionPadding, "bg-paper")}>
+      <section className={cn(sectionPadding, "bg-ink")}>
         <Reveal as="div" className={eyebrowClass}>
           What We Do
         </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
+        <Reveal as="h2" className={cn(sectionTitleClass, "text-paper")} delay={1}>
           Services
         </Reveal>
-        <div className="mt-14 grid grid-cols-2 gap-0.5 md:grid-cols-3">
+        {/* gap-px over a hairline background is what draws the rules between
+            tiles — each card paints its own ink over the top. */}
+        <div className="mt-14 grid gap-px bg-white/8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => (
             <ServiceCard
               key={service.name}
