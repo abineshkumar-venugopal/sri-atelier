@@ -7,19 +7,27 @@ import type { ProcessStep } from "@/lib/data";
 
 /** How far the curve leans off the spine, as a fraction of width. */
 const BOW = 0.14;
+/** The lead in and out span half a row, so they lean proportionately less. */
+const LEAD_BOW = BOW * 0.55;
 /** Used until the container has been measured, so first paint is sensible. */
 const FALLBACK = { width: 1000, rowHeight: 256 };
 
-type Segment =
-  | { kind: "line"; y0: number; y1: number }
-  | {
-      kind: "cubic";
-      y0: number;
-      y1: number;
-      c1y: number;
-      c2y: number;
-      bow: number;
-    };
+/** Every segment is a cubic — the connector has no straight runs. */
+type Segment = {
+  y0: number;
+  y1: number;
+  c1y: number;
+  c2y: number;
+  bow: number;
+};
+
+const segment = (y0: number, y1: number, bow: number): Segment => ({
+  y0,
+  y1,
+  c1y: y0 + (y1 - y0) * 0.35,
+  c2y: y0 + (y1 - y0) * 0.65,
+  bow,
+});
 
 /**
  * The connector, built in the container's own pixel space.
@@ -29,36 +37,44 @@ type Segment =
  * unit is a CSS pixel. That keeps the geometry undistorted, and means the dash
  * lengths the browser computes and the table below are measuring the same
  * thing. Stretching the viewBox instead put the marker well off the line.
+ *
+ * The run into the first node and out of the last lean opposite their
+ * neighbouring curve, so the weave carries through rather than starting and
+ * ending on a straight.
  */
 function buildSegments(count: number, width: number, height: number) {
   const spine = width / 2;
   const nodeY = (i: number) => ((i + 0.5) * height) / count;
-  const segments: Segment[] = [{ kind: "line", y0: 0, y1: nodeY(0) }];
+  const amplitude = width * BOW;
+  const leadAmplitude = width * LEAD_BOW;
+  /** Inter-node curves alternate, starting to the right of the spine. */
+  const side = (i: number) => (i % 2 === 0 ? 1 : -1);
+
+  const segments: Segment[] = [
+    segment(0, nodeY(0), spine - side(0) * leadAmplitude),
+  ];
 
   for (let i = 0; i < count - 1; i++) {
-    const y0 = nodeY(i);
-    const y1 = nodeY(i + 1);
-    segments.push({
-      kind: "cubic",
-      y0,
-      y1,
-      c1y: y0 + (y1 - y0) * 0.35,
-      c2y: y0 + (y1 - y0) * 0.65,
-      bow: spine + (i % 2 === 0 ? 1 : -1) * width * BOW,
-    });
+    segments.push(
+      segment(nodeY(i), nodeY(i + 1), spine + side(i) * amplitude)
+    );
   }
 
-  segments.push({ kind: "line", y0: nodeY(count - 1), y1: height });
+  segments.push(
+    segment(
+      nodeY(count - 1),
+      height,
+      spine - side(count - 2) * leadAmplitude
+    )
+  );
+
   return segments;
 }
 
 function toPathData(segments: Segment[], spine: number) {
   let d = `M ${spine} ${segments[0].y0}`;
-  for (const segment of segments) {
-    d +=
-      segment.kind === "line"
-        ? ` L ${spine} ${segment.y1}`
-        : ` C ${segment.bow} ${segment.c1y}, ${segment.bow} ${segment.c2y}, ${spine} ${segment.y1}`;
+  for (const s of segments) {
+    d += ` C ${s.bow} ${s.c1y}, ${s.bow} ${s.c2y}, ${spine} ${s.y1}`;
   }
   return d;
 }
@@ -68,36 +84,41 @@ const cubic = (a: number, b: number, c: number, d: number, t: number) => {
   return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
 };
 
-const pointOn = (segment: Segment, spine: number, t: number) => ({
-  x:
-    segment.kind === "line"
-      ? spine
-      : cubic(spine, segment.bow, segment.bow, spine, t),
-  y:
-    segment.kind === "line"
-      ? segment.y0 + (segment.y1 - segment.y0) * t
-      : cubic(segment.y0, segment.c1y, segment.c2y, segment.y1, t),
+const pointOn = (s: Segment, spine: number, t: number) => ({
+  x: cubic(spine, s.bow, s.bow, spine, t),
+  y: cubic(s.y0, s.c1y, s.c2y, s.y1, t),
 });
 
-/** Flattens the connector into points carrying their running arc length. */
-function buildLengthTable(segments: Segment[], spine: number) {
+/**
+ * Flattens the connector into points carrying their running arc length, and
+ * records where each node falls along it as a 0-1 fraction.
+ *
+ * Those fractions are what make a step reveal itself at the moment the marker
+ * reaches its number: both are measured against the same arc length, so there
+ * is nothing to approximate.
+ */
+function buildLengthTable(segments: Segment[], spine: number, nodeCount: number) {
   let previous = pointOn(segments[0], spine, 0);
   let length = 0;
   const table = [{ ...previous, length }];
+  const nodeLengths: number[] = [];
 
-  for (const segment of segments) {
-    const steps = segment.kind === "line" ? 1 : 96;
-    for (let i = 1; i <= steps; i++) {
-      const point = pointOn(segment, spine, i / steps);
+  segments.forEach((s, index) => {
+    for (let i = 1; i <= 96; i++) {
+      const point = pointOn(s, spine, i / 96);
       length += Math.hypot(point.x - previous.x, point.y - previous.y);
       table.push({ ...point, length });
       previous = point;
     }
-  }
-  return table;
+    // A node sits at the end of each segment bar the final run-out.
+    if (index < nodeCount) nodeLengths.push(length);
+  });
+
+  const total = length || 1;
+  return { table, nodeFractions: nodeLengths.map((l) => l / total) };
 }
 
-type LengthTable = ReturnType<typeof buildLengthTable>;
+type LengthTable = ReturnType<typeof buildLengthTable>["table"];
 
 /** Point at `fraction` (0-1) of the connector arc length, in pixels. */
 export function pointAtFraction(table: LengthTable, fraction: number) {
@@ -129,13 +150,15 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
     height: steps.length * FALLBACK.rowHeight,
   });
 
-  const { table, d } = useMemo(() => {
+  const { table, nodeFractions, d } = useMemo(() => {
     const spine = size.width / 2;
     const segments = buildSegments(steps.length, size.width, size.height);
-    return {
-      table: buildLengthTable(segments, spine),
-      d: toPathData(segments, spine),
-    };
+    const { table, nodeFractions } = buildLengthTable(
+      segments,
+      spine,
+      steps.length
+    );
+    return { table, nodeFractions, d: toPathData(segments, spine) };
   }, [steps.length, size.width, size.height]);
 
   // Keep the viewBox matched to the rendered box, so one unit stays one pixel.
@@ -185,7 +208,11 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         pointerRef.current.style.top = `${point.y}px`;
       }
 
-      const reached = Math.floor(progress * steps.length + 0.15) - 1;
+      // A step turns on exactly as the marker passes its number.
+      let reached = -1;
+      for (let i = 0; i < nodeFractions.length; i++) {
+        if (progress >= nodeFractions[i]) reached = i;
+      }
       setActiveIndex((prev) => (prev === reached ? prev : reached));
     };
 
@@ -202,7 +229,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [steps.length, table]);
+  }, [table, nodeFractions]);
 
   return (
     <div ref={containerRef} className="relative mt-16">
