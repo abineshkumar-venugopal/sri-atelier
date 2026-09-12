@@ -7,27 +7,85 @@ import type { ProcessStep } from "@/lib/data";
 
 /** Vertical room each step gets inside the SVG's own coordinate space. */
 const STEP_UNITS = 260;
-/** How far the curve bows off the spine, as a percentage of width. A gentle
- *  lean rather than a full swing — raise it for a more pronounced weave. */
+/** How far the curve leans off the spine, as a percentage of width. 50 is
+ *  dead straight; raise it for a more pronounced weave. */
 const BOW = 64;
 
+type Segment =
+  | { kind: "line"; y0: number; y1: number }
+  | { kind: "cubic"; y0: number; y1: number; c1y: number; c2y: number; bow: number };
+
 /**
- * Serpentine path weaving down the section: straight into the first node, then
- * a bow out to alternating sides between each pair of nodes. Nodes sit on the
- * centre line so the markers can be positioned without measuring the curve.
+ * The connector, as data rather than only a `d` string, so the pointer's
+ * position can be solved directly instead of measured off the rendered SVG.
+ * Nodes sit on the spine; the line leans to alternating sides between them.
  */
-function buildPath(count: number) {
+function buildSegments(count: number) {
   const height = count * STEP_UNITS;
   const nodeY = (i: number) => (i + 0.5) * STEP_UNITS;
+  const segments: Segment[] = [{ kind: "line", y0: 0, y1: nodeY(0) }];
 
-  let d = `M 50 0 L 50 ${nodeY(0)}`;
   for (let i = 0; i < count - 1; i++) {
-    const from = nodeY(i);
-    const to = nodeY(i + 1);
-    const bow = i % 2 === 0 ? BOW : 100 - BOW;
-    d += ` C ${bow} ${from + (to - from) * 0.35}, ${bow} ${from + (to - from) * 0.65}, 50 ${to}`;
+    const y0 = nodeY(i);
+    const y1 = nodeY(i + 1);
+    segments.push({
+      kind: "cubic",
+      y0,
+      y1,
+      c1y: y0 + (y1 - y0) * 0.35,
+      c2y: y0 + (y1 - y0) * 0.65,
+      bow: i % 2 === 0 ? BOW : 100 - BOW,
+    });
   }
-  return `${d} L 50 ${height}`;
+
+  segments.push({ kind: "line", y0: nodeY(count - 1), y1: height });
+  return { segments, height };
+}
+
+function toPathData(segments: Segment[]) {
+  let d = `M 50 ${segments[0].y0}`;
+  for (const segment of segments) {
+    d +=
+      segment.kind === "line"
+        ? ` L 50 ${segment.y1}`
+        : ` C ${segment.bow} ${segment.c1y}, ${segment.bow} ${segment.c2y}, 50 ${segment.y1}`;
+  }
+  return d;
+}
+
+const cubic = (a: number, b: number, c: number, d: number, t: number) => {
+  const u = 1 - t;
+  return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
+};
+
+/**
+ * Point on the connector at `progress` (0-1), in viewBox units.
+ *
+ * Parameterised by vertical position, which is monotonic along the whole
+ * path, so the marker descends at a steady rate. Within a curved segment the
+ * matching t is found by bisection — y is monotonic there too, and the
+ * steps put it far inside a pixel.
+ */
+export function pointAt(segments: Segment[], height: number, progress: number) {
+  const targetY = Math.min(height, Math.max(0, progress * height));
+  const segment =
+    segments.find((s) => targetY >= s.y0 && targetY <= s.y1) ??
+    segments[segments.length - 1];
+
+  if (segment.kind === "line") return { x: 50, y: targetY };
+
+  let low = 0;
+  let high = 1;
+  for (let i = 0; i < 28; i++) {
+    const mid = (low + high) / 2;
+    if (cubic(segment.y0, segment.c1y, segment.c2y, segment.y1, mid) < targetY) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+  const t = (low + high) / 2;
+  return { x: cubic(50, segment.bow, segment.bow, 50, t), y: targetY };
 }
 
 export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
@@ -36,23 +94,12 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
   const pointerRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const height = steps.length * STEP_UNITS;
-  const d = buildPath(steps.length);
+  const { segments, height } = buildSegments(steps.length);
+  const d = toPathData(segments);
 
   useEffect(() => {
     const el = containerRef.current;
-    const path = pathRef.current;
-    if (!el || !path) return;
-
-    // Sample the curve once into percentage coordinates. Because the SVG
-    // stretches with preserveAspectRatio="none", viewBox x/y map linearly onto
-    // the container's width/height — so these percentages place a plain DOM
-    // element on the curve without inheriting the SVG's distortion.
-    const total = path.getTotalLength();
-    const samples = Array.from({ length: 240 }, (_, i) => {
-      const point = path.getPointAtLength((i / 239) * total);
-      return { x: point.x, y: (point.y / height) * 100 };
-    });
+    if (!el) return;
 
     let frame = 0;
 
@@ -66,12 +113,16 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       const distance = rect.height + (startLine - endLine);
       const progress = Math.min(1, Math.max(0, (startLine - rect.top) / distance));
 
-      path.style.strokeDashoffset = String(1 - progress);
+      if (pathRef.current) {
+        pathRef.current.style.strokeDashoffset = String(1 - progress);
+      }
 
-      const point = samples[Math.round(progress * (samples.length - 1))];
-      if (pointerRef.current && point) {
+      // viewBox x spans 0-100 and y spans 0-height, and the svg stretches to
+      // the container, so these convert straight to percentage offsets.
+      const point = pointAt(segments, height, progress);
+      if (pointerRef.current) {
         pointerRef.current.style.left = `${point.x}%`;
-        pointerRef.current.style.top = `${point.y}%`;
+        pointerRef.current.style.top = `${(point.y / height) * 100}%`;
       }
 
       const reached = Math.floor(progress * steps.length + 0.15) - 1;
@@ -91,7 +142,9 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [steps.length, height]);
+    // segments/height are derived from steps.length, so that alone gates this.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [steps.length]);
 
   return (
     <div ref={containerRef} className="relative mt-16">
@@ -130,7 +183,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       <span
         ref={pointerRef}
         aria-hidden="true"
-        className="absolute z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass shadow-[0_0_0_5px_var(--color-mist),0_0_0_6px_var(--color-brass)]"
+        className="absolute top-0 left-1/2 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass shadow-[0_0_0_5px_var(--color-mist),0_0_0_6px_var(--color-brass)]"
       />
 
       {steps.map((step, i) => {
