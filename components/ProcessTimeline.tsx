@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import type { ProcessStep } from "@/lib/data";
@@ -58,34 +58,59 @@ const cubic = (a: number, b: number, c: number, d: number, t: number) => {
   return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
 };
 
+const pointOn = (segment: Segment, t: number) => ({
+  x: segment.kind === "line" ? 50 : cubic(50, segment.bow, segment.bow, 50, t),
+  y:
+    segment.kind === "line"
+      ? segment.y0 + (segment.y1 - segment.y0) * t
+      : cubic(segment.y0, segment.c1y, segment.c2y, segment.y1, t),
+});
+
 /**
- * Point on the connector at `progress` (0-1), in viewBox units.
+ * Flattens the connector into points carrying their running arc length.
  *
- * Parameterised by vertical position, which is monotonic along the whole
- * path, so the marker descends at a steady rate. Within a curved segment the
- * matching t is found by bisection — y is monotonic there too, and the
- * steps put it far inside a pixel.
+ * The drawn line is revealed by stroke-dashoffset, which measures arc length,
+ * so the marker has to be placed the same way. Positioning it by vertical
+ * position instead leaves it running ahead of the line's end through every
+ * curve, where the path covers more distance than it descends.
  */
-export function pointAt(segments: Segment[], height: number, progress: number) {
-  const targetY = Math.min(height, Math.max(0, progress * height));
-  const segment =
-    segments.find((s) => targetY >= s.y0 && targetY <= s.y1) ??
-    segments[segments.length - 1];
+function buildLengthTable(segments: Segment[]) {
+  let previous = pointOn(segments[0], 0);
+  let length = 0;
+  const table = [{ ...previous, length }];
 
-  if (segment.kind === "line") return { x: 50, y: targetY };
-
-  let low = 0;
-  let high = 1;
-  for (let i = 0; i < 28; i++) {
-    const mid = (low + high) / 2;
-    if (cubic(segment.y0, segment.c1y, segment.c2y, segment.y1, mid) < targetY) {
-      low = mid;
-    } else {
-      high = mid;
+  for (const segment of segments) {
+    const steps = segment.kind === "line" ? 1 : 64;
+    for (let i = 1; i <= steps; i++) {
+      const point = pointOn(segment, i / steps);
+      length += Math.hypot(point.x - previous.x, point.y - previous.y);
+      table.push({ ...point, length });
+      previous = point;
     }
   }
-  const t = (low + high) / 2;
-  return { x: cubic(50, segment.bow, segment.bow, 50, t), y: targetY };
+  return table;
+}
+
+type LengthTable = ReturnType<typeof buildLengthTable>;
+
+/** Point at `fraction` (0-1) of the connector's arc length, in viewBox units. */
+export function pointAtFraction(table: LengthTable, fraction: number) {
+  const total = table[table.length - 1].length;
+  const target = Math.min(1, Math.max(0, fraction)) * total;
+
+  let low = 0;
+  let high = table.length - 1;
+  while (low < high - 1) {
+    const mid = (low + high) >> 1;
+    if (table[mid].length < target) low = mid;
+    else high = mid;
+  }
+
+  const a = table[low];
+  const b = table[high];
+  const span = b.length - a.length;
+  const k = span > 0 ? (target - a.length) / span : 0;
+  return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k };
 }
 
 export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
@@ -94,7 +119,11 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
   const pointerRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const { segments, height } = buildSegments(steps.length);
+  const { segments, height } = useMemo(
+    () => buildSegments(steps.length),
+    [steps.length]
+  );
+  const table = useMemo(() => buildLengthTable(segments), [segments]);
   const d = toPathData(segments);
 
   useEffect(() => {
@@ -117,9 +146,10 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         pathRef.current.style.strokeDashoffset = String(1 - progress);
       }
 
-      // viewBox x spans 0-100 and y spans 0-height, and the svg stretches to
-      // the container, so these convert straight to percentage offsets.
-      const point = pointAt(segments, height, progress);
+      // Same fraction the dash uses, so the marker sits exactly on the end of
+      // the drawn line. viewBox x spans 0-100 and y spans 0-height, and the svg
+      // stretches to the container, so these convert to percentage offsets.
+      const point = pointAtFraction(table, progress);
       if (pointerRef.current) {
         pointerRef.current.style.left = `${point.x}%`;
         pointerRef.current.style.top = `${(point.y / height) * 100}%`;
@@ -142,9 +172,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       window.removeEventListener("resize", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-    // segments/height are derived from steps.length, so that alone gates this.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [steps.length]);
+  }, [steps.length, table, height]);
 
   return (
     <div ref={containerRef} className="relative mt-16">
@@ -179,11 +207,13 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         />
       </svg>
 
-      {/* Rides the end of the drawn line. */}
+      {/* Rides the end of the drawn line. The halo is translucent on purpose:
+          an opaque ring in the section colour would paint over the line where
+          it meets the dot, making the fill look like it stops short. */}
       <span
         ref={pointerRef}
         aria-hidden="true"
-        className="absolute top-0 left-1/2 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass shadow-[0_0_0_5px_var(--color-mist),0_0_0_6px_var(--color-brass)]"
+        className="absolute top-0 left-1/2 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass ring-4 ring-brass/25"
       />
 
       {steps.map((step, i) => {
