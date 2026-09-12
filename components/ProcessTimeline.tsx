@@ -329,8 +329,11 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
             {/* Opposite the heading, and entering from the opposite side. */}
             <div
               className={cn(
-                "relative hidden h-72 overflow-hidden transition-all delay-100 duration-700 ease-forma md:block",
-                onLeft ? "md:col-start-2" : "md:col-start-1",
+                // 3:2 to match the source files, so nothing is cropped, and
+                // capped near their natural width to keep them sharp. Hugs the
+                // spine rather than the page edge.
+                "relative hidden aspect-[3/2] w-full max-w-[26rem] overflow-hidden transition-all delay-100 duration-700 ease-forma md:block",
+                onLeft ? "md:col-start-2 md:mr-auto" : "md:col-start-1 md:ml-auto",
                 reached
                   ? "translate-x-0 opacity-100"
                   : cn("opacity-0", onLeft ? "translate-x-8" : "-translate-x-8")
@@ -340,7 +343,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
                 src={step.image}
                 alt={step.imageAlt}
                 fill
-                sizes="(max-width: 768px) 0px, 40vw"
+                sizes="(max-width: 768px) 0px, 416px"
                 className="object-cover"
               />
             </div>
