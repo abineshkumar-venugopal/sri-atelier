@@ -29,7 +29,7 @@ export default function ValueCard({
       <div className="mb-3 font-display text-[1.3rem] font-light text-paper">
         {value.name}
       </div>
-      <div className="text-[0.82rem] leading-[1.8] text-ash">
+      <div className="text-[0.9rem] leading-[1.8] text-fog">
         {value.description}
       </div>
     </div>

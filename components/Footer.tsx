@@ -50,7 +50,7 @@ const contactDetails = [
 ];
 
 const linkClass =
-  "text-[0.82rem] text-ash transition-colors duration-300 hover:text-paper";
+  "text-[0.9rem] text-fog transition-colors duration-300 hover:text-paper";
 
 export default function Footer() {
   return (
@@ -66,23 +66,20 @@ export default function Footer() {
             sizes="160px"
             className="mb-5 h-16 w-auto"
           />
-          <div className="font-display text-xl font-semibold uppercase tracking-[0.12em] text-paper">
-            Sri Atelier
-          </div>
-          <p className="mt-1.5 text-[0.8rem] text-ash">
+          <p className="mt-2 text-[0.875rem] text-fog">
             Architecture &amp; Interior Design Studio, Chennai
           </p>
 
           <ul className="mt-8 space-y-4">
             {contactDetails.map(({ Icon, href, lines }) => (
               <li key={lines[0]} className="flex items-start gap-3">
-                <Icon className="mt-0.5 size-4 shrink-0 text-brass" />
+                <Icon className="mt-0.5 size-4.5 shrink-0 text-brass" />
                 {href ? (
                   <a href={href} className={linkClass}>
                     {lines[0]}
                   </a>
                 ) : (
-                  <span className="text-[0.82rem] leading-[1.7] text-ash">
+                  <span className="text-[0.9rem] leading-[1.7] text-fog">
                     {lines.map((line, i) => (
                       <span key={line}>
                         {i > 0 && <br />}
@@ -100,7 +97,7 @@ export default function Footer() {
 
         {columns.map((column) => (
           <div key={column.title}>
-            <p className="mb-5 font-display text-[1.05rem] font-semibold text-paper">
+            <p className="mb-5 font-display text-[1.2rem] font-semibold text-paper">
               {column.title}
             </p>
             <ul className="space-y-3">
@@ -116,8 +113,9 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className="mt-14 border-t border-white/6 pt-8 text-center text-label text-ash">
-        Copyright © {new Date().getFullYear()} Sri Atelier | All rights reserved.
+      <div className="mt-14 border-t border-white/6 pt-8 text-center text-[0.85rem] text-fog">
+        Copyright © {new Date().getFullYear()} Sri Atelier | All rights
+        reserved.
       </div>
     </footer>
   );

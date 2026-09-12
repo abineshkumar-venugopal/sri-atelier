@@ -27,7 +27,7 @@ function StatItem({ stat, delay }: { stat: Stat; delay?: 1 | 2 | 3 | 4 }) {
         {value.toLocaleString("en-US")}
         {stat.suffix}
       </div>
-      <div className="mt-4 text-eyebrow uppercase tracking-[0.2em] text-ash">
+      <div className="mt-4 text-[0.78rem] uppercase tracking-[0.2em] text-fog">
         {stat.label}
       </div>
     </div>

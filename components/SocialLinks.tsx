@@ -43,13 +43,13 @@ export default function SocialLinks({ className }: { className?: string }) {
           key={social.label}
           href={social.href}
           aria-label={social.label}
-          className="text-ash transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-ring hover:text-brass"
+          className="text-fog transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-ring hover:text-brass"
         >
           <svg
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
-            className="size-4.5"
+            className="size-5"
           >
             {social.glyph}
           </svg>
