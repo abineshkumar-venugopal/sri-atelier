@@ -7,8 +7,9 @@ import type { ProcessStep } from "@/lib/data";
 
 /** Vertical room each step gets inside the SVG's own coordinate space. */
 const STEP_UNITS = 260;
-/** How far the curve bows off the spine, as a percentage of width. */
-const BOW = 86;
+/** How far the curve bows off the spine, as a percentage of width. A gentle
+ *  lean rather than a full swing — raise it for a more pronounced weave. */
+const BOW = 64;
 
 /**
  * Serpentine path weaving down the section: straight into the first node, then
