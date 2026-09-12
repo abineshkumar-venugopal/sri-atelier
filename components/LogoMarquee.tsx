@@ -43,9 +43,11 @@ export default function LogoMarquee({
                 <Image
                   src={client.logo}
                   alt={client.name}
-                  width={200}
+                  width={240}
                   height={48}
-                  className="h-9 w-auto opacity-60 grayscale transition-all duration-500 ease-forma hover:opacity-100 hover:grayscale-0"
+                  // next/image serves .svg unoptimized automatically, so these
+                  // need no config change and stay crisp at any size.
+                  className="h-10 w-auto opacity-90 transition-opacity duration-500 ease-forma hover:opacity-100"
                 />
               ) : (
                 <span className="font-display text-[1.35rem] whitespace-nowrap text-ash/80 transition-colors duration-500 ease-forma hover:text-ink">

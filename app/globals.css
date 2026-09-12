@@ -31,6 +31,7 @@
   --animate-fade-in: fade-in 1s forwards;
   --animate-scroll-pulse: scroll-pulse 2s ease-in-out infinite;
   --animate-line-draw: line-draw 1.1s var(--ease-forma) 0.35s forwards;
+  --animate-marquee: marquee 45s linear infinite;
 
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(24px); }
@@ -47,6 +48,12 @@
   @keyframes line-draw {
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
+  }
+  /* The track carries four copies of the list and travels two, so -50% lands
+     on an identical arrangement and the loop has no seam. */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
   }
 }
 

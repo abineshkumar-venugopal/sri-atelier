@@ -369,10 +369,10 @@ export interface Client {
  * files in public/clients) once artwork is available.
  */
 export const clients: Client[] = [
-  { name: "Thillai Developers" },
-  { name: "Coromandel Estates" },
-  { name: "Nilaya Hospitality" },
-  { name: "Kadamba Trust" },
-  { name: "Ashvin Realty" },
-  { name: "Suvarna Group" },
+  { name: "Thillai Developers", logo: "/clients/thillai-developers.svg" },
+  { name: "Coromandel Estates", logo: "/clients/coromandel-estates.svg" },
+  { name: "Nilaya Hospitality", logo: "/clients/nilaya-hospitality.svg" },
+  { name: "Kadamba Trust", logo: "/clients/kadamba-trust.svg" },
+  { name: "Ashvin Realty", logo: "/clients/ashvin-realty.svg" },
+  { name: "Suvarna Group", logo: "/clients/suvarna-group.svg" },
 ];
