@@ -163,16 +163,16 @@ export default function HomePage() {
 
       <LogoMarquee items={clients} />
 
-      <section className={cn(sectionPadding, "bg-ink")}>
+      <section className={cn(sectionPadding, "bg-mist")}>
         <Reveal as="div" className={eyebrowClass}>
           What We Do
         </Reveal>
-        <Reveal as="h2" className={cn(sectionTitleClass, "text-paper")} delay={1}>
+        <Reveal as="h2" className={sectionTitleClass} delay={1}>
           Services
         </Reveal>
         {/* gap-px over a hairline background is what draws the rules between
             tiles — each card paints its own ink over the top. */}
-        <div className="mt-14 grid gap-px bg-white/8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-px bg-fog/70 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => (
             <ServiceCard
               key={service.name}
