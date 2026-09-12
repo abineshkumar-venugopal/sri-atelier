@@ -356,3 +356,23 @@ export const stats: Stat[] = [
   { value: 1200000, suffix: "+", label: "Sq Ft Designed" },
   { value: 9, label: "Cities Across South India" },
 ];
+
+export interface Client {
+  name: string;
+  /** Optional wordmark. Falls back to the name set in the display face. */
+  logo?: string;
+}
+
+/**
+ * PLACEHOLDER NAMES. Invented stand-ins so the strip reads correctly before
+ * real clients are confirmed — replace them, and add `logo` paths (drop the
+ * files in public/clients) once artwork is available.
+ */
+export const clients: Client[] = [
+  { name: "Thillai Developers" },
+  { name: "Coromandel Estates" },
+  { name: "Nilaya Hospitality" },
+  { name: "Kadamba Trust" },
+  { name: "Ashvin Realty" },
+  { name: "Suvarna Group" },
+];
