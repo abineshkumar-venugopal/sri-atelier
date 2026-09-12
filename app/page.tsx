@@ -5,7 +5,7 @@ import Parallax from "@/components/Parallax";
 import Carousel from "@/components/Carousel";
 import ServiceCard from "@/components/ServiceCard";
 import ProjectCard from "@/components/ProjectCard";
-import ProcessStepCard from "@/components/ProcessStepCard";
+import ProcessTimeline from "@/components/ProcessTimeline";
 import Reveal from "@/components/Reveal";
 import Footer from "@/components/Footer";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
@@ -33,7 +33,6 @@ const featuredItems = homeFeaturedSlugs
 
 const serviceDelays = [undefined, 1, 2] as const;
 const featuredDelays = [undefined, 1, 2, 3, undefined, 1] as const;
-const processDelays = [undefined, 1, 2, 3] as const;
 
 /** Section padding shared by most bands on this page. */
 const sectionPadding = "px-6 py-25 md:px-15";
@@ -74,9 +73,9 @@ export default function HomePage() {
             <Button asChild variant="light">
               <Link href="/projects">View Projects</Link>
             </Button>
-            <Button asChild variant="outline">
+            {/* <Button asChild variant="outline">
               <Link href="/quote">Get Quote</Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
 
@@ -108,7 +107,7 @@ export default function HomePage() {
         <div className="group relative h-115 overflow-hidden">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80&fit=crop"
-            alt="Forma studio"
+            alt="SRI ATELIER studio"
             fill
             className="object-cover transition-transform duration-800 ease-forma group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -120,7 +119,7 @@ export default function HomePage() {
 
         <div>
           <Reveal as="p" className={eyebrowClass}>
-            About Forma
+            About SRI ATELIER
           </Reveal>
           <Reveal as="h2" className={sectionTitleClass} delay={1}>
             Design is not
@@ -227,20 +226,7 @@ export default function HomePage() {
         <Reveal as="h2" className={sectionTitleClass} delay={1}>
           Our Process
         </Reveal>
-        {/* The span is the connector line running behind the numbered circles. */}
-        <div className="relative mt-15 grid grid-cols-2 md:grid-cols-4">
-          <span
-            aria-hidden="true"
-            className="absolute inset-x-[10%] top-7 h-px bg-fog"
-          />
-          {processSteps.map((step, i) => (
-            <ProcessStepCard
-              key={step.num}
-              step={step}
-              delay={processDelays[i]}
-            />
-          ))}
-        </div>
+        <ProcessTimeline steps={processSteps} />
       </section>
 
       <section className="bg-paper px-6 py-30 md:px-15">
@@ -256,14 +242,25 @@ export default function HomePage() {
       </section>
 
       <div className="relative overflow-hidden bg-ink px-6 py-30 text-center md:px-15">
-        {/* Oversized watermark; a real element rather than a ::before so it is
-            visible to anyone reading the markup. */}
-        <span
+        {/* Oversized SRI ATELIER watermark */}
+        <img
+          src="/name_white.png"
+          alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display text-[20vw] font-light text-white/3"
-        >
-          FORMA
-        </span>
+          className="
+      pointer-events-none
+      absolute
+      top-1/2
+      left-1/2
+      z-0
+      w-[80vw]
+      max-w-[1100px]
+      -translate-x-1/2
+      -translate-y-1/2
+      opacity-[0.10]
+    "
+        />
+
         <div className="relative z-[1]">
           <Reveal
             as="h2"
@@ -275,9 +272,10 @@ export default function HomePage() {
             <br />
             extraordinary?
           </Reveal>
+
           <Reveal as="div" delay={1}>
             <Button asChild variant="accent">
-              <Link href="/quote">Get Quote →</Link>
+              <Link href="/contact">Contact →</Link>
             </Button>
           </Reveal>
         </div>
