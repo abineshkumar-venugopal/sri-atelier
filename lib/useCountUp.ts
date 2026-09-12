@@ -1,24 +1,8 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 
-function subscribeToMotionPreference(onChange: () => void) {
-  const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
-
-/**
- * Read through useSyncExternalStore rather than an effect, so the preference
- * is known on the first client render and never needs a setState to correct.
- */
-export function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    subscribeToMotionPreference,
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false // the server cannot know; assume motion is fine
-  );
-}
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 /**
  * Counts from zero up to `target` once `active` turns true — pair it with

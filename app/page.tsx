@@ -98,7 +98,9 @@ export default function HomePage() {
             Projects
           </Reveal>
         </div>
-        <Carousel items={carouselItems} />
+        <Reveal delay={2}>
+          <Carousel items={carouselItems} />
+        </Reveal>
       </section>
 
       <div
@@ -106,7 +108,7 @@ export default function HomePage() {
           "grid items-center gap-20 bg-mist px-6 py-25 md:grid-cols-2 md:px-15",
         )}
       >
-        <div className="group relative h-115 overflow-hidden">
+        <Reveal as="div" className="group relative h-115 overflow-hidden">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80&fit=crop"
             alt="SRI ATELIER studio"
@@ -117,7 +119,7 @@ export default function HomePage() {
           <div className="pointer-events-none absolute top-5 right-5 font-display text-[5rem] font-light leading-none text-white/55 [text-shadow:0_2px_20px_rgb(0_0_0/40%)]">
             2008
           </div>
-        </div>
+        </Reveal>
 
         <div>
           <Reveal as="p" className={eyebrowClass}>
@@ -161,7 +163,9 @@ export default function HomePage() {
 
       <Stats items={stats} />
 
-      <LogoMarquee items={clients} />
+      <Reveal>
+        <LogoMarquee items={clients} />
+      </Reveal>
 
       <section className={cn(sectionPadding, "bg-mist")}>
         <Reveal as="div" className={eyebrowClass}>
@@ -245,7 +249,9 @@ export default function HomePage() {
           <br />
           Stories
         </Reveal>
-        <TestimonialCarousel items={testimonials} />
+        <Reveal delay={2}>
+          <TestimonialCarousel items={testimonials} />
+        </Reveal>
       </section>
 
       <div className="relative overflow-hidden bg-ink px-6 py-30 text-center md:px-15">

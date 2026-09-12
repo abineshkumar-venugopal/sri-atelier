@@ -2,12 +2,16 @@
 
 import { useEffect, useState, type RefObject } from "react";
 
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
+
 import { cn } from "@/lib/utils";
 
 export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -23,9 +27,11 @@ export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [ref]);
+  }, [ref, prefersReducedMotion]);
 
-  return visible;
+  // Nothing animates in for visitors who would rather it did not — the
+  // content is simply already there.
+  return prefersReducedMotion || visible;
 }
 
 /** Staggers a group of revealing elements; each step is 150ms. */
