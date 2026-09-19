@@ -34,7 +34,10 @@ export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
   return prefersReducedMotion || visible;
 }
 
-/** Staggers a group of revealing elements; each step is 150ms. */
+/** One step of the reveal stagger. Anything timed to a reveal reads this. */
+export const REVEAL_STEP_MS = 150;
+
+/** Staggers a group of revealing elements; each step is REVEAL_STEP_MS. */
 const DELAY_CLASSNAMES = {
   1: "delay-150",
   2: "delay-300",

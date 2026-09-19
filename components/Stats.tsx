@@ -3,7 +3,11 @@
 import { useRef } from "react";
 
 import { cn } from "@/lib/utils";
-import { useRevealVisible, revealClassName } from "@/lib/useReveal";
+import {
+  useRevealVisible,
+  revealClassName,
+  REVEAL_STEP_MS,
+} from "@/lib/useReveal";
 import { useCountUp } from "@/lib/useCountUp";
 import type { Stat } from "@/lib/data";
 
@@ -12,7 +16,10 @@ const delays = [undefined, 1, 2, 3] as const;
 function StatItem({ stat, delay }: { stat: Stat; delay?: 1 | 2 | 3 | 4 }) {
   const ref = useRef<HTMLDivElement>(null);
   const visible = useRevealVisible(ref);
-  const value = useCountUp(stat.value, visible);
+  // Start counting as the tile starts appearing, not before it.
+  const value = useCountUp(stat.value, visible, {
+    delayMs: (delay ?? 0) * REVEAL_STEP_MS,
+  });
 
   return (
     <div
