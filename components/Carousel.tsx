@@ -1,7 +1,8 @@
 "use client";
 
+import { useMemo } from "react";
 import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay";
+import AutoScroll from "embla-carousel-auto-scroll";
 
 import {
   Carousel as CarouselRoot,
@@ -10,13 +11,42 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Project } from "@/lib/data";
 
+/**
+ * Autoplay advances a slide at a time with a pause between, which reads as a
+ * jump. Auto-scroll glides the track continuously instead, so the work drifts
+ * past rather than stepping. It needs loop so the run never reaches an end and
+ * stalls; that also means the arrows are never disabled.
+ *
+ * Dragging or using the arrows does not stop it, but hovering does — so it
+ * holds still while a project is being looked at. Nothing moves on its own for
+ * visitors who prefer reduced motion; the carousel stays draggable for them.
+ */
 export default function Carousel({ items }: { items: Project[] }) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  // Memoised: a fresh plugins array on every render would re-initialise embla.
+  const plugins = useMemo(
+    () =>
+      prefersReducedMotion
+        ? []
+        : [
+            AutoScroll({
+              speed: 0.7,
+              startDelay: 0,
+              stopOnInteraction: false,
+              stopOnMouseEnter: true,
+            }),
+          ],
+    [prefersReducedMotion]
+  );
+
   return (
     <CarouselRoot
-      opts={{ align: "start" }}
-      plugins={[Autoplay({ delay: 4500, stopOnInteraction: false })]}
+      opts={{ align: "start", loop: true, dragFree: true }}
+      plugins={plugins}
     >
       {/* 2px gutter: the track pulls back by half and each slide pads by half. */}
       <CarouselContent className="-ml-0.5">
