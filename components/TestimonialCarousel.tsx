@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import { PlayIcon } from "lucide-react";
 
 import {
@@ -10,6 +11,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import CarouselArrow from "@/components/ui/carousel-arrow";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Testimonial } from "@/lib/data";
 
 /**
@@ -19,12 +21,30 @@ import type { Testimonial } from "@/lib/data";
  * bandwidth and say nothing. Each slide shows its poster with a play control,
  * and starts with sound only when asked.
  *
- * Unlike the projects carousel, this one steps a whole testimonial at a time
- * rather than drifting — a quote being read should hold still until asked to
- * move on.
+ * Unlike the projects carousel, this one advances a whole testimonial at a
+ * time rather than drifting, holding each one long enough to be read. It
+ * yields to the content: hovering stops it, and starting a video stops it
+ * until that video is paused or finishes, so a testimonial is never cut off
+ * mid-sentence.
  */
 export default function TestimonialCarousel({ items }: { items: Testimonial[] }) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [api, setApi] = useState<CarouselApi>();
+
+  // Memoised: a fresh plugins array on every render would re-initialise embla.
+  const plugins = useMemo(
+    () =>
+      prefersReducedMotion
+        ? []
+        : [
+            Autoplay({
+              delay: 7000,
+              stopOnInteraction: false,
+              stopOnMouseEnter: true,
+            }),
+          ],
+    [prefersReducedMotion]
+  );
   const [playing, setPlaying] = useState<number | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -43,6 +63,10 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
     };
   }, [api, pauseAll]);
 
+  // A playing video outranks the timer: hold the carousel until it is done.
+  const holdAdvancing = () => api?.plugins().autoplay?.stop();
+  const resumeAdvancing = () => api?.plugins().autoplay?.play();
+
   const play = (index: number) => {
     videoRefs.current.forEach((video, i) => i !== index && video?.pause());
     const video = videoRefs.current[index];
@@ -51,6 +75,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
     video.play().catch(() => {
       /* blocked — the poster and play control stay put */
     });
+    holdAdvancing();
     setPlaying(index);
   };
 
@@ -58,6 +83,9 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
     if (!api) return;
     // One testimonial per press; pause whatever is playing before moving.
     pauseAll();
+    // Reset rather than stop, so a press postpones the next advance instead
+    // of cancelling it.
+    api.plugins().autoplay?.reset();
     if (direction === -1) api.scrollPrev();
     else api.scrollNext();
   };
@@ -67,6 +95,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
       className="group/carousel relative"
       setApi={setApi}
       opts={{ align: "start", loop: true }}
+      plugins={plugins}
     >
       <CarouselContent>
         {items.map((testimonial, i) => (
@@ -81,8 +110,14 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
                   preload="none"
                   playsInline
                   controls={playing === i}
-                  onPause={() => setPlaying((p) => (p === i ? null : p))}
-                  onEnded={() => setPlaying(null)}
+                  onPause={() => {
+                    setPlaying((p) => (p === i ? null : p));
+                    resumeAdvancing();
+                  }}
+                  onEnded={() => {
+                    setPlaying(null);
+                    resumeAdvancing();
+                  }}
                   className="size-full object-cover"
                 >
                   <source src={testimonial.video} type="video/mp4" />
