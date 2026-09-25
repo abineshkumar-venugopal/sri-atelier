@@ -23,7 +23,7 @@ import type { Testimonial } from "@/lib/data";
  *
  * Unlike the projects carousel, this one advances a whole testimonial at a
  * time rather than drifting, holding each one long enough to be read. It
- * yields to the content: hovering stops it, and starting a video stops it
+ * It yields to the video rather than to the pointer: starting a video stops it
  * until that video is paused or finishes, so a testimonial is never cut off
  * mid-sentence.
  */
@@ -38,9 +38,14 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
         ? []
         : [
             Autoplay({
-              delay: 7000,
+              delay: 5000,
               stopOnInteraction: false,
-              stopOnMouseEnter: true,
+              // Deliberately NOT stopOnMouseEnter. This block spans the full
+              // width and the height of the video and quote together, so a
+              // cursor resting anywhere over it would hold the carousel still
+              // for as long as someone was looking at it — which reads as it
+              // simply not advancing. A playing video still stops it, which is
+              // the interruption actually worth avoiding.
             }),
           ],
     [prefersReducedMotion]
