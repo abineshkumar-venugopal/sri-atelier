@@ -38,7 +38,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
         ? []
         : [
             Autoplay({
-              delay: 5000,
+              delay: 3500,
               stopOnInteraction: false,
               // Deliberately NOT stopOnMouseEnter. This block spans the full
               // width and the height of the video and quote together, so a
@@ -158,15 +158,20 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
       </CarouselContent>
 
       {/* Centred on each edge, revealed by hovering the track. */}
+      {/* Pushed out into the section gutter from md up, so they sit clear of
+          the still and the quote instead of over them. Below that there is no
+          gutter to move into, so they stay inset. */}
       <CarouselArrow
         direction="prev"
         label="Previous testimonial"
         onClick={() => step(-1)}
+        className="md:-left-12"
       />
       <CarouselArrow
         direction="next"
         label="Next testimonial"
         onClick={() => step(1)}
+        className="md:-right-12"
       />
     </Carousel>
   );
