@@ -7,10 +7,9 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import CarouselArrow from "@/components/ui/carousel-arrow";
 import type { Testimonial } from "@/lib/data";
 
 /**
@@ -19,6 +18,10 @@ import type { Testimonial } from "@/lib/data";
  * Nothing autoplays: three muted videos competing in a carousel would burn
  * bandwidth and say nothing. Each slide shows its poster with a play control,
  * and starts with sound only when asked.
+ *
+ * Unlike the projects carousel, this one steps a whole testimonial at a time
+ * rather than drifting — a quote being read should hold still until asked to
+ * move on.
  */
 export default function TestimonialCarousel({ items }: { items: Testimonial[] }) {
   const [api, setApi] = useState<CarouselApi>();
@@ -51,8 +54,20 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
     setPlaying(index);
   };
 
+  const step = (direction: -1 | 1) => {
+    if (!api) return;
+    // One testimonial per press; pause whatever is playing before moving.
+    pauseAll();
+    if (direction === -1) api.scrollPrev();
+    else api.scrollNext();
+  };
+
   return (
-    <Carousel setApi={setApi} opts={{ align: "start" }}>
+    <Carousel
+      className="group/carousel relative"
+      setApi={setApi}
+      opts={{ align: "start", loop: true }}
+    >
       <CarouselContent>
         {items.map((testimonial, i) => (
           <CarouselItem key={testimonial.author}>
@@ -102,10 +117,17 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
         ))}
       </CarouselContent>
 
-      <div className="mt-12 flex items-center gap-3">
-        <CarouselPrevious />
-        <CarouselNext />
-      </div>
+      {/* Centred on each edge, revealed by hovering the track. */}
+      <CarouselArrow
+        direction="prev"
+        label="Previous testimonial"
+        onClick={() => step(-1)}
+      />
+      <CarouselArrow
+        direction="next"
+        label="Next testimonial"
+        onClick={() => step(1)}
+      />
     </Carousel>
   );
 }

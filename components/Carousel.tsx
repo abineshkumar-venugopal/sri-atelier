@@ -3,7 +3,6 @@
 import { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import {
   Carousel as CarouselRoot,
@@ -11,11 +10,9 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import CarouselArrow from "@/components/ui/carousel-arrow";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Project } from "@/lib/data";
-
-const arrowClass =
-  "absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-paper/70 bg-ink/25 text-paper opacity-100 backdrop-blur-sm transition-all duration-400 ease-forma outline-none focus-visible:ring-2 focus-visible:ring-ring hover:border-paper hover:bg-paper hover:text-ink md:opacity-0 md:group-hover/carousel:opacity-100";
 
 /**
  * Autoplay advances a slide at a time with a pause between, which reads as a
@@ -94,24 +91,17 @@ export default function Carousel({ items }: { items: Project[] }) {
         ))}
       </CarouselContent>
 
-      {/* Centred on each edge. Shown on hover from md up; always visible on
-          touch, where there is no hover to reveal them with. */}
-      <button
-        type="button"
-        aria-label="Previous project"
+      {/* Centred on each edge, revealed by hovering the track. */}
+      <CarouselArrow
+        direction="prev"
+        label="Previous project"
         onClick={() => nudge(-1)}
-        className={`${arrowClass} left-4 md:left-8`}
-      >
-        <ChevronLeftIcon className="size-5" strokeWidth={1.25} />
-      </button>
-      <button
-        type="button"
-        aria-label="Next project"
+      />
+      <CarouselArrow
+        direction="next"
+        label="Next project"
         onClick={() => nudge(1)}
-        className={`${arrowClass} right-4 md:right-8`}
-      >
-        <ChevronRightIcon className="size-5" strokeWidth={1.25} />
-      </button>
+      />
     </CarouselRoot>
   );
 }
