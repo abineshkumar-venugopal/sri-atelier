@@ -1,31 +1,35 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import AutoScroll from "embla-carousel-auto-scroll";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import {
   Carousel as CarouselRoot,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Project } from "@/lib/data";
+
+const arrowClass =
+  "absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-paper/70 bg-ink/25 text-paper opacity-100 backdrop-blur-sm transition-all duration-400 ease-forma outline-none focus-visible:ring-2 focus-visible:ring-ring hover:border-paper hover:bg-paper hover:text-ink md:opacity-0 md:group-hover/carousel:opacity-100";
 
 /**
  * Autoplay advances a slide at a time with a pause between, which reads as a
  * jump. Auto-scroll glides the track continuously instead, so the work drifts
  * past rather than stepping. It needs loop so the run never reaches an end and
- * stalls; that also means the arrows are never disabled.
+ * stalls.
  *
- * Dragging or using the arrows does not stop it, but hovering does — so it
- * holds still while a project is being looked at. Nothing moves on its own for
- * visitors who prefer reduced motion; the carousel stays draggable for them.
+ * Hovering pauses the drift and brings the arrows in, so the track holds still
+ * while a project is being looked at. Nothing moves on its own for visitors who
+ * prefer reduced motion; the carousel stays draggable and the arrows stay put.
  */
 export default function Carousel({ items }: { items: Project[] }) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [api, setApi] = useState<CarouselApi>();
 
   // Memoised: a fresh plugins array on every render would re-initialise embla.
   const plugins = useMemo(
@@ -43,10 +47,27 @@ export default function Carousel({ items }: { items: Project[] }) {
     [prefersReducedMotion]
   );
 
+  /**
+   * Auto-scroll drives the track every frame, so a bare scrollPrev/scrollNext
+   * is overwritten before it can be seen — which is why the arrows appeared to
+   * do nothing. The plugin has to be interrupted first: reset, rather than
+   * stop, because stopOnInteraction is false and the drift should resume.
+   */
+  const nudge = useCallback(
+    (direction: -1 | 1) => {
+      if (!api) return;
+      api.plugins().autoScroll?.reset();
+      if (direction === -1) api.scrollPrev();
+      else api.scrollNext();
+    },
+    [api]
+  );
+
   return (
     <CarouselRoot
-      className="relative"
-      opts={{ align: "start", loop: true, dragFree: true }}
+      className="group/carousel relative"
+      setApi={setApi}
+      opts={{ align: "start", loop: true }}
       plugins={plugins}
     >
       {/* 2px gutter: the track pulls back by half and each slide pads by half. */}
@@ -73,17 +94,24 @@ export default function Carousel({ items }: { items: Project[] }) {
         ))}
       </CarouselContent>
 
-      {/* Centred on each edge of the track rather than in a row beneath it.
-          The light variant keeps them legible over any photograph, where the
-          bordered one relied on ink against an unknown image. */}
-      <CarouselPrevious
-        variant="light"
-        className="absolute top-1/2 left-4 z-10 -translate-y-1/2 md:left-8"
-      />
-      <CarouselNext
-        variant="light"
-        className="absolute top-1/2 right-4 z-10 -translate-y-1/2 md:right-8"
-      />
+      {/* Centred on each edge. Shown on hover from md up; always visible on
+          touch, where there is no hover to reveal them with. */}
+      <button
+        type="button"
+        aria-label="Previous project"
+        onClick={() => nudge(-1)}
+        className={`${arrowClass} left-4 md:left-8`}
+      >
+        <ChevronLeftIcon className="size-5" strokeWidth={1.25} />
+      </button>
+      <button
+        type="button"
+        aria-label="Next project"
+        onClick={() => nudge(1)}
+        className={`${arrowClass} right-4 md:right-8`}
+      >
+        <ChevronRightIcon className="size-5" strokeWidth={1.25} />
+      </button>
     </CarouselRoot>
   );
 }
