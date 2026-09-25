@@ -47,7 +47,10 @@ export default function Nav() {
   return (
     <nav
       data-scrolled={scrolled}
-      className="group fixed inset-x-0 top-0 z-[1000] flex items-center justify-between px-6 py-5 transition-[background-color,padding,box-shadow] duration-500 ease-forma data-[scrolled=true]:bg-paper/94 data-[scrolled=true]:py-3.5 data-[scrolled=true]:shadow-[0_1px_0_rgb(0_0_0/8%)] data-[scrolled=true]:backdrop-blur-[14px] md:px-15 md:py-7 md:data-[scrolled=true]:py-4.5"
+      // Over the hero the bar sits well inside its corners and stands taller;
+      // as it solidifies it tightens outward to the page gutter and shortens.
+      // Padding is in the transition list, so both edges ease rather than jump.
+      className="group fixed inset-x-0 top-0 z-[1000] flex items-center justify-between px-10 py-6 transition-[background-color,padding,box-shadow] duration-500 ease-forma data-[scrolled=true]:bg-paper/94 data-[scrolled=true]:px-6 data-[scrolled=true]:py-3.5 data-[scrolled=true]:shadow-[0_1px_0_rgb(0_0_0/8%)] data-[scrolled=true]:backdrop-blur-[14px] md:px-28 md:py-8 md:data-[scrolled=true]:px-15 md:data-[scrolled=true]:py-4.5"
     >
       {/* Logo */}
       <Link
