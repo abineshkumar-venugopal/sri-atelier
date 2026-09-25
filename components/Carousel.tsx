@@ -45,6 +45,7 @@ export default function Carousel({ items }: { items: Project[] }) {
 
   return (
     <CarouselRoot
+      className="relative"
       opts={{ align: "start", loop: true, dragFree: true }}
       plugins={plugins}
     >
@@ -72,10 +73,17 @@ export default function Carousel({ items }: { items: Project[] }) {
         ))}
       </CarouselContent>
 
-      <div className="flex items-center gap-3 px-6 pt-8 md:px-15">
-        <CarouselPrevious />
-        <CarouselNext />
-      </div>
+      {/* Centred on each edge of the track rather than in a row beneath it.
+          The light variant keeps them legible over any photograph, where the
+          bordered one relied on ink against an unknown image. */}
+      <CarouselPrevious
+        variant="light"
+        className="absolute top-1/2 left-4 z-10 -translate-y-1/2 md:left-8"
+      />
+      <CarouselNext
+        variant="light"
+        className="absolute top-1/2 right-4 z-10 -translate-y-1/2 md:right-8"
+      />
     </CarouselRoot>
   );
 }
