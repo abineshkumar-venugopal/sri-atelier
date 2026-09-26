@@ -116,8 +116,8 @@ import { cn } from "@/lib/utils";
 const MIN_VISIBLE_MS = 1600;
 /** Never hold the page hostage if something is slow to load. */
 const MAX_VISIBLE_MS = 4000;
-/** Must match the fade-out duration below. */
-const EXIT_MS = 800;
+/** Must match the shutter's duration-1000 below. */
+const EXIT_MS = 1000;
 
 type Phase = "visible" | "exiting" | "done";
 
@@ -143,7 +143,8 @@ export default function PageLoader() {
     const startExit = () => {
       setPhase("exiting");
 
-      // Release the page animations as the loader begins to fade.
+      // Release the page animations as the shutter starts to lift, so the hero
+      // is already moving as it comes into view.
       delete root.dataset.loading;
 
       doneTimer = window.setTimeout(() => {
@@ -198,14 +199,26 @@ export default function PageLoader() {
         // Above navigation and other overlays.
         "fixed inset-0 z-[3000] flex flex-col items-center justify-center bg-paper",
 
-        // Loader fade-out.
-        "transition-opacity duration-800 ease-forma",
+        // Shutter: the whole panel slides up off the screen. The shadow sits
+        // below its bottom edge, so it only shows once that edge is moving.
+        "shadow-[0_24px_60px_rgb(42_38_34/0.18)] transition-transform duration-1000 ease-shutter",
 
-        // Prevent the fading loader from blocking clicks.
-        exiting && "pointer-events-none opacity-0",
+        // Prevent the lifting loader from blocking clicks.
+        exiting && "pointer-events-none -translate-y-full",
+
+        // Reduced motion: no travel, just a quick fade.
+        "motion-reduce:translate-y-0 motion-reduce:transition-opacity motion-reduce:duration-500",
+        exiting && "motion-reduce:opacity-0",
       )}
     >
-      <div className="flex w-[min(80vw,420px)] flex-col items-center">
+      {/* The logo lifts and fades a little ahead of the panel, so it doesn't
+          ride the shutter all the way out. */}
+      <div
+        className={cn(
+          "flex w-[min(80vw,420px)] flex-col items-center transition-[translate,opacity] duration-600 ease-shutter motion-reduce:transition-none",
+          exiting && "-translate-y-16 opacity-0",
+        )}
+      >
         {/* =========================================
             SRI ATELIER LOGO
             ========================================= */}
@@ -221,7 +234,7 @@ export default function PageLoader() {
             alt="Sri Atelier"
             width={600}
             height={300}
-            priority
+            preload
             className="h-auto w-[min(80vw,420px)] object-contain"
           />
         </div>
