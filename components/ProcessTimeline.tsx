@@ -255,7 +255,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         viewBox={`0 0 ${size.width} ${size.height}`}
         className="pointer-events-none absolute inset-0 size-full"
       >
-        {/* Dotted track, then the brass line drawn over it. pathLength=1 makes
+        {/* Dotted track, then the terracotta line drawn over it. pathLength=1 makes
             the dash a plain 0-1 fraction of the curve. */}
         <path
           d={d}
@@ -269,7 +269,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
           ref={pathRef}
           d={d}
           fill="none"
-          stroke="var(--color-brass)"
+          stroke="var(--color-terracotta)"
           strokeWidth={2}
           strokeLinecap="round"
           pathLength={1}
@@ -284,7 +284,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
       <span
         ref={pointerRef}
         aria-hidden="true"
-        className="absolute top-0 left-0 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass ring-4 ring-brass/25"
+        className="absolute top-0 left-0 z-[2] size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-terracotta ring-4 ring-terracotta/25"
       />
 
       {steps.map((step, i) => {
@@ -294,7 +294,6 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         return (
           <div
             key={step.num}
-            data-cursor="hover"
             // Rows are a fixed height on purpose: the nodes are placed at even
             // fractions of the container, so uneven rows would drift off the
             // curve. Copy is written to sit inside it.
@@ -304,7 +303,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
               aria-hidden="true"
               data-reached={reached}
               style={{ left: "var(--spine)" }}
-              className="absolute top-1/2 z-[1] flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-fog bg-mist font-display text-[1.05rem] font-light text-ash transition-all duration-500 ease-forma data-[reached=true]:border-ink data-[reached=true]:bg-ink data-[reached=true]:text-paper"
+              className="absolute top-1/2 z-[1] flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-fog bg-mist font-display text-[1.05rem] font-light text-ash transition-all duration-500 ease-forma data-[reached=true]:border-terracotta data-[reached=true]:bg-terracotta data-[reached=true]:text-paper"
             >
               {step.num}
             </span>

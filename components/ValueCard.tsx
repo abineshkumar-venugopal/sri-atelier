@@ -19,17 +19,17 @@ export default function ValueCard({
     <div
       ref={ref}
       className={cn(
-        "border-l border-white/8 px-9 py-12 first:border-l-0",
+        "border-l border-fog px-9 py-12 first:border-l-0",
         revealClassName(visible, delay)
       )}
     >
-      <div className="mb-5 font-display text-5xl font-light leading-none text-white/10">
+      <div className="mb-5 font-display text-5xl font-light leading-none text-ink/12">
         {value.num}
       </div>
-      <div className="mb-3 font-display text-[1.3rem] font-light text-paper">
+      <div className="mb-3 font-display text-[1.3rem] font-light text-ink">
         {value.name}
       </div>
-      <div className="text-[0.9rem] leading-[1.8] text-fog">
+      <div className="text-[0.9rem] leading-[1.8] text-ash">
         {value.description}
       </div>
     </div>

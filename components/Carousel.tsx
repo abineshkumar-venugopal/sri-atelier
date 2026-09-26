@@ -11,6 +11,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import CarouselArrow from "@/components/ui/carousel-arrow";
+import ProjectHoverDetails from "@/components/ProjectHoverDetails";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Project } from "@/lib/data";
 
@@ -72,7 +73,6 @@ export default function Carousel({ items }: { items: Project[] }) {
         {items.map((project) => (
           <CarouselItem
             key={project.slug}
-            data-cursor="hover"
             className="group relative h-[52vh] min-h-85 basis-4/5 overflow-hidden pl-0.5 md:basis-[38vw]"
           >
             <Image
@@ -82,11 +82,7 @@ export default function Carousel({ items }: { items: Project[] }) {
               className="object-cover transition-transform duration-800 ease-forma group-hover:scale-[1.04]"
               sizes="(max-width: 768px) 80vw, 38vw"
             />
-            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-ink/72 from-0% to-transparent to-55% p-8 opacity-0 transition-opacity duration-500 ease-forma group-hover:opacity-100">
-              <div className="translate-y-2 font-display text-2xl font-light text-paper transition-transform duration-400 ease-forma group-hover:translate-y-0">
-                {project.name}
-              </div>
-            </div>
+            <ProjectHoverDetails project={project} size="lg" />
           </CarouselItem>
         ))}
       </CarouselContent>

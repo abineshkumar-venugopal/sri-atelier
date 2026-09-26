@@ -4,7 +4,7 @@
  * varying elements (p, h1, h2) and usually through <Reveal as="...">.
  */
 
-/** Small brass-or-ash kicker above a section title. */
+/** Small terracotta-or-ash kicker above a section title. */
 export const eyebrowClass =
   "mb-4 text-eyebrow uppercase tracking-[0.25em] text-ash";
 

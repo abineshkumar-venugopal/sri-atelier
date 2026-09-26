@@ -6,6 +6,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MenuIcon } from "lucide-react";
 
+import { ContactTrigger } from "@/components/ContactDialog";
+import { Button } from "@/components/ui/button";
+
 import {
   Sheet,
   SheetContent,
@@ -17,8 +20,12 @@ import {
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  // No services page: this lands on the section of the home page, from anywhere.
+  { href: "/#services", label: "Services" },
+  { href: "/#process", label: "Process" },
   { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
+  // The call to action: a button that opens the contact dialog, not a page.
+  { href: "#contact", label: "Contact", cta: true },
 ];
 
 /**
@@ -83,16 +90,29 @@ export default function Nav() {
       </Link>
 
       {/* Desktop Navigation */}
-      <div className="hidden gap-10 md:flex">
+      <div className="hidden items-center gap-10 md:flex">
         {links.map((link) => {
           const current = isCurrent(pathname, link.href);
+          if (link.cta) {
+            return (
+              <ContactTrigger key={link.href}>
+                <Button
+                  variant="dark"
+                  // A pill, which --radius: 0 would otherwise square off.
+                  className="rounded-full px-6 py-2.5 text-[0.75rem] tracking-[0.15em]"
+                >
+                  {link.label}
+                </Button>
+              </ContactTrigger>
+            );
+          }
           return (
             <Link
               key={link.href}
               href={link.href}
               data-current={current}
               aria-current={current ? "page" : undefined}
-              className="relative text-[0.75rem] uppercase tracking-[0.15em] text-paper/80 transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-[3px] after:h-px after:origin-right after:scale-x-0 after:bg-brass after:transition-transform after:duration-400 after:ease-forma hover:after:origin-left hover:after:scale-x-100 data-[current=true]:text-paper data-[current=true]:after:origin-left data-[current=true]:after:scale-x-100 group-data-[scrolled=true]:text-ash group-data-[scrolled=true]:hover:text-ink group-data-[scrolled=true]:data-[current=true]:text-ink"
+              className="relative text-[0.75rem] uppercase tracking-[0.15em] text-paper/80 transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-[3px] after:h-px after:origin-right after:scale-x-0 after:bg-terracotta after:transition-transform after:duration-400 after:ease-forma hover:after:origin-left hover:after:scale-x-100 data-[current=true]:text-paper data-[current=true]:after:origin-left data-[current=true]:after:scale-x-100 group-data-[scrolled=true]:text-ash group-data-[scrolled=true]:hover:text-ink group-data-[scrolled=true]:data-[current=true]:text-ink"
             >
               {link.label}
             </Link>
@@ -115,13 +135,28 @@ export default function Nav() {
           <div className="flex flex-col gap-7">
             {links.map((link) => {
               const current = isCurrent(pathname, link.href);
+              if (link.cta) {
+                return (
+                  // SheetClose shuts the menu as the dialog opens over it.
+                  <SheetClose key={link.href} asChild>
+                    <ContactTrigger>
+                      <Button
+                        variant="dark"
+                        className="mt-3 w-full rounded-full py-3 text-[0.75rem] tracking-[0.15em]"
+                      >
+                        {link.label}
+                      </Button>
+                    </ContactTrigger>
+                  </SheetClose>
+                );
+              }
               return (
                 <SheetClose key={link.href} asChild>
                   <Link
                     href={link.href}
                     data-current={current}
                     aria-current={current ? "page" : undefined}
-                    className="relative border-l-2 border-transparent pl-4 text-label uppercase tracking-[0.15em] text-ash transition-colors duration-300 hover:text-brass data-[current=true]:border-brass data-[current=true]:text-ink"
+                    className="relative border-l-2 border-transparent pl-4 text-label uppercase tracking-[0.15em] text-ash transition-colors duration-300 hover:text-terracotta data-[current=true]:border-terracotta data-[current=true]:text-ink"
                   >
                     {link.label}
                   </Link>

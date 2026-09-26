@@ -36,9 +36,23 @@ markup** — there is no stylesheet of component classes to keep in sync.
 
 **Design tokens** live in the `@theme` block and become real utilities:
 
-- Colour — `bg-ink`, `text-paper`, `bg-mist`, `border-fog`, `text-ash`, `text-brass`, `bg-brass-dark`.
-  `ash` is the secondary text grey; it is not called `slate` (collides with
-  Tailwind's own scale) or `muted` (owned by shadcn).
+- Colour — a warm terracotta palette on white:
+
+  | Token | | Use |
+  | --- | --- | --- |
+  | `paper` | #FFFFFF | main surface |
+  | `mist` | #F5F2EC | warm ivory — alternate bands, footer |
+  | `stone` | #EAE5DD | the weightier bands (stats, CTA, values); small labels over photos |
+  | `fog` | #D8D1C6 | hairlines and borders |
+  | `ash` | #645B52 | secondary text |
+  | `ink` | #2A2622 | body text — warm charcoal |
+  | `terracotta` / `terracotta-dark` | #9A5241 / #7F4234 | accent, buttons, links / hover |
+  | `bronze` | #7E6245 | quieter labels on light backgrounds |
+  | `terracotta-light` | #E8C4B2 | accent **over photography**, large display words only |
+
+  Every text pairing clears WCAG AA on paper, mist and stone. `ash` is not
+  called `slate` (collides with Tailwind's own scale) or `muted` (owned by
+  shadcn).
 - Type — `font-display` (Cormorant), `font-sans` (DM Sans), and the micro scale
   `text-micro` / `text-eyebrow` / `text-label`. **Adding a new `--text-*` token
   means registering it in `lib/utils.ts`** — otherwise `cn()` cannot tell the
@@ -60,9 +74,10 @@ Values off the default scale are written as arbitrary values
 - **Repetition becomes a component,** not a CSS class. Buttons and form fields
   are in `components/ui/`.
 - **No `@apply`** outside the base layer.
-- **The custom cursor is opt-in.** `components/CustomCursor.tsx` grows over
-  `a`, `button`, and anything marked `data-cursor="hover"`. Add that attribute
-  to new non-interactive cards.
+- **No black.** A band that needs weight uses `stone`, not a dark fill; text
+  uses `ink`. Over photographs, soften with a warm scrim
+  (`rgb(42_38_34/…)`) and set type in `paper`, `stone` or `terracotta-light` —
+  plain `terracotta` is too dark to read there.
 
 **Adding a shadcn component**
 
@@ -77,6 +92,23 @@ overwrite and `git checkout --` the file back.
 
 `--radius: 0rem` in `globals.css` keeps every shadcn component square, matching
 the rest of the design. Overlays sit at `z-2000`, above the `z-1000` nav.
+
+## Contact form email
+
+The contact dialog (`components/ContactDialog.tsx`) sends enquiries through a
+server action, `app/actions/contact.ts`, which emails them to the studio with
+[Resend](https://resend.com). Validation and the email's content live in
+`lib/enquiry.ts`.
+
+1. Copy `.env.example` to `.env.local`.
+2. Create a Resend account and an API key, and set `RESEND_API_KEY`.
+3. Set `CONTACT_TO_EMAIL` to the inbox that should receive enquiries.
+
+Until a domain is verified in Resend, leave `CONTACT_FROM_EMAIL` empty: mail
+then comes from Resend's test sender, which only delivers to the address the
+Resend account was registered with. Before launch, verify the studio's domain
+in Resend and set `CONTACT_FROM_EMAIL` to an address on it. Replying to an
+enquiry email answers the visitor directly.
 
 ## Learn More
 

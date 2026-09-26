@@ -19,7 +19,6 @@ export default function TeamCard({
   return (
     <div
       ref={ref}
-      data-cursor="hover"
       className={cn("group", revealClassName(visible, delay))}
     >
       <div className="relative mb-4 aspect-[3/4] overflow-hidden">

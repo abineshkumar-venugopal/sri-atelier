@@ -15,7 +15,7 @@ import type { Client } from "@/lib/data";
  */
 export default function LogoMarquee({
   items,
-  label = "Selected Clients",
+  label = "Trusted By",
 }: {
   items: Client[];
   label?: string;

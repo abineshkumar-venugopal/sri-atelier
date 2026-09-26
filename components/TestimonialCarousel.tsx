@@ -106,7 +106,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
         {items.map((testimonial, i) => (
           <CarouselItem key={testimonial.author}>
             <div className="grid items-center gap-10 md:grid-cols-2 md:gap-14">
-              <div className="relative aspect-video overflow-hidden bg-ink">
+              <div className="relative aspect-video overflow-hidden bg-stone">
                 <video
                   ref={(el) => {
                     videoRefs.current[i] = el;
@@ -135,7 +135,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
                     aria-label={`Play testimonial from ${testimonial.author}`}
                     className="group absolute inset-0 grid place-items-center bg-ink/25 transition-colors duration-300 hover:bg-ink/10"
                   >
-                    <span className="flex size-16 items-center justify-center rounded-full border border-paper/70 text-paper transition-all duration-400 ease-forma group-hover:border-brass group-hover:bg-brass">
+                    <span className="flex size-16 items-center justify-center rounded-full border border-paper/70 text-paper transition-all duration-400 ease-forma group-hover:border-terracotta group-hover:bg-terracotta">
                       <PlayIcon className="size-5 translate-x-px" fill="currentColor" />
                     </span>
                   </button>
@@ -143,11 +143,11 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
               </div>
 
               <div>
-                <div className="mb-8 h-px w-10 bg-brass" />
+                <div className="mb-8 h-px w-10 bg-terracotta" />
                 <blockquote className="mb-8 font-display text-[clamp(1.4rem,2.4vw,2rem)] font-light italic leading-[1.5] text-ink">
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
-                <p className="text-label uppercase tracking-[0.2em] text-brass">
+                <p className="text-label uppercase tracking-[0.2em] text-bronze">
                   {testimonial.author}
                 </p>
                 <p className="mt-1.5 text-[0.8rem] text-ash">{testimonial.project}</p>

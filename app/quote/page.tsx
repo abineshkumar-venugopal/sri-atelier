@@ -7,7 +7,7 @@ import { eyebrowClass } from "@/components/ui/typography";
 export const metadata: Metadata = {
   title: "Get a Quote",
   description:
-    "Tell FORMA about your interior, exterior, or construction project and get a response within one business day.",
+    "Tell SRI ATELIER about your interior, exterior, or construction project and get a response within one business day.",
 };
 
 export default function QuotePage() {
@@ -19,10 +19,11 @@ export default function QuotePage() {
           <h1 className="mb-4 font-display text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[1.1]">
             Get a
             <br />
-            <em className="italic text-brass">Quote</em>
+            <em className="italic text-terracotta">Quote</em>
           </h1>
           <p className="text-[0.9rem] text-ash">
-            Tell us about your vision and we&apos;ll be in touch within 24 hours.
+            Tell us about your vision and we&apos;ll be in touch within 24
+            hours.
           </p>
         </div>
         <QuoteForm />

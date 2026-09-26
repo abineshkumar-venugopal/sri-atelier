@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Stats from "@/components/Stats";
 import LogoMarquee from "@/components/LogoMarquee";
+import { ContactTrigger } from "@/components/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
@@ -53,17 +54,17 @@ export default function HomePage() {
           imgClassName="object-[center_30%]"
           video={{ webm: "/hero.webm", mp4: "/hero.mp4" }}
         />
-        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[rgb(5_5_5/38%)] to-[rgb(5_5_5/62%)]" />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[rgb(42_38_34/25%)] to-[rgb(42_38_34/50%)]" />
 
         <div className="relative z-[2] px-10 text-center text-paper">
           {/* Staggered entrance: each line animates in 200-250ms after the last. */}
-          <p className="mb-7 animate-fade-up text-eyebrow uppercase tracking-[0.3em] text-brass opacity-0 [animation-delay:0.3s]">
+          {/* <p className="mb-7 animate-fade-up text-eyebrow uppercase tracking-[0.3em] text-stone opacity-0 [animation-delay:0.3s]">
             Architecture &amp; Design Studio · Est. 2008
-          </p>
+          </p> */}
           <h1 className="mb-7 animate-fade-up font-display text-[clamp(4rem,9vw,9rem)] font-light leading-[0.92] tracking-[-0.02em] opacity-0 [animation-delay:0.5s] [animation-duration:1.1s] max-md:text-[3.5rem]">
             Spaces
             <br />
-            that <em className="italic text-brass">define</em>
+            that <em className="italic text-terracotta-light">define</em>
             <br />
             lives.
           </h1>
@@ -137,10 +138,10 @@ export default function HomePage() {
             className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
             delay={2}
           >
-            We are a Chennai-based architecture and design studio with over
-            sixteen years of practice. Our work spans residential, commercial,
-            and cultural projects, each defined by restraint, material honesty,
-            and a deep understanding of place.
+            We are a Chennai-based architecture and design studio with over five
+            years of practice. Our work spans residential, commercial, and
+            cultural projects, each defined by restraint, material honesty, and
+            a deep understanding of place.
           </Reveal>
           <Reveal
             as="p"
@@ -153,7 +154,7 @@ export default function HomePage() {
           <Reveal as="div" delay={4}>
             <Link
               href="/about"
-              className="inline-flex items-center gap-3 border-b border-ink pb-0.5 text-[0.75rem] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:gap-5 hover:border-brass hover:text-brass"
+              className="inline-flex items-center gap-3 border-b border-ink pb-0.5 text-[0.75rem] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:gap-5 hover:border-terracotta hover:text-terracotta"
             >
               Our story →
             </Link>
@@ -167,7 +168,10 @@ export default function HomePage() {
         <LogoMarquee items={clients} />
       </Reveal>
 
-      <section className={cn(sectionPadding, "bg-mist")}>
+      <section
+        id="services"
+        className={cn(sectionPadding, "scroll-mt-24 bg-mist")}
+      >
         <Reveal as="div" className={eyebrowClass}>
           What We Do
         </Reveal>
@@ -196,7 +200,7 @@ export default function HomePage() {
           mode="center"
           factor={0.5}
         />
-        <div className="absolute inset-0 z-[1] bg-[rgb(8_8_8/65%)]" />
+        <div className="absolute inset-0 z-[1] bg-[rgb(42_38_34/45%)]" />
         <Reveal
           as="div"
           className="relative z-[2] px-10 text-center text-paper"
@@ -204,7 +208,7 @@ export default function HomePage() {
           <blockquote className="max-w-200 font-display text-[clamp(2rem,4vw,3.5rem)] font-light italic leading-[1.3]">
             &ldquo;Architecture is the art of how to waste space.&rdquo;
           </blockquote>
-          <cite className="mt-6 block text-label uppercase not-italic tracking-[0.2em] text-brass">
+          <cite className="mt-6 block text-label uppercase not-italic tracking-[0.2em] text-stone">
             — Philip Johnson
           </cite>
         </Reveal>
@@ -230,7 +234,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className={cn(sectionPadding, "bg-mist")}>
+      <section
+        id="process"
+        className={cn(sectionPadding, "scroll-mt-24 bg-mist")}
+      >
         <Reveal as="p" className={eyebrowClass}>
           How We Work
         </Reveal>
@@ -254,10 +261,10 @@ export default function HomePage() {
         </Reveal>
       </section>
 
-      <div className="relative overflow-hidden bg-ink px-6 py-30 text-center md:px-15">
+      <div className="relative overflow-hidden bg-stone px-6 py-30 text-center md:px-15">
         {/* Oversized SRI ATELIER watermark */}
         <img
-          src="/name_white.png"
+          src="/name_black.png"
           alt=""
           aria-hidden="true"
           className="
@@ -270,14 +277,14 @@ export default function HomePage() {
       max-w-[1100px]
       -translate-x-1/2
       -translate-y-1/2
-      opacity-[0.10]
+      opacity-[0.06]
     "
         />
 
         <div className="relative z-[1]">
           <Reveal
             as="h2"
-            className="mb-12 font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light italic leading-[1.1] text-paper"
+            className="mb-12 font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light italic leading-[1.1] text-ink"
           >
             Ready to
             <br />
@@ -287,9 +294,9 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal as="div" delay={1}>
-            <Button asChild variant="accent">
-              <Link href="/contact">Contact →</Link>
-            </Button>
+            <ContactTrigger>
+              <Button variant="accent">Contact →</Button>
+            </ContactTrigger>
           </Reveal>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
 import PageLoader from "@/components/PageLoader";
+import { ContactProvider } from "@/components/ContactDialog";
 import Nav from "@/components/Nav";
 import { cn } from "@/lib/utils";
 
@@ -21,11 +21,11 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "FORMA — Architecture & Interior Design Studio, Chennai",
-    template: "%s — FORMA",
+    default: "SRI ATELIER — Architecture & Interior Design Studio, Chennai",
+    template: "%s — SRI ATELIER",
   },
   description:
-    "FORMA is a Chennai-based architecture and interior design studio crafting residential, commercial, and cultural spaces across South India since 2008.",
+    "SRI ATELIER is a Chennai-based architecture and interior design studio crafting residential, commercial, and cultural spaces across South India since 2008.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -46,9 +46,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col">
         <PageLoader />
-        <CustomCursor />
-        <Nav />
-        {children}
+        {/* Owns the one contact dialog; any ContactTrigger inside opens it. */}
+        <ContactProvider>
+          <Nav />
+          {children}
+        </ContactProvider>
       </body>
     </html>
   );

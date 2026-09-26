@@ -7,15 +7,26 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Palette. `ash` is the secondary text grey — not named `slate` or `muted`,
-     which would collide with Tailwind's slate-* scale and shadcn's --muted. */
-  --color-ink: #0a0a0a;
-  --color-paper: #fafaf8;
-  --color-mist: #f0efec;
-  --color-fog: #c8c5be;
-  --color-ash: #6b6860;
-  --color-brass: #b5a58a;
-  --color-brass-dark: #8a7a64;
+  /* Palette — warm terracotta on white. There is no black on this site: the
+     darkest colour is `ink`, a warm charcoal used for text, and the bands that
+     need weight use `stone`. Every text pairing below clears WCAG AA (4.5:1)
+     on paper, mist and stone; check a new pairing before relying on it.
+
+     `ash` is the secondary text grey — not named `slate` or `muted`, which
+     would collide with Tailwind's slate-* scale and shadcn's --muted. */
+  --color-paper: #ffffff;           /* main surface */
+  --color-mist: #f5f2ec;            /* warm ivory — alternate bands */
+  --color-stone: #eae5dd;           /* stone beige — the weightier bands */
+  --color-fog: #d8d1c6;             /* hairlines and borders */
+  --color-ash: #645b52;             /* secondary text */
+  --color-ink: #2a2622;             /* body text — warm charcoal, not black */
+  --color-terracotta: #9a5241;      /* primary accent */
+  --color-terracotta-dark: #7f4234; /* accent hover */
+  --color-bronze: #7e6245;          /* quieter accent for small labels */
+  /* Accent for type set over photography. Terracotta itself fails there
+     (1-2.6:1 on a scrimmed photo); this light tint reads on the scrim and is
+     meant for large display words only — small labels on photos use stone. */
+  --color-terracotta-light: #e8c4b2;
 
   /* Type */
   --font-display: var(--font-cormorant), Georgia, serif;
@@ -71,16 +82,11 @@
     overflow-x: hidden;
     @apply bg-background text-foreground;
   }
-  /* Preflight and shadcn both set cursors on interactive elements; the custom
-     cursor (components/CustomCursor.tsx) needs every one of them suppressed. */
-  body,
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  [role="button"] {
-    cursor: none;
+  /* Tailwind v4 gives buttons the default arrow; show the hand on anything
+     clickable, as links already do. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
   }
 
   /* While the preloader is up, hold the page's own entrance animations so the
@@ -141,16 +147,16 @@
   --card-foreground: var(--color-ink);
   --popover: var(--color-paper);
   --popover-foreground: var(--color-ink);
-  --primary: var(--color-ink);
+  --primary: var(--color-terracotta);
   --primary-foreground: var(--color-paper);
   --secondary: var(--color-mist);
   --secondary-foreground: var(--color-ink);
   --muted: var(--color-mist);
   --muted-foreground: var(--color-ash);
-  --accent: var(--color-brass);
+  --accent: var(--color-terracotta);
   --accent-foreground: var(--color-paper);
   --destructive: oklch(0.577 0.245 27.325);
   --border: var(--color-fog);
   --input: var(--color-fog);
-  --ring: var(--color-brass);
+  --ring: var(--color-terracotta);
 }

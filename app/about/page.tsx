@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 
 import Reveal from "@/components/Reveal";
 import ValueCard from "@/components/ValueCard";
 import TeamCard from "@/components/TeamCard";
 import Footer from "@/components/Footer";
+import { ContactTrigger } from "@/components/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
 import { values, team } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Sixteen years of architecture and interior design practice across South India — the story, principles, and team behind FORMA.",
+    "Sixteen years of architecture and interior design practice across South India — the story, principles, and team behind SRI ATELIER.",
 };
 
 const valueDelays = [undefined, 1, 2, 3] as const;
@@ -32,15 +31,15 @@ export default function AboutPage() {
           sizes="100vw"
           preload
         />
-        <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[rgb(5_5_5/72%)] from-40% to-[rgb(5_5_5/25%)]" />
+        <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[rgb(42_38_34/55%)] from-40% to-[rgb(42_38_34/15%)]" />
         <div className="relative z-[2]">
-          <p className="mb-5 text-eyebrow uppercase tracking-[0.25em] text-brass">
+          <p className="mb-5 text-eyebrow uppercase tracking-[0.25em] text-stone">
             Who We Are
           </p>
           <h1 className="font-display text-[clamp(3.5rem,8vw,8rem)] font-light leading-[0.9] tracking-[-0.02em] text-paper">
             About
             <br />
-            <em className="italic text-brass">Forma</em>
+            <em className="italic text-terracotta-light">SRI ATELIER</em>
           </h1>
         </div>
       </div>
@@ -54,21 +53,26 @@ export default function AboutPage() {
             as="p"
             className="mb-8 font-display text-2xl font-light leading-[1.7] text-ink"
           >
-            We founded Forma with a single belief: that great architecture is not about
-            spectacle, but about the quiet intelligence of well-considered space.
+            We founded SRI ATELIER with a single belief: that great architecture
+            is not about spectacle, but about the quiet intelligence of
+            well-considered space.
           </Reveal>
-          <Reveal as="p" className="mb-8 text-base leading-[1.9] text-ash" delay={1}>
-            Over sixteen years and across sixty-four projects, we have worked with
-            homeowners, developers, and institutions across South India — each commission
-            approached as a singular opportunity to create something that will outlast the
-            moment of its making.
+          <Reveal
+            as="p"
+            className="mb-8 text-base leading-[1.9] text-ash"
+            delay={1}
+          >
+            Over sixteen years and across sixty-four projects, we have worked
+            with homeowners, developers, and institutions across South India —
+            each commission approached as a singular opportunity to create
+            something that will outlast the moment of its making.
           </Reveal>
         </div>
       </div>
 
-      <div className="bg-ink px-6 py-20 md:px-15">
+      <div className="bg-stone px-6 py-20 md:px-15">
         <p className={eyebrowClass}>Our Principles</p>
-        <Reveal as="h2" className={cn(sectionTitleClass, "text-paper")}>
+        <Reveal as="h2" className={sectionTitleClass}>
           What we
           <br />
           believe in
@@ -105,9 +109,9 @@ export default function AboutPage() {
             Every great space starts with a conversation.
           </p>
         </div>
-        <Button asChild variant="dark">
-          <Link href="/contact">Get In Touch →</Link>
-        </Button>
+        <ContactTrigger>
+          <Button variant="dark">Get In Touch →</Button>
+        </ContactTrigger>
       </div>
 
       <Footer />

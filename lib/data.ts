@@ -1,10 +1,31 @@
-export type ProjectCategory = "interior" | "exterior" | "construction";
+/** What the work was. Drives the filters on the projects page. */
+export type ProjectCategory =
+  | "interior"
+  | "exterior"
+  | "construction"
+  | "restoration";
+
+/** Who the building is for. */
+export type ProjectSector = "residential" | "commercial";
+
+export const categoryLabels: Record<ProjectCategory, string> = {
+  interior: "Interior",
+  exterior: "Exterior",
+  construction: "Construction",
+  restoration: "Restoration",
+};
+
+export const sectorLabels: Record<ProjectSector, string> = {
+  residential: "Residential",
+  commercial: "Commercial",
+};
 
 export interface Project {
   slug: string;
   name: string;
   location: string;
   category: ProjectCategory;
+  sector: ProjectSector;
   year: string;
   description: string;
   image: string;
@@ -17,6 +38,7 @@ export const projects: Project[] = [
     name: "Meridian House",
     location: "Chennai",
     category: "exterior",
+    sector: "residential",
     year: "2023",
     description:
       "A private residence perched on a hillside, designed around views, breezes, and the rhythms of natural light.",
@@ -30,6 +52,7 @@ export const projects: Project[] = [
     name: "The Loft Collection",
     location: "Bengaluru",
     category: "interior",
+    sector: "residential",
     year: "2023",
     description:
       "A series of curated apartment interiors, each distinct in character while united by an ethos of calm restraint.",
@@ -43,6 +66,7 @@ export const projects: Project[] = [
     name: "Studio Norte",
     location: "Pondicherry",
     category: "construction",
+    sector: "residential",
     year: "2023",
     description:
       "A creative studio and residence for a sculptor, built in hand-laid stone and raw concrete.",
@@ -56,6 +80,7 @@ export const projects: Project[] = [
     name: "Villa Serena",
     location: "Coimbatore",
     category: "interior",
+    sector: "residential",
     year: "2023",
     description:
       "A sprawling family home interior defined by natural stone, handwoven textiles, and filtered tropical light.",
@@ -69,6 +94,7 @@ export const projects: Project[] = [
     name: "The Obsidian Tower",
     location: "Chennai",
     category: "exterior",
+    sector: "commercial",
     year: "2023",
     description:
       "A mixed-use commercial tower clad in dark granite, its angular facade responding to the city grid below.",
@@ -82,6 +108,7 @@ export const projects: Project[] = [
     name: "Casa Mira",
     location: "Mysuru",
     category: "construction",
+    sector: "residential",
     year: "2023",
     description:
       "A weekend retreat built for serenity — low, long, and embedded in the landscape it inhabits.",
@@ -94,7 +121,8 @@ export const projects: Project[] = [
     slug: "the-garden-flat",
     name: "The Garden Flat",
     location: "Chennai",
-    category: "interior",
+    category: "restoration",
+    sector: "residential",
     year: "2023",
     description:
       "A compact city apartment transformed by light, texture, and a rigorous restraint that makes space feel infinite.",
@@ -108,6 +136,7 @@ export const projects: Project[] = [
     name: "Lighthouse Pavilion",
     location: "Mahabalipuram",
     category: "exterior",
+    sector: "commercial",
     year: "2023",
     description:
       "A coastal cultural pavilion designed to disappear into the horizon — glass, concrete, and open sky.",
@@ -121,6 +150,7 @@ export const projects: Project[] = [
     name: "The Clay House",
     location: "Auroville",
     category: "construction",
+    sector: "residential",
     year: "2023",
     description:
       "An earthen architecture experiment — rammed earth walls, passive cooling, and a deep respect for the site.",
@@ -228,8 +258,7 @@ export const processSteps: ProcessStep[] = [
     name: "Consultation",
     description:
       "We begin by listening. Site visits, long conversations, and a careful read of how you actually live or work — the light you wake up to, the rooms you avoid, the way a family or a team moves through a day. Nothing is drawn until the brief has been earned.",
-    image:
-      "/process/consultation.png",
+    image: "/process/consultation.png",
     imageAlt: "The consultation stage of a Sri Atelier project",
   },
   {
@@ -237,8 +266,7 @@ export const processSteps: ProcessStep[] = [
     name: "Design",
     description:
       "Concepts take shape as sketches, models, and material boards, then are tested against sun path, structure, and budget. We work through several schemes rather than defending the first, refining plan and section until the idea holds from the street down to a door handle.",
-    image:
-      "/process/design.png",
+    image: "/process/design.png",
     imageAlt: "The design stage of a Sri Atelier project",
   },
   {
@@ -246,8 +274,7 @@ export const processSteps: ProcessStep[] = [
     name: "Build",
     description:
       "Drawings become a building. We stay on site through the work, coordinating contractors, checking every pour and joint, and resolving the details that only reveal themselves once the structure is standing. Material honesty is protected here or it is lost.",
-    image:
-      "/process/build.png",
+    image: "/process/build.png",
     imageAlt: "The build stage of a Sri Atelier project",
   },
   {
@@ -255,8 +282,7 @@ export const processSteps: ProcessStep[] = [
     name: "Deliver",
     description:
       "Snagging, finishes, and a full handover — every system explained, every drawing archived. We return after the first season to see how the space has settled and how you have made it your own, because a building is only finished once it is lived in.",
-    image:
-      "/process/deliver.png",
+    image: "/process/deliver.png",
     imageAlt: "The deliver stage of a Sri Atelier project",
   },
 ];
@@ -289,7 +315,8 @@ export const values: Value[] = [
   {
     num: "04",
     name: "Longevity",
-    description: "We design for decades, not for trends. Beauty that deepens with age.",
+    description:
+      "We design for decades, not for trends. Beauty that deepens with age.",
   },
 ];
 
@@ -385,9 +412,9 @@ export interface Stat {
  * placeholders — confirm them before this goes live.
  */
 export const stats: Stat[] = [
-  { value: 16, label: "Years of Practice" },
-  { value: 64, suffix: "+", label: "Projects Delivered" },
-  { value: 1200000, suffix: "+", label: "Sq Ft Designed" },
+  { value: 5, suffix: "+", label: "Years of Practice" },
+  { value: 30, suffix: "+", label: "Projects Delivered" },
+  { value: 1000000, suffix: "+", label: "Sq Ft Designed" },
   { value: 9, label: "Cities Across South India" },
 ];
 
@@ -410,3 +437,16 @@ export const clients: Client[] = [
   { name: "Ashvin Realty", logo: "/clients/ashvin-realty.svg" },
   { name: "Suvarna Group", logo: "/clients/suvarna-group.svg" },
 ];
+
+/**
+ * The studio's contact details, in one place: the contact dialog and the
+ * footer both read from here, so a change only has to be made once.
+ */
+export const studio = {
+  email: "hello@forma.studio",
+  phone: "+91 98400 00000",
+  phoneHref: "tel:+919840000000",
+  whatsappHref: "https://wa.me/919840000000",
+  address: ["42 Adyar Bridge Road", "Adyar, Chennai — 600020", "Tamil Nadu, India"],
+  hours: "Mon – Fri, 9am – 6pm",
+};

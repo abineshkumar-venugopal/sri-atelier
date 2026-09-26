@@ -5,13 +5,14 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import ProjItem from "@/components/ProjItem";
 import { cn } from "@/lib/utils";
-import { projects, type ProjectCategory } from "@/lib/data";
+import { projects, categoryLabels, type ProjectCategory } from "@/lib/data";
 
+// Built from the category labels, so a new project type gets a filter too.
 const filters: { key: "all" | ProjectCategory; label: string }[] = [
   { key: "all", label: "All" },
-  { key: "interior", label: "Interior" },
-  { key: "exterior", label: "Exterior" },
-  { key: "construction", label: "Construction" },
+  ...(Object.entries(categoryLabels) as [ProjectCategory, string][]).map(
+    ([key, label]) => ({ key, label })
+  ),
 ];
 
 const itemDelays = [undefined, 1, 2, undefined, 1, 2, undefined, 1] as const;
@@ -47,7 +48,7 @@ export default function ProjectsPage() {
             className={cn(
               // The ::after is the active/hover underline, inset by the padding.
               "relative shrink-0 px-8 py-6 text-label uppercase tracking-[0.18em] text-ash transition-all duration-300 hover:text-ink",
-              "after:absolute after:inset-x-8 after:bottom-0 after:h-0.5 after:scale-x-0 after:bg-ink after:transition-transform after:duration-300 after:ease-forma",
+              "after:absolute after:inset-x-8 after:bottom-0 after:h-0.5 after:scale-x-0 after:bg-terracotta after:transition-transform after:duration-300 after:ease-forma",
               "data-[active=true]:text-ink data-[active=true]:after:scale-x-100"
             )}
           >

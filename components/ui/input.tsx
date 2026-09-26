@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
  * darkens from fog to ink on focus. Shared with Textarea and SelectTrigger.
  */
 const fieldClassName =
-  "w-full border-b border-fog bg-transparent py-3 text-base font-light text-ink outline-none transition-colors duration-300 placeholder:text-ash/60 focus-visible:border-ink disabled:opacity-50"
+  "w-full border-b border-fog bg-transparent py-3 text-base font-light text-ink outline-none transition-colors duration-300 placeholder:text-ash/60 focus-visible:border-ink aria-invalid:border-destructive disabled:opacity-50"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
