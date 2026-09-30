@@ -1,6 +1,10 @@
-import Image from "next/image";
-
-import { categoryLabels, sectorLabels, type Project } from "@/lib/data";
+import ProjectGallery from "@/components/ProjectGallery";
+import {
+  categoryLabels,
+  sectorLabels,
+  projectImages,
+  type Project,
+} from "@/lib/data";
 
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
@@ -16,16 +20,7 @@ function MetaItem({ label, value }: { label: string; value: string }) {
 export default function ProjectDetail({ project }: { project: Project }) {
   return (
     <>
-      <div className="relative h-[70vh] overflow-hidden">
-        <Image
-          src={project.image}
-          alt={project.name}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          preload
-        />
-      </div>
+      <ProjectGallery images={projectImages(project)} name={project.name} />
       <div className="p-6 md:p-15">
         <div className="mb-14 grid grid-cols-2 gap-10 border-b border-mist pb-10 md:grid-cols-4">
           <MetaItem label="Project" value={project.name} />

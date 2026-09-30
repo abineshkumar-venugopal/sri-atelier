@@ -25,8 +25,9 @@ function StatItem({ stat, delay }: { stat: Stat; delay?: 1 | 2 | 3 | 4 }) {
     <div
       ref={ref}
       className={cn(
-        "border-l border-fog px-6 py-10 md:px-9 md:py-12",
-        revealClassName(visible, delay)
+        "px-6 py-10 md:px-9 md:py-12",
+        delay && "border-l border-fog",
+        revealClassName(visible, delay),
       )}
     >
       {/* tabular-nums keeps the figure from jittering as digits tick over. */}

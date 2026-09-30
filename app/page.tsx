@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Stats from "@/components/Stats";
 import LogoMarquee from "@/components/LogoMarquee";
+import ServiceMarquee from "@/components/ServiceMarquee";
 import { ContactTrigger } from "@/components/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
@@ -43,7 +44,7 @@ const sectionPadding = "px-6 py-25 md:px-15";
 export default function HomePage() {
   return (
     <>
-      <section className="relative flex h-screen min-h-175 items-center justify-center overflow-hidden">
+      <section className="relative flex h-screen min-h-175 items-center overflow-hidden">
         <Parallax
           className="absolute inset-0 h-[115%] will-change-transform"
           src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=85&fit=crop"
@@ -56,7 +57,9 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-[rgb(42_38_34/25%)] to-[rgb(42_38_34/50%)]" />
 
-        <div className="relative z-[2] px-10 text-center text-paper">
+        {/* Same side padding as the unscrolled nav, so the copy's left edge
+            lines up under the logo. */}
+        <div className="relative z-[2] w-full px-10 text-left text-paper md:px-28">
           {/* Staggered entrance: each line animates in 200-250ms after the last. */}
           {/* <p className="mb-7 animate-fade-up text-eyebrow uppercase tracking-[0.3em] text-stone opacity-0 [animation-delay:0.3s]">
             Architecture &amp; Design Studio · Est. 2008
@@ -72,7 +75,7 @@ export default function HomePage() {
             We craft architecture that stands at the intersection of beauty and
             purpose.
           </p>
-          <div className="flex animate-fade-up justify-center gap-4 opacity-0 [animation-delay:1s]">
+          <div className="flex animate-fade-up justify-start gap-4 opacity-0 [animation-delay:1s]">
             <Button asChild variant="light">
               <Link href="/projects">View Projects</Link>
             </Button>
@@ -214,7 +217,11 @@ export default function HomePage() {
         </Reveal>
       </div>
 
-      <section className={sectionPadding}>
+      <Reveal>
+        <ServiceMarquee items={services} />
+      </Reveal>
+
+      <section className="px-6 py-10 md:px-15">
         <Reveal as="p" className={eyebrowClass}>
           Portfolio
         </Reveal>

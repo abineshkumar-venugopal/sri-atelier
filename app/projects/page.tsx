@@ -5,12 +5,13 @@ import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import ProjItem from "@/components/ProjItem";
 import { cn } from "@/lib/utils";
-import { projects, categoryLabels, type ProjectCategory } from "@/lib/data";
+import { projects, sectorLabels, type ProjectSector } from "@/lib/data";
 
-// Built from the category labels, so a new project type gets a filter too.
-const filters: { key: "all" | ProjectCategory; label: string }[] = [
+// Filtered by who the building is for, not the kind of work. Built from the
+// sector labels, so a new sector gets a filter too.
+const filters: { key: "all" | ProjectSector; label: string }[] = [
   { key: "all", label: "All" },
-  ...(Object.entries(categoryLabels) as [ProjectCategory, string][]).map(
+  ...(Object.entries(sectorLabels) as [ProjectSector, string][]).map(
     ([key, label]) => ({ key, label })
   ),
 ];
@@ -18,7 +19,7 @@ const filters: { key: "all" | ProjectCategory; label: string }[] = [
 const itemDelays = [undefined, 1, 2, undefined, 1, 2, undefined, 1] as const;
 
 export default function ProjectsPage() {
-  const [active, setActive] = useState<"all" | ProjectCategory>("all");
+  const [active, setActive] = useState<"all" | ProjectSector>("all");
 
   return (
     <>
@@ -63,7 +64,7 @@ export default function ProjectsPage() {
             key={project.slug}
             project={project}
             delay={itemDelays[i]}
-            hidden={active !== "all" && project.category !== active}
+            hidden={active !== "all" && project.sector !== active}
           />
         ))}
       </div>

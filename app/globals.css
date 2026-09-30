@@ -45,6 +45,7 @@
   --animate-scroll-pulse: scroll-pulse 2s ease-in-out infinite;
   --animate-line-draw: line-draw 1.1s var(--ease-forma) 0.35s forwards;
   --animate-marquee: marquee 45s linear infinite;
+  --animate-letter-hop: letter-hop 0.45s var(--ease-forma);
 
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(24px); }
@@ -67,6 +68,12 @@
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
+  }
+  /* One letter's jump in the nav hover wave. Moves `translate`, not
+     `transform`, so the letter's `scale` can change at the same time. */
+  @keyframes letter-hop {
+    0%, 100% { translate: 0 0; }
+    40%      { translate: 0 -5px; }
   }
 }
 
