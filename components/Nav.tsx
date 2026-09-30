@@ -112,9 +112,11 @@ export default function Nav() {
               href={link.href}
               data-current={current}
               aria-current={current ? "page" : undefined}
-              className="relative text-[0.75rem] uppercase tracking-[0.15em] text-paper/80 transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-[3px] after:h-px after:origin-right after:scale-x-0 after:bg-terracotta after:transition-transform after:duration-400 after:ease-forma hover:after:origin-left hover:after:scale-x-100 data-[current=true]:text-paper data-[current=true]:after:origin-left data-[current=true]:after:scale-x-100 group-data-[scrolled=true]:text-ash group-data-[scrolled=true]:hover:text-ink group-data-[scrolled=true]:data-[current=true]:text-ink"
+              // Hover: the letters hop in a wave (see HoverWave), the text
+              // brightens, and the underline draws in from the left.
+              className="group/link relative text-[0.75rem] uppercase tracking-[0.15em] text-paper/80 transition-colors duration-300 hover:text-paper after:absolute after:inset-x-0 after:-bottom-[3px] after:h-px after:origin-right after:scale-x-0 after:bg-terracotta after:transition-transform after:duration-400 after:ease-forma hover:after:origin-left hover:after:scale-x-100 data-[current=true]:text-paper data-[current=true]:after:origin-left data-[current=true]:after:scale-x-100 group-data-[scrolled=true]:text-ash group-data-[scrolled=true]:hover:text-ink group-data-[scrolled=true]:data-[current=true]:text-ink"
             >
-              {link.label}
+              <HoverWave text={link.label} />
             </Link>
           );
         })}
@@ -167,5 +169,37 @@ export default function Nav() {
         </SheetContent>
       </Sheet>
     </nav>
+  );
+}
+
+/** Gap between one letter's hop and the next, in ms. */
+const WAVE_STEP_MS = 40;
+
+/**
+ * Hovering the parent `group/link` makes each letter jump in turn, left to
+ * right, and stay slightly larger until the pointer leaves. Growing with
+ * `scale` rather than font-size keeps the neighbouring links still.
+ *
+ * Screen readers get the word whole; the split letters are hidden from them.
+ */
+function HoverWave({ text }: { text: string }) {
+  return (
+    <>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true" className="inline-flex">
+        {text.split("").map((letter, i) => (
+          <span
+            key={i}
+            style={{
+              animationDelay: `${i * WAVE_STEP_MS}ms`,
+              transitionDelay: `${i * WAVE_STEP_MS}ms`,
+            }}
+            className="inline-block origin-bottom transition-[scale] duration-300 ease-forma group-hover/link:scale-115 group-hover/link:animate-letter-hop motion-reduce:transition-none motion-reduce:group-hover/link:scale-100 motion-reduce:group-hover/link:animate-none"
+          >
+            {letter === " " ? "\u00a0" : letter}
+          </span>
+        ))}
+      </span>
+    </>
   );
 }

@@ -4,7 +4,7 @@ import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 
 import SocialLinks from "@/components/SocialLinks";
 import { ContactTrigger } from "@/components/ContactDialog";
-import { studio } from "@/lib/data";
+import { services, studio } from "@/lib/data";
 
 /** `contact` entries open the contact dialog instead of navigating. */
 const columns: {
@@ -21,12 +21,11 @@ const columns: {
   },
   {
     title: "Services",
-    links: [
-      { href: "/#services", label: "Interior Design" },
-      { href: "/#services", label: "Exterior Design" },
-      { href: "/#services", label: "Construction" },
-      { href: "/#services", label: "Consultation" },
-    ],
+    // From the same list as the Services section, so the two can't drift apart.
+    links: services.map((service) => ({
+      href: "/#services",
+      label: service.name,
+    })),
   },
   {
     title: "Connect",

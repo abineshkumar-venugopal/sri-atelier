@@ -7,13 +7,23 @@ import { cn } from "@/lib/utils";
 import type { ProcessStep } from "@/lib/data";
 
 /** How far the curve leans off the spine, as a fraction of width. */
-const BOW = 0.14;
+const BOW = 0.1;
 /** The lead in and out span half a row, so they lean proportionately less. */
 const LEAD_BOW = BOW * 0.55;
-/** Below this the spine moves left and the layout becomes a single column. */
-const WIDE_AT = 768;
+/**
+ * Below this the spine moves left and the layout becomes a single column. The
+ * same query as Tailwind's `md`, which is what switches the grid to two columns;
+ * the container's own width is 120px narrower, so it can't be tested instead.
+ */
+const WIDE_QUERY = "(min-width: 768px)";
+/**
+ * How far the curve reaches into a column beside a node, as a fraction of its
+ * bow. The curve only reaches its full bow between rows; the tallest thing in a
+ * row (an image, up to three quarters of the row) meets it at roughly 70%.
+ */
+const CLEAR = 0.72;
 /** Used until the container has been measured, so first paint is sensible. */
-const FALLBACK = { width: 1000, rowHeight: 384 };
+const FALLBACK = { width: 1000, rowHeight: 448 };
 
 /** Every segment is a cubic — the connector has no straight runs. */
 type Segment = {
@@ -154,10 +164,19 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
     width: FALLBACK.width,
     height: steps.length * FALLBACK.rowHeight,
   });
+  const [wide, setWide] = useState(true);
+
+  useEffect(() => {
+    const query = window.matchMedia(WIDE_QUERY);
+    const sync = () => setWide(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
 
   // Centred where there is room for content either side; tucked left once the
   // rows collapse to a single column.
-  const spine = size.width * (size.width >= WIDE_AT ? 0.5 : 0.12);
+  const spine = size.width * (wide ? 0.5 : 0.12);
 
   const { table, nodeFractions, d } = useMemo(() => {
     const segments = buildSegments(
@@ -248,7 +267,13 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
     <div
       ref={containerRef}
       className="relative mt-16"
-      style={{ "--spine": `${spine}px` } as React.CSSProperties}
+      style={
+        {
+          "--spine": `${spine}px`,
+          // Keeps the copy and images out of the curve's path either side.
+          "--clear": `${size.width * BOW * CLEAR}px`,
+        } as React.CSSProperties
+      }
     >
       <svg
         aria-hidden="true"
@@ -260,9 +285,12 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
         <path
           d={d}
           fill="none"
-          stroke="var(--color-fog)"
-          strokeWidth={2}
-          strokeDasharray="2 10"
+          // Ash at partial strength rather than fog: fog barely shows on the
+          // mist band at this weight.
+          stroke="var(--color-ash)"
+          strokeOpacity={0.35}
+          strokeWidth={2.5}
+          strokeDasharray="3 10"
           strokeLinecap="round"
         />
         <path
@@ -297,7 +325,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
             // Rows are a fixed height on purpose: the nodes are placed at even
             // fractions of the container, so uneven rows would drift off the
             // curve. Copy is written to sit inside it.
-            className="relative grid h-[30rem] grid-cols-1 items-center pr-2 pl-[calc(var(--spine)+2.75rem)] md:h-96 md:grid-cols-2 md:gap-x-24 md:px-0"
+            className="relative grid h-[30rem] grid-cols-1 items-center pr-2 pl-[calc(var(--spine)+2.75rem)] md:h-[28rem] md:grid-cols-2 md:gap-x-[calc(2*var(--clear)+3rem)] md:px-0"
           >
             <span
               aria-hidden="true"
@@ -310,8 +338,13 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
 
             <div
               className={cn(
-                "transition-all duration-700 ease-forma",
-                onLeft ? "md:col-start-1 md:text-right" : "md:col-start-2",
+                // Same width as the image and hugging the spine the same way, so
+                // both sit the same distance from the page edge. The cap wraps
+                // each description to four lines. Pinned to the first row:
+                // without it, a col-start-2 item followed by a col-start-1 one
+                // drops the second into a new, half-height row.
+                "w-full max-w-[33rem] transition-all duration-700 ease-forma md:row-start-1",
+                onLeft ? "md:col-start-1 md:ml-auto" : "md:col-start-2",
                 reached
                   ? "translate-x-0 opacity-100"
                   : cn("opacity-0", onLeft ? "-translate-x-8" : "translate-x-8")
@@ -328,10 +361,10 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
             {/* Opposite the heading, and entering from the opposite side. */}
             <div
               className={cn(
-                // 3:2 to match the source files, so nothing is cropped, and
-                // capped near their natural width to keep them sharp. Hugs the
+                // 3:2 to match the source files, so nothing is cropped. Capped
+                // to the copy's width, under the files' 612px, and hugs the
                 // spine rather than the page edge.
-                "relative hidden aspect-[3/2] w-full max-w-[26rem] overflow-hidden transition-all delay-100 duration-700 ease-forma md:block",
+                "relative hidden aspect-[3/2] w-full max-w-[33rem] overflow-hidden transition-all delay-100 duration-700 ease-forma md:row-start-1 md:block",
                 onLeft ? "md:col-start-2 md:mr-auto" : "md:col-start-1 md:ml-auto",
                 reached
                   ? "translate-x-0 opacity-100"
@@ -342,7 +375,7 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
                 src={step.image}
                 alt={step.imageAlt}
                 fill
-                sizes="(max-width: 768px) 0px, 416px"
+                sizes="(max-width: 768px) 0px, 528px"
                 className="object-cover"
               />
             </div>

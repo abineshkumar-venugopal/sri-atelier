@@ -1,11 +1,11 @@
-/** What the work was. Drives the filters on the projects page. */
+/** What the work was. Shown on each project alongside its sector. */
 export type ProjectCategory =
   | "interior"
   | "exterior"
   | "construction"
   | "restoration";
 
-/** Who the building is for. */
+/** Who the building is for. Drives the filters on the projects page. */
 export type ProjectSector = "residential" | "commercial";
 
 export const categoryLabels: Record<ProjectCategory, string> = {
@@ -16,8 +16,8 @@ export const categoryLabels: Record<ProjectCategory, string> = {
 };
 
 export const sectorLabels: Record<ProjectSector, string> = {
-  residential: "Residential",
   commercial: "Commercial",
+  residential: "Residential",
 };
 
 export interface Project {
@@ -30,6 +30,8 @@ export interface Project {
   description: string;
   image: string;
   thumb: string;
+  /** More photos, shown after `image` in the project's gallery. */
+  gallery?: string[];
 }
 
 export const projects: Project[] = [
@@ -46,6 +48,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "the-loft-collection",
@@ -60,6 +68,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "studio-norte",
@@ -74,6 +88,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "villa-serena",
@@ -88,6 +108,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "the-obsidian-tower",
@@ -102,6 +128,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "casa-mira",
@@ -116,6 +148,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "the-garden-flat",
@@ -130,6 +168,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "lighthouse-pavilion",
@@ -144,6 +188,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1400&q=85&fit=crop",
+    ],
   },
   {
     slug: "the-clay-house",
@@ -158,6 +208,12 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
     thumb:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80&fit=crop",
+    // Placeholder stock photos until the project's own are in.
+    gallery: [
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
+    ],
   },
 ];
 
@@ -177,6 +233,11 @@ export const homeFeaturedSlugs = [
   "the-obsidian-tower",
   "casa-mira",
 ];
+
+/** Every photo of a project, cover first. */
+export function projectImages(project: Project): string[] {
+  return [project.image, ...(project.gallery ?? [])];
+}
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
@@ -201,7 +262,7 @@ export interface Service {
 export const services: Service[] = [
   {
     num: "01",
-    name: "Architectural Design",
+    name: "Architectural Design & Drawing",
     description:
       "Buildings that earn their place — sited to the light and the street, planned around how people actually move, and detailed so they age well. We work across private homes, workplaces, and cultural and institutional projects, from first sketch to the drawings a contractor builds from.",
     icon: "architecture",
@@ -222,24 +283,24 @@ export const services: Service[] = [
   },
   {
     num: "04",
-    name: "Turnkey Construction",
-    description:
-      "Design and delivery under one roof. We tender, appoint and coordinate the trades, hold the programme and the budget, and stay on site through the work — so responsibility for what gets built sits with the people who drew it.",
-    icon: "construction",
-  },
-  {
-    num: "05",
     name: "Planning & Feasibility",
     description:
       "The work before the design. Site appraisal, massing studies, regulatory review and honest cost and programme advice, so a brief is tested against what the site, the approvals and the budget will genuinely allow before commitments are made.",
     icon: "planning",
   },
   {
-    num: "06",
-    name: "Visualisation",
+    num: "05",
+    name: "3D Models & Visualisation",
     description:
       "Photoreal images, walkthroughs and physical models made during design, not after it. Seeing a scheme in material and daylight is how clients make confident decisions — and how we catch what a plan and section alone will not reveal.",
     icon: "visualisation",
+  },
+  {
+    num: "06",
+    name: "Execution & Handover",
+    description:
+      "Design and delivery under one roof. We tender, appoint and coordinate the trades, hold the programme and the budget, and stay on site through the work — so responsibility for what gets built sits with the people who drew it.",
+    icon: "construction",
   },
 ];
 
@@ -255,7 +316,7 @@ export interface ProcessStep {
 export const processSteps: ProcessStep[] = [
   {
     num: "01",
-    name: "Consultation",
+    name: "Consultation & Requirement Analysis",
     description:
       "We begin by listening. Site visits, long conversations, and a careful read of how you actually live or work — the light you wake up to, the rooms you avoid, the way a family or a team moves through a day. Nothing is drawn until the brief has been earned.",
     image: "/process/consultation.png",
@@ -263,7 +324,7 @@ export const processSteps: ProcessStep[] = [
   },
   {
     num: "02",
-    name: "Design",
+    name: "Design & Development",
     description:
       "Concepts take shape as sketches, models, and material boards, then are tested against sun path, structure, and budget. We work through several schemes rather than defending the first, refining plan and section until the idea holds from the street down to a door handle.",
     image: "/process/design.png",
@@ -271,7 +332,7 @@ export const processSteps: ProcessStep[] = [
   },
   {
     num: "03",
-    name: "Build",
+    name: "Execution & Coordination",
     description:
       "Drawings become a building. We stay on site through the work, coordinating contractors, checking every pour and joint, and resolving the details that only reveal themselves once the structure is standing. Material honesty is protected here or it is lost.",
     image: "/process/build.png",
@@ -447,6 +508,10 @@ export const studio = {
   phone: "+91 98400 00000",
   phoneHref: "tel:+919840000000",
   whatsappHref: "https://wa.me/919840000000",
-  address: ["42 Adyar Bridge Road", "Adyar, Chennai — 600020", "Tamil Nadu, India"],
+  address: [
+    "42 Adyar Bridge Road",
+    "Adyar, Chennai — 600020",
+    "Tamil Nadu, India",
+  ],
   hours: "Mon – Fri, 9am – 6pm",
 };
