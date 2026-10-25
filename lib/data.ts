@@ -36,202 +36,181 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "meridian-house",
-    name: "Meridian House",
-    location: "Chennai",
-    category: "exterior",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A private residence perched on a hillside, designed around views, breezes, and the rhythms of natural light.",
-    image:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "the-loft-collection",
-    name: "The Loft Collection",
-    location: "Bengaluru",
-    category: "interior",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A series of curated apartment interiors, each distinct in character while united by an ethos of calm restraint.",
-    image:
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "studio-norte",
-    name: "Studio Norte",
-    location: "Pondicherry",
-    category: "construction",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A creative studio and residence for a sculptor, built in hand-laid stone and raw concrete.",
-    image:
-      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "villa-serena",
-    name: "Villa Serena",
-    location: "Coimbatore",
-    category: "interior",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A sprawling family home interior defined by natural stone, handwoven textiles, and filtered tropical light.",
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "the-obsidian-tower",
-    name: "The Obsidian Tower",
+    slug: "amutha-surabi-resto-bar",
+    name: "Amutha Surabi Resto Bar",
     location: "Chennai",
     category: "exterior",
     sector: "commercial",
-    year: "2023",
+    year: "2025",
     description:
-      "A mixed-use commercial tower clad in dark granite, its angular facade responding to the city grid below.",
-    image:
-      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
+      "A commercial hospitality project shaped around volume, shade, and a strong street presence.",
+    image: "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
+    thumb: "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
+      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
     ],
   },
   {
-    slug: "casa-mira",
-    name: "Casa Mira",
-    location: "Mysuru",
-    category: "construction",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A weekend retreat built for serenity — low, long, and embedded in the landscape it inhabits.",
-    image:
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "the-garden-flat",
-    name: "The Garden Flat",
+    slug: "murugan-hospital",
+    name: "Murugan Hospital",
     location: "Chennai",
-    category: "restoration",
-    sector: "residential",
-    year: "2023",
-    description:
-      "A compact city apartment transformed by light, texture, and a rigorous restraint that makes space feel infinite.",
-    image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
-    gallery: [
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&q=85&fit=crop",
-    ],
-  },
-  {
-    slug: "lighthouse-pavilion",
-    name: "Lighthouse Pavilion",
-    location: "Mahabalipuram",
     category: "exterior",
     sector: "commercial",
-    year: "2023",
+    year: "2025",
     description:
-      "A coastal cultural pavilion designed to disappear into the horizon — glass, concrete, and open sky.",
-    image:
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
+      "A clinical commercial building designed for clarity, access, and daily ease of movement.",
+    image: "/gallery/commercial/exterior/murugan-hospital/facade.png",
+    thumb: "/gallery/commercial/exterior/murugan-hospital/facade.png",
     gallery: [
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1400&q=85&fit=crop",
+      "/gallery/commercial/exterior/murugan-hospital/facade.png",
     ],
   },
   {
-    slug: "the-clay-house",
-    name: "The Clay House",
-    location: "Auroville",
-    category: "construction",
-    sector: "residential",
-    year: "2023",
+    slug: "vardha-resort",
+    name: "Vardha Resort",
+    location: "Tamil Nadu",
+    category: "exterior",
+    sector: "commercial",
+    year: "2025",
     description:
-      "An earthen architecture experiment — rammed earth walls, passive cooling, and a deep respect for the site.",
-    image:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1400&q=85&fit=crop",
-    thumb:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80&fit=crop",
-    // Placeholder stock photos until the project's own are in.
+      "A hospitality exterior project with a layered arrival experience and a softened landscape edge.",
+    image: "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
+    thumb: "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1400&q=85&fit=crop",
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1400&q=85&fit=crop",
+      "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
+      "/gallery/commercial/exterior/vardha-resort/gate.jpg",
+    ],
+  },
+  {
+    slug: "amudha-surabi-cafe",
+    name: "Amudha Surabi Cafe",
+    location: "Chennai",
+    category: "interior",
+    sector: "commercial",
+    year: "2025",
+    description:
+      "A hospitality interior shaped by warmth, rhythm, and a strong visual identity.",
+    image: "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+    thumb: "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+    gallery: [
+      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+    ],
+  },
+  {
+    slug: "deva-residence-rain-bownagar",
+    name: "Deva Residence, Rain Bownagar",
+    location: "Chennai",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A residential exterior shaped by a strong front elevation, light, and contextual materiality.",
+    image: "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+    thumb: "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+    gallery: [
+      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+      "/gallery/residential/exterior/deva-residence-rain-bownagar/side-view.jpg",
+    ],
+  },
+  {
+    slug: "guru-nagar-residence",
+    name: "Guru Nagar Residence",
+    location: "Chennai",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A modern residence harmonised with the street edge and a warm, tropical palette.",
+    image: "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
+    thumb: "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
+    gallery: [
+      "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
+      "/gallery/residential/exterior/guru-nagar-residence/rear-view.jpg",
+      "/gallery/residential/exterior/guru-nagar-residence/garden-view.jpg",
+    ],
+  },
+  {
+    slug: "essai-residence",
+    name: "Essai Residence",
+    location: "Chennai",
+    category: "interior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A residence refined through calm interiors, layered textures, and naturally lit living spaces.",
+    image: "/gallery/residential/interior/essai-residence/living-room.png",
+    thumb: "/gallery/residential/interior/essai-residence/living-room.png",
+    gallery: [
+      "/gallery/residential/interior/essai-residence/living-room.png",
+      "/gallery/residential/interior/essai-residence/dining.png",
+      "/gallery/residential/interior/essai-residence/bedroom.png",
+      "/gallery/residential/interior/essai-residence/study.png",
+    ],
+  },
+  {
+    slug: "terrace-garden",
+    name: "Terrace Garden",
+    location: "Chennai",
+    category: "interior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "An outdoor living experience designed for green relief, shade, and relaxed everyday use.",
+    image: "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
+    thumb: "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
+    gallery: [
+      "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
+      "/gallery/residential/interior/terrace-garden/terrace-details.jpg",
+    ],
+  },
+  {
+    slug: "ram-kumar-residence",
+    name: "Ram Kumar Residence",
+    location: "Chennai",
+    category: "interior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A family living space brought together through a measured material palette and practical comfort.",
+    image: "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+    thumb: "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+    gallery: [
+      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+    ],
+  },
+  {
+    slug: "villa-residence",
+    name: "Villa Residence",
+    location: "Chennai",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A residence where the day-view volume and landscape framing establish the overall character.",
+    image: "/gallery/residential/exterior/villa-residence/day-view.png",
+    thumb: "/gallery/residential/exterior/villa-residence/day-view.png",
+    gallery: [
+      "/gallery/residential/exterior/villa-residence/day-view.png",
+      "/gallery/residential/exterior/villa-residence/evening-view.png",
     ],
   },
 ];
 
 export const homeCarouselSlugs = [
-  "meridian-house",
-  "the-obsidian-tower",
-  "villa-serena",
-  "the-loft-collection",
-  "studio-norte",
+  "amutha-surabi-resto-bar",
+  "vardha-resort",
+  "deva-residence-rain-bownagar",
+  "essai-residence",
+  "murugan-hospital",
 ];
 
 export const homeFeaturedSlugs = [
-  "meridian-house",
-  "the-loft-collection",
-  "studio-norte",
-  "villa-serena",
-  "the-obsidian-tower",
-  "casa-mira",
+  "amutha-surabi-resto-bar",
+  "vardha-resort",
+  "essai-residence",
+  "deva-residence-rain-bownagar",
+  "murugan-hospital",
+  "amudha-surabi-cafe",
 ];
 
 /** Every photo of a project, cover first. */

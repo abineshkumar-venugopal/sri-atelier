@@ -24,7 +24,7 @@ export default function ServiceMarquee({ items }: { items: Service[] }) {
               // Pattern counted within each copy, so both copies match and the
               // loop stays seamless even with an odd number of services.
               className={cn(
-                "px-7 font-display text-[clamp(1.75rem,3.5vw,3rem)] leading-none font-light whitespace-nowrap md:px-10",
+                "px-7 font-display text-[clamp(1.75rem,3.5vw,3rem)] leading-none font-bold whitespace-nowrap md:px-10",
                 (i % items.length) % 2 === 0
                   ? "text-ash/60"
                   : "italic text-terracotta/75",

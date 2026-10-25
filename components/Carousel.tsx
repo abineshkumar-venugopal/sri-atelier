@@ -36,13 +36,13 @@ export default function Carousel({ items }: { items: Project[] }) {
         ? []
         : [
             AutoScroll({
-              speed: 0.7,
+              speed: 2.0,
               startDelay: 0,
               stopOnInteraction: false,
               stopOnMouseEnter: true,
             }),
           ],
-    [prefersReducedMotion]
+    [prefersReducedMotion],
   );
 
   /**
@@ -58,7 +58,7 @@ export default function Carousel({ items }: { items: Project[] }) {
       if (direction === -1) api.scrollPrev();
       else api.scrollNext();
     },
-    [api]
+    [api],
   );
 
   return (
