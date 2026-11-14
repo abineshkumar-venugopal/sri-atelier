@@ -9,7 +9,12 @@ import { services, studio } from "@/lib/data";
 /** `contact` entries open the contact dialog instead of navigating. */
 const columns: {
   title: string;
-  links: { label: string; href?: string; contact?: boolean }[];
+  links: {
+    label: string;
+    href?: string;
+    contact?: boolean;
+    social?: boolean;
+  }[];
 }[] = [
   {
     title: "Studio",
@@ -32,7 +37,7 @@ const columns: {
     links: [
       // { href: "/quote", label: "Get a Quote" },
       { label: "Contact Us", contact: true },
-      { label: "Work With Us", contact: true },
+      { label: "Social Connections", social: true },
     ],
   },
 ];
@@ -85,8 +90,6 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-
-          <SocialLinks className="mt-8" />
         </div>
 
         {columns.map((column) => (
@@ -97,7 +100,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {column.links.map((link) => (
                 <li key={link.label}>
-                  {link.contact ? (
+                  {link.social ? (
+                    <SocialLinks />
+                  ) : link.contact ? (
                     <ContactTrigger>
                       <button type="button" className={linkClass}>
                         {link.label}
