@@ -44,8 +44,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A commercial hospitality project shaped around volume, shade, and a strong street presence.",
-    image: "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
-    thumb: "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
+    image:
+      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
+    thumb:
+      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
     gallery: [
       "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
     ],
@@ -61,9 +63,7 @@ export const projects: Project[] = [
       "A clinical commercial building designed for clarity, access, and daily ease of movement.",
     image: "/gallery/commercial/exterior/murugan-hospital/facade.png",
     thumb: "/gallery/commercial/exterior/murugan-hospital/facade.png",
-    gallery: [
-      "/gallery/commercial/exterior/murugan-hospital/facade.png",
-    ],
+    gallery: ["/gallery/commercial/exterior/murugan-hospital/facade.png"],
   },
   {
     slug: "vardha-resort",
@@ -90,8 +90,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A hospitality interior shaped by warmth, rhythm, and a strong visual identity.",
-    image: "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
-    thumb: "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+    image:
+      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+    thumb:
+      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
     gallery: [
       "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
     ],
@@ -105,8 +107,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A residential exterior shaped by a strong front elevation, light, and contextual materiality.",
-    image: "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
-    thumb: "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+    image:
+      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+    thumb:
+      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
     gallery: [
       "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
       "/gallery/residential/exterior/deva-residence-rain-bownagar/side-view.jpg",
@@ -172,8 +176,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A family living space brought together through a measured material palette and practical comfort.",
-    image: "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
-    thumb: "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+    image:
+      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+    thumb:
+      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
     gallery: [
       "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
     ],
@@ -215,7 +221,7 @@ export const homeFeaturedSlugs = [
 
 /** Every photo of a project, cover first. */
 export function projectImages(project: Project): string[] {
-  return [project.image, ...(project.gallery ?? [])];
+  return [...new Set([project.image, ...(project.gallery ?? [])])];
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
@@ -287,9 +293,6 @@ export interface ProcessStep {
   num: string;
   name: string;
   description: string;
-  /** Shown opposite the heading on the process timeline. */
-  image: string;
-  imageAlt: string;
 }
 
 export const processSteps: ProcessStep[] = [
@@ -297,33 +300,25 @@ export const processSteps: ProcessStep[] = [
     num: "01",
     name: "Consultation & Requirement Analysis",
     description:
-      "We begin by listening. Site visits, long conversations, and a careful read of how you actually live or work — the light you wake up to, the rooms you avoid, the way a family or a team moves through a day. Nothing is drawn until the brief has been earned.",
-    image: "/process/consultation.png",
-    imageAlt: "The consultation stage of a Sri Atelier project",
+      "We begin by listening. Site visits, long conversations, and a careful read of how you actually live or work — the light you wake up to, the rooms you avoid, the way a family or a team moves through a day. Nothing is drawn until the brief has been earned, understood, refined, and thoughtfully shaped.",
   },
   {
     num: "02",
     name: "Design & Development",
     description:
       "Concepts take shape as sketches, models, and material boards, then are tested against sun path, structure, and budget. We work through several schemes rather than defending the first, refining plan and section until the idea holds from the street down to a door handle.",
-    image: "/process/design.png",
-    imageAlt: "The design stage of a Sri Atelier project",
   },
   {
     num: "03",
     name: "Execution & Coordination",
     description:
-      "Drawings become a building. We stay on site through the work, coordinating contractors, checking every pour and joint, and resolving the details that only reveal themselves once the structure is standing. Material honesty is protected here or it is lost.",
-    image: "/process/build.png",
-    imageAlt: "The build stage of a Sri Atelier project",
+      "Drawings become a building. We stay on site through the work, coordinating contractors, checking every pour and joint, and resolving the details that only reveal themselves once the structure is standing. Material honesty is protected here or it is lost, through careful execution and attention.",
   },
   {
     num: "04",
     name: "Deliver",
     description:
-      "Snagging, finishes, and a full handover — every system explained, every drawing archived. We return after the first season to see how the space has settled and how you have made it your own, because a building is only finished once it is lived in.",
-    image: "/process/deliver.png",
-    imageAlt: "The deliver stage of a Sri Atelier project",
+      "Snagging, finishes, and a full handover — every system explained, every drawing archived. We return after the first season to see how the space has settled and how you have made it your own, because a building is only finished once it is lived in, loved, truly experienced, and cherished daily.",
   },
 ];
 

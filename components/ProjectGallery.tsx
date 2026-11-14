@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { ExpandIcon, XIcon } from "lucide-react";
+import type { MouseEvent } from "react";
 
+import OrientationImage from "@/components/OrientationImage";
 import {
   Carousel,
   CarouselContent,
@@ -13,7 +13,6 @@ import {
 import CarouselArrow from "@/components/ui/carousel-arrow";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -21,6 +20,41 @@ import {
 /** "01 / 04". Zero-padded to match the numbering elsewhere on the site. */
 const counter = (index: number, total: number) =>
   `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+
+function clickedOutsidePhoto(event: MouseEvent<HTMLDivElement>) {
+  const image = event.currentTarget.querySelector("img");
+  if (!image) return true;
+  if (event.target !== image) return true;
+
+  const rect = image.getBoundingClientRect();
+  const style = window.getComputedStyle(image);
+  const paddingLeft = Number.parseFloat(style.paddingLeft);
+  const paddingRight = Number.parseFloat(style.paddingRight);
+  const paddingTop = Number.parseFloat(style.paddingTop);
+  const paddingBottom = Number.parseFloat(style.paddingBottom);
+  const contentWidth = rect.width - paddingLeft - paddingRight;
+  const contentHeight = rect.height - paddingTop - paddingBottom;
+
+  if (!image.naturalWidth || !image.naturalHeight) return true;
+
+  const scale = Math.min(
+    contentWidth / image.naturalWidth,
+    contentHeight / image.naturalHeight
+  );
+  const photoWidth = image.naturalWidth * scale;
+  const photoHeight = image.naturalHeight * scale;
+  const photoLeft =
+    rect.left + paddingLeft + (contentWidth - photoWidth) / 2;
+  const photoTop =
+    rect.top + paddingTop + (contentHeight - photoHeight) / 2;
+
+  return (
+    event.clientX < photoLeft ||
+    event.clientX > photoLeft + photoWidth ||
+    event.clientY < photoTop ||
+    event.clientY > photoTop + photoHeight
+  );
+}
 
 /** Tracks which slide an embla instance is showing. */
 function useSelectedIndex(api: CarouselApi) {
@@ -47,7 +81,7 @@ function useSelectedIndex(api: CarouselApi) {
  *
  * The full-screen view starts on the photo the hero is showing, and hands its
  * position back on close, so the two never disagree. With a single photo the
- * controls are left out and only the expand button remains.
+ * controls are left out.
  */
 export default function ProjectGallery({
   images,
@@ -71,21 +105,27 @@ export default function ProjectGallery({
   return (
     <>
       <Carousel
-        className="group/carousel relative h-[70vh] bg-ink"
+        className="group/carousel relative h-[min(56.25vw,70vh)] bg-stone"
         setApi={setApi}
         opts={{ loop: true }}
       >
-        <CarouselContent className="ml-0 h-[70vh]">
+        <CarouselContent className="ml-0 h-[min(56.25vw,70vh)]">
           {images.map((src, i) => (
-            <CarouselItem key={src} className="relative h-full pl-0">
-              <Image
-                src={src}
-                alt={`${name}, photo ${i + 1} of ${images.length}`}
-                fill
-                className="object-cover"
-                sizes="100vw"
-                preload={i === 0}
-              />
+            <CarouselItem key={`${src}-${i}`} className="relative h-full pl-0">
+              <button
+                type="button"
+                aria-label={`View ${name}, photo ${i + 1} full screen`}
+                onClick={() => setOpen(true)}
+                className="absolute inset-0 z-[1]"
+              >
+                <OrientationImage
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="100vw"
+                  preload={i === 0}
+                />
+              </button>
             </CarouselItem>
           ))}
         </CarouselContent>
@@ -111,15 +151,6 @@ export default function ProjectGallery({
           </>
         )}
 
-        {/* Bottom corner: the top-right one belongs to the modal's close button. */}
-        <button
-          type="button"
-          aria-label="View photos full screen"
-          onClick={() => setOpen(true)}
-          className="absolute right-6 bottom-5 z-10 grid size-11 place-items-center rounded-full border border-paper/70 bg-ink/25 text-paper backdrop-blur-sm transition-all duration-400 ease-forma outline-none hover:border-paper hover:bg-paper hover:text-ink focus-visible:ring-2 focus-visible:ring-ring md:right-15 md:bottom-8"
-        >
-          <ExpandIcon className="size-4.5" strokeWidth={1.25} />
-        </button>
       </Carousel>
 
       <Dialog open={open} onOpenChange={close}>
@@ -139,8 +170,20 @@ export default function ProjectGallery({
           >
             <CarouselContent className="ml-0 h-dvh">
               {images.map((src, i) => (
-                <CarouselItem key={src} className="relative h-full pl-0">
-                  <Image
+                <CarouselItem
+                  key={`${src}-${i}`}
+                  className="relative h-full pl-0"
+                  onClick={(event) => {
+                    if (
+                      event.target instanceof Element &&
+                      event.target.closest("button")
+                    ) {
+                      return;
+                    }
+                    if (clickedOutsidePhoto(event)) close(false);
+                  }}
+                >
+                  <OrientationImage
                     src={src}
                     alt={`${name}, photo ${i + 1} of ${images.length}`}
                     fill
@@ -174,12 +217,6 @@ export default function ProjectGallery({
               </>
             )}
 
-            <DialogClose
-              aria-label="Close"
-              className="absolute top-5 right-5 grid size-11 place-items-center rounded-full border border-paper/70 text-paper transition-all duration-400 ease-forma outline-none hover:border-paper hover:bg-paper hover:text-ink focus-visible:ring-2 focus-visible:ring-ring md:top-7 md:right-10"
-            >
-              <XIcon className="size-5" strokeWidth={1.25} />
-            </DialogClose>
           </Carousel>
         </DialogContent>
       </Dialog>

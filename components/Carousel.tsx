@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import Image from "next/image";
 import AutoScroll from "embla-carousel-auto-scroll";
 
+import OrientationImage from "@/components/OrientationImage";
 import {
   Carousel as CarouselRoot,
   CarouselContent,
@@ -73,13 +73,13 @@ export default function Carousel({ items }: { items: Project[] }) {
         {items.map((project) => (
           <CarouselItem
             key={project.slug}
-            className="group relative h-[52vh] min-h-85 basis-4/5 overflow-hidden pl-0.5 md:basis-[38vw]"
+            className="group relative aspect-video basis-4/5 overflow-hidden bg-stone pl-0.5 md:basis-[38vw]"
           >
-            <Image
+            <OrientationImage
               src={project.thumb}
               alt={project.name}
               fill
-              className="object-cover transition-transform duration-800 ease-forma group-hover:scale-[1.04]"
+              className="home-image-entrance transition-transform duration-800 ease-forma group-hover:scale-[1.04]"
               sizes="(max-width: 768px) 80vw, 38vw"
             />
             <ProjectHoverDetails project={project} size="lg" />

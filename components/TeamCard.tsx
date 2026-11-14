@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 
+import OrientationImage from "@/components/OrientationImage";
 import { cn } from "@/lib/utils";
 import { useRevealVisible, revealClassName } from "@/lib/useReveal";
 import type { TeamMember } from "@/lib/data";
@@ -21,12 +21,12 @@ export default function TeamCard({
       ref={ref}
       className={cn("group", revealClassName(visible, delay))}
     >
-      <div className="relative mb-4 aspect-[3/4] overflow-hidden">
-        <Image
+      <div className="relative mb-4 aspect-[3/4] overflow-hidden bg-stone">
+        <OrientationImage
           src={member.photo}
           alt={member.name}
           fill
-          className="object-cover object-top grayscale-20 transition-transform duration-600 ease-forma group-hover:scale-[1.04] group-hover:grayscale-0"
+          className="object-top grayscale-20 transition-transform duration-600 ease-forma group-hover:scale-[1.04] group-hover:grayscale-0"
           sizes="(max-width: 768px) 50vw, 25vw"
         />
       </div>
