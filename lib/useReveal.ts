@@ -45,14 +45,29 @@ const DELAY_CLASSNAMES = {
   4: "delay-600",
 } as const;
 
+export type RevealDirection = "up" | "left" | "right";
+
 /**
- * Fade-and-rise on scroll. Pair with `useRevealVisible` so the element
+ * Fade-and-slide on scroll. Pair with `useRevealVisible` so the element
  * animates once, the first time it enters the viewport.
  */
-export function revealClassName(visible: boolean, delay?: 1 | 2 | 3 | 4) {
+export function revealClassName(
+  visible: boolean,
+  delay?: 1 | 2 | 3 | 4,
+  direction: RevealDirection = "up"
+) {
+  const startPosition =
+    direction === "up"
+      ? "translate-y-[30px]"
+      : direction === "left"
+        ? "-translate-x-8"
+        : "translate-x-8";
+  const visiblePosition =
+    direction === "up" ? "translate-y-0" : "translate-x-0";
+
   return cn(
-    "transition-[opacity,transform] duration-800 ease-forma",
-    visible ? "translate-y-0 opacity-100" : "translate-y-[30px] opacity-0",
+    "transition-[opacity,transform,translate] duration-800 ease-forma",
+    visible ? cn(visiblePosition, "opacity-100") : cn(startPosition, "opacity-0"),
     delay && DELAY_CLASSNAMES[delay]
   );
 }

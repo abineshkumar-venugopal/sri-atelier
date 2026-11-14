@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useRevealVisible, revealClassName } from "@/lib/useReveal";
+import {
+  useRevealVisible,
+  revealClassName,
+  type RevealDirection,
+} from "@/lib/useReveal";
 import type { Service, ServiceIcon } from "@/lib/data";
 
 const icons: Record<ServiceIcon, LucideIcon> = {
@@ -27,9 +31,11 @@ const icons: Record<ServiceIcon, LucideIcon> = {
 export default function ServiceCard({
   service,
   delay,
+  direction,
 }: {
   service: Service;
   delay?: 1 | 2 | 3 | 4;
+  direction?: RevealDirection;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const visible = useRevealVisible(ref);
@@ -43,7 +49,7 @@ export default function ServiceCard({
         // draws the rules between tiles; the terracotta bar wipes in on hover.
         "group relative overflow-hidden bg-mist px-8 py-10 transition-colors duration-500 ease-forma hover:bg-paper md:px-10 md:py-12",
         "before:absolute before:inset-x-0 before:bottom-0 before:h-px before:origin-left before:scale-x-0 before:bg-terracotta before:transition-transform before:duration-500 before:ease-forma hover:before:scale-x-100",
-        revealClassName(visible, delay)
+        revealClassName(visible, delay, direction)
       )}
     >
       <div className="mb-8 text-micro tracking-[0.2em] text-ash/60">

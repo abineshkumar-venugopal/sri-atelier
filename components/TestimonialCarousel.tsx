@@ -123,7 +123,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
                     setPlaying(null);
                     resumeAdvancing();
                   }}
-                  className="size-full object-cover"
+                  className="size-full bg-ink object-contain"
                 >
                   <source src={testimonial.video} type="video/mp4" />
                 </video>

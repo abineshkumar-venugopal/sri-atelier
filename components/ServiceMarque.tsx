@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const LOOP_SECONDS = 50;
 
-export default function ServiceMarquee({ items }: { items: Service[] }) {
+export default function ServiceMarque({ items }: { items: Service[] }) {
   const track = [...items, ...items];
 
   return (

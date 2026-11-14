@@ -37,6 +37,8 @@ yarn-error.log*
 # vercel
 .vercel
 
+.github/skills/premium-frontend-ui/SKILL.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

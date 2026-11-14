@@ -1,8 +1,10 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import Parallax from "@/components/Parallax";
 import Carousel from "@/components/Carousel";
+import OrientationImage from "@/components/OrientationImage";
 import ServiceCard from "@/components/ServiceCard";
 import ProjectCard from "@/components/ProjectCard";
 import ProcessTimeline from "@/components/ProcessTimeline";
@@ -11,7 +13,7 @@ import Footer from "@/components/Footer";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Stats from "@/components/Stats";
 import LogoMarquee from "@/components/LogoMarquee";
-import ServiceMarquee from "@/components/ServiceMarquee";
+import ServiceMarque from "@/components/ServiceMarque";
 import { ContactTrigger } from "@/components/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
@@ -93,16 +95,25 @@ export default function HomePage() {
 
       <section className="bg-paper pt-25 pb-20">
         <div className="px-6 md:px-15">
-          <Reveal as="p" className={eyebrowClass}>
+          <Reveal as="p" direction="left" className={eyebrowClass}>
             Selected Works
           </Reveal>
-          <Reveal as="h2" className={sectionTitleClass} delay={1}>
+          <Reveal
+            as="h2"
+            className={sectionTitleClass}
+            delay={1}
+            direction="right"
+          >
             Recent
             <br />
             Projects
           </Reveal>
         </div>
-        <Reveal delay={2}>
+        <Reveal
+          delay={2}
+          direction="left"
+          className="home-image-reveal"
+        >
           <Carousel items={carouselItems} />
         </Reveal>
       </section>
@@ -112,12 +123,16 @@ export default function HomePage() {
           "grid items-center gap-20 bg-mist px-6 py-25 md:grid-cols-2 md:px-15",
         )}
       >
-        <Reveal as="div" className="group relative h-115 overflow-hidden">
-          <Image
+        <Reveal
+          as="div"
+          direction="left"
+          className="home-image-reveal group relative h-115 overflow-hidden"
+        >
+          <OrientationImage
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80&fit=crop"
             alt="SRI ATELIER studio"
             fill
-            className="object-cover transition-transform duration-800 ease-forma group-hover:scale-[1.03]"
+            className="home-image-entrance transition-transform duration-800 ease-forma group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="pointer-events-none absolute top-5 right-5 font-display text-[5rem] font-light leading-none text-white/55 [text-shadow:0_2px_20px_rgb(0_0_0/40%)]">
@@ -126,10 +141,15 @@ export default function HomePage() {
         </Reveal>
 
         <div>
-          <Reveal as="p" className={eyebrowClass}>
+          <Reveal as="p" direction="right" className={eyebrowClass}>
             About SRI ATELIER
           </Reveal>
-          <Reveal as="h2" className={sectionTitleClass} delay={1}>
+          <Reveal
+            as="h2"
+            className={sectionTitleClass}
+            delay={1}
+            direction="right"
+          >
             Design is not
             <br />
             decoration — it is
@@ -140,6 +160,7 @@ export default function HomePage() {
             as="p"
             className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
             delay={2}
+            direction="left"
           >
             We are a Chennai-based architecture and design studio with over five
             years of practice. Our work spans residential, commercial, and
@@ -150,11 +171,12 @@ export default function HomePage() {
             as="p"
             className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
             delay={3}
+            direction="right"
           >
             Every project begins with listening — to the site, the client, the
             light, and the land.
           </Reveal>
-          <Reveal as="div" delay={4}>
+          <Reveal as="div" delay={4} direction="right">
             <Link
               href="/about"
               className="inline-flex items-center gap-3 border-b border-ink pb-0.5 text-[0.75rem] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:gap-5 hover:border-terracotta hover:text-terracotta"
@@ -167,7 +189,7 @@ export default function HomePage() {
 
       <Stats items={stats} />
 
-      <Reveal>
+      <Reveal direction="left">
         <LogoMarquee items={clients} />
       </Reveal>
 
@@ -175,10 +197,15 @@ export default function HomePage() {
         id="services"
         className={cn(sectionPadding, "scroll-mt-24 bg-mist")}
       >
-        <Reveal as="div" className={eyebrowClass}>
+        <Reveal as="div" direction="left" className={eyebrowClass}>
           What We Do
         </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
+        <Reveal
+          as="h2"
+          className={sectionTitleClass}
+          delay={1}
+          direction="right"
+        >
           Services
         </Reveal>
         {/* gap-px over a hairline background is what draws the rules between
@@ -189,6 +216,7 @@ export default function HomePage() {
               key={service.name}
               service={service}
               delay={serviceDelays[i]}
+              direction={i % 2 === 0 ? "left" : "right"}
             />
           ))}
         </div>
@@ -206,26 +234,107 @@ export default function HomePage() {
         <div className="absolute inset-0 z-[1] bg-[rgb(42_38_34/45%)]" />
         <Reveal
           as="div"
-          className="relative z-[2] px-10 text-center text-paper"
+          direction="left"
+          className="liquid-quote-reveal relative z-[2] px-10 text-center text-paper"
         >
-          <blockquote className="max-w-200 font-display text-[clamp(2rem,4vw,3.5rem)] font-light italic leading-[1.3]">
-            &ldquo;Architecture is the art of how to waste space.&rdquo;
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute h-0 w-0"
+            focusable="false"
+          >
+            <filter
+              id="liquid-glass-type"
+              x="-8%"
+              y="-12%"
+              width="116%"
+              height="124%"
+              colorInterpolationFilters="sRGB"
+            >
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.025 0.08"
+                numOctaves="1"
+                seed="8"
+                result="glassRipple"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="glassRipple"
+                scale="1.1"
+                xChannelSelector="R"
+                yChannelSelector="G"
+                result="refractedText"
+              />
+              <feGaussianBlur
+                in="SourceAlpha"
+                stdDeviation="0.65"
+                result="softEdge"
+              />
+              <feSpecularLighting
+                in="softEdge"
+                surfaceScale="2.2"
+                specularConstant="0.75"
+                specularExponent="18"
+                lightingColor="#fff4e2"
+                result="edgeLight"
+              >
+                <feDistantLight azimuth="225" elevation="52" />
+              </feSpecularLighting>
+              <feComposite
+                in="edgeLight"
+                in2="SourceAlpha"
+                operator="in"
+                result="beveledHighlight"
+              />
+              <feBlend
+                in="refractedText"
+                in2="beveledHighlight"
+                mode="screen"
+              />
+            </filter>
+          </svg>
+          <blockquote className="liquid-quote mx-auto w-[90vw] max-w-none font-display text-[clamp(3.5rem,9vw,7rem)] font-bold italic leading-[1.15]">
+            {[
+              ["Architecture", "is", "the"],
+              ["poetry", "of", "space", "and", "design"],
+            ].map((line, lineIndex) => (
+              <span className="block" key={lineIndex}>
+                {line.map((word, wordIndex) => {
+                  const index = lineIndex === 0 ? wordIndex : wordIndex + 3;
+                  return (
+                    <Fragment key={word}>
+                      {wordIndex > 0 && " "}
+                      <span
+                        className="liquid-quote__word"
+                        style={{
+                          transitionDelay: `${index * 55}ms`,
+                        }}
+                      >
+                        {word}
+                      </span>
+                    </Fragment>
+                  );
+                })}
+              </span>
+            ))}
           </blockquote>
-          <cite className="mt-6 block text-label uppercase not-italic tracking-[0.2em] text-stone">
-            — Philip Johnson
-          </cite>
         </Reveal>
       </div>
 
-      <Reveal>
-        <ServiceMarquee items={services} />
+      <Reveal direction="right">
+        <ServiceMarque items={services} />
       </Reveal>
 
       <section className="px-6 py-10 md:px-15">
-        <Reveal as="p" className={eyebrowClass}>
+        <Reveal as="p" direction="left" className={eyebrowClass}>
           Portfolio
         </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
+        <Reveal
+          as="h2"
+          className={sectionTitleClass}
+          delay={1}
+          direction="right"
+        >
           Featured
           <br />
           Projects
@@ -236,6 +345,8 @@ export default function HomePage() {
               key={project.slug}
               project={project}
               delay={featuredDelays[i]}
+              direction={i % 2 === 0 ? "left" : "right"}
+              animateImageOnReveal
             />
           ))}
         </div>
@@ -243,32 +354,66 @@ export default function HomePage() {
 
       <section
         id="process"
-        className={cn(sectionPadding, "scroll-mt-24 bg-mist")}
+        className={cn(
+          sectionPadding,
+          "relative isolate scroll-mt-24 overflow-hidden bg-mist"
+        )}
       >
-        <Reveal as="p" className={eyebrowClass}>
-          How We Work
-        </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
-          Our Process
-        </Reveal>
-        <ProcessTimeline steps={processSteps} />
+        <Image
+          src="/process-background-3.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 -z-10 object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-paper/45"
+        />
+        <div className="relative z-10">
+          <Reveal as="p" direction="left" className={eyebrowClass}>
+            How We Work
+          </Reveal>
+          <Reveal
+            as="h2"
+            className={sectionTitleClass}
+            delay={1}
+            direction="right"
+          >
+            Our Process
+          </Reveal>
+          <ProcessTimeline steps={processSteps} />
+        </div>
       </section>
 
       <section className="bg-paper px-6 py-30 md:px-15">
-        <Reveal as="p" className={eyebrowClass}>
+        <Reveal as="p" direction="left" className={eyebrowClass}>
           In Their Words
         </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
+        <Reveal
+          as="h2"
+          className={sectionTitleClass}
+          delay={1}
+          direction="right"
+        >
           Client
           <br />
           Stories
         </Reveal>
-        <Reveal delay={2}>
+        <Reveal delay={2} direction="right">
           <TestimonialCarousel items={testimonials} />
         </Reveal>
       </section>
 
       <div className="relative overflow-hidden bg-stone px-6 py-30 text-center md:px-15">
+        <Image
+          src="/art_illustration_background.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 z-0 object-cover object-[center_65%]"
+        />
+
         {/* Oversized SRI ATELIER watermark */}
         <img
           src="/name_black.png"
@@ -291,6 +436,7 @@ export default function HomePage() {
         <div className="relative z-[1]">
           <Reveal
             as="h2"
+            direction="left"
             className="mb-12 font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light italic leading-[1.1] text-ink"
           >
             Ready to
@@ -300,7 +446,7 @@ export default function HomePage() {
             extraordinary?
           </Reveal>
 
-          <Reveal as="div" delay={1}>
+          <Reveal as="div" delay={1} direction="right">
             <ContactTrigger>
               <Button variant="accent">Contact →</Button>
             </ContactTrigger>
@@ -308,7 +454,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      <Footer />
+      <Reveal direction="right">
+        <Footer />
+      </Reveal>
     </>
   );
 }

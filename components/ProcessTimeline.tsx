@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import type { ProcessStep } from "@/lib/data";
@@ -338,11 +337,6 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
 
             <div
               className={cn(
-                // Same width as the image and hugging the spine the same way, so
-                // both sit the same distance from the page edge. The cap wraps
-                // each description to four lines. Pinned to the first row:
-                // without it, a col-start-2 item followed by a col-start-1 one
-                // drops the second into a new, half-height row.
                 "w-full max-w-[33rem] transition-all duration-700 ease-forma md:row-start-1",
                 onLeft ? "md:col-start-1 md:ml-auto" : "md:col-start-2",
                 reached
@@ -356,28 +350,6 @@ export default function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
               <p className="text-[0.9rem] leading-[1.9] text-ash">
                 {step.description}
               </p>
-            </div>
-
-            {/* Opposite the heading, and entering from the opposite side. */}
-            <div
-              className={cn(
-                // 3:2 to match the source files, so nothing is cropped. Capped
-                // to the copy's width, under the files' 612px, and hugs the
-                // spine rather than the page edge.
-                "relative hidden aspect-[3/2] w-full max-w-[33rem] overflow-hidden transition-all delay-100 duration-700 ease-forma md:row-start-1 md:block",
-                onLeft ? "md:col-start-2 md:mr-auto" : "md:col-start-1 md:ml-auto",
-                reached
-                  ? "translate-x-0 opacity-100"
-                  : cn("opacity-0", onLeft ? "translate-x-8" : "-translate-x-8")
-              )}
-            >
-              <Image
-                src={step.image}
-                alt={step.imageAlt}
-                fill
-                sizes="(max-width: 768px) 0px, 528px"
-                className="object-cover"
-              />
             </div>
           </div>
         );
