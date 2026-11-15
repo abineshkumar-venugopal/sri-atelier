@@ -1,4 +1,8 @@
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
+
 import ProjectGallery from "@/components/ProjectGallery";
+import { Button } from "@/components/ui/button";
 import {
   categoryLabels,
   sectorLabels,
@@ -20,7 +24,19 @@ function MetaItem({ label, value }: { label: string; value: string }) {
 export default function ProjectDetail({ project }: { project: Project }) {
   return (
     <>
-      <ProjectGallery images={projectImages(project)} name={project.name} />
+      <div className="relative">
+        <Button
+          asChild
+          variant="dark"
+          size="icon"
+          className="absolute left-6 top-6 z-20 rounded-full shadow-md md:left-15 md:top-8"
+        >
+          <Link href="/projects" aria-label="Back to projects">
+            <ChevronLeft aria-hidden="true" />
+          </Link>
+        </Button>
+        <ProjectGallery images={projectImages(project)} name={project.name} />
+      </div>
       <div className="p-6 md:p-15">
         <div className="mb-14 grid grid-cols-2 gap-10 border-b border-mist pb-10 md:grid-cols-4">
           <MetaItem label="Project" value={project.name} />
