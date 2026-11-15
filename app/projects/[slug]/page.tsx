@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import ProjectDetail from "@/components/ProjectDetail";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
@@ -35,14 +34,6 @@ export default async function ProjectPage({
   return (
     <>
       <ProjectDetail project={project} />
-      <div className="px-6 pb-20 md:px-15">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-3 border-b border-ink pb-0.5 text-[0.75rem] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:gap-5 hover:border-terracotta hover:text-terracotta"
-        >
-          ← Back to Projects
-        </Link>
-      </div>
       <Footer />
     </>
   );

@@ -38,18 +38,22 @@ const isCurrent = (pathname: string, href: string) =>
 export default function Nav() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isProjectDetail = pathname.startsWith("/projects/");
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
+    if (isProjectDetail) return;
     const handleScroll = () => setScrollY(window.scrollY);
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isProjectDetail]);
 
   const scrolled = !isHome || scrollY > 60;
+
+  if (isProjectDetail) return null;
 
   return (
     <nav
