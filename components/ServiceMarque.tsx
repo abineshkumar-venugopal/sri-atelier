@@ -29,6 +29,10 @@ export default function ServiceMarque({ items }: { items: Service[] }) {
                   ? "text-ash/60"
                   : "italic text-terracotta/75",
               )}
+              style={{
+                textShadow:
+                  "0 0 0 rgba(42,38,34,0.18), 1px 1px 0 rgba(42,38,34,0.18), 2px 2px 0 rgba(42,38,34,0.16), 3px 3px 0 rgba(42,38,34,0.14), 4px 4px 0 rgba(42,38,34,0.12), 6px 6px 0 rgba(42,38,34,0.1), 10px 10px 18px rgba(42,38,34,0.14)",
+              }}
             >
               {service.name}
             </span>
