@@ -18,11 +18,13 @@ export default function ProjectCard({
   delay,
   direction,
   animateImageOnReveal = false,
+  popupImageOnReveal = false,
 }: {
   project: Project;
   delay?: 1 | 2 | 3 | 4;
   direction?: RevealDirection;
   animateImageOnReveal?: boolean;
+  popupImageOnReveal?: boolean;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const visible = useRevealVisible(ref);
@@ -30,10 +32,12 @@ export default function ProjectCard({
     <Link
       ref={ref}
       data-image-revealed={animateImageOnReveal ? visible : undefined}
+      data-popup-revealed={popupImageOnReveal ? visible : undefined}
       href={`/projects/${project.slug}`}
       className={cn(
         "group relative block aspect-video overflow-hidden bg-stone",
         animateImageOnReveal && "home-image-card",
+        popupImageOnReveal && "featured-image-card",
         revealClassName(visible, delay, direction)
       )}
     >
@@ -43,7 +47,7 @@ export default function ProjectCard({
         fill
         className={cn(
           "transition-transform duration-800 ease-forma group-hover:scale-105",
-          animateImageOnReveal && "home-image-entrance"
+          (animateImageOnReveal || popupImageOnReveal) && "home-image-entrance"
         )}
         sizes="(max-width: 768px) 50vw, 33vw"
       />

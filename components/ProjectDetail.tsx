@@ -35,21 +35,22 @@ export default function ProjectDetail({ project }: { project: Project }) {
             <ChevronLeft aria-hidden="true" />
           </Link>
         </Button>
-        <ProjectGallery images={projectImages(project)} name={project.name} />
-      </div>
-      <div className="p-6 md:p-15">
-        <div className="mb-14 grid grid-cols-2 gap-10 border-b border-mist pb-10 md:grid-cols-4">
-          <MetaItem label="Project" value={project.name} />
-          <MetaItem label="Location" value={project.location} />
-          <MetaItem
-            label="Type"
-            value={`${sectorLabels[project.sector]} · ${categoryLabels[project.category]}`}
-          />
-          <MetaItem label="Year" value={String(project.year)} />
-        </div>
-        <p className="max-w-170 font-display text-[1.3rem] font-light leading-[1.7] text-ash">
-          {project.description}
-        </p>
+        <ProjectGallery images={projectImages(project)} name={project.name}>
+          <div className="p-6 md:p-15">
+            <div className="mb-14 grid grid-cols-2 gap-10 border-b border-mist pb-10 md:grid-cols-4">
+              <MetaItem label="Project" value={project.name} />
+              <MetaItem label="Location" value={project.location} />
+              <MetaItem
+                label="Type"
+                value={`${sectorLabels[project.sector]} · ${categoryLabels[project.category]}`}
+              />
+              <MetaItem label="Year" value={String(project.year)} />
+            </div>
+            <p className="max-w-170 font-display text-[1.3rem] font-light leading-[1.7] text-ash">
+              {project.description}
+            </p>
+          </div>
+        </ProjectGallery>
       </div>
     </>
   );

@@ -7,7 +7,6 @@ import {
   useRevealVisible,
   revealClassName,
   REVEAL_STEP_MS,
-  type RevealDirection,
 } from "@/lib/useReveal";
 import { useCountUp } from "@/lib/useCountUp";
 import type { Stat } from "@/lib/data";
@@ -17,26 +16,22 @@ const delays = [undefined, 1, 2, 3] as const;
 function StatItem({
   stat,
   delay,
-  direction,
+  active,
 }: {
   stat: Stat;
   delay?: 1 | 2 | 3 | 4;
-  direction: RevealDirection;
+  active: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const visible = useRevealVisible(ref);
   // Start counting as the tile starts appearing, not before it.
-  const value = useCountUp(stat.value, visible, {
+  const value = useCountUp(stat.value, active, {
     delayMs: (delay ?? 0) * REVEAL_STEP_MS,
   });
 
   return (
     <div
-      ref={ref}
       className={cn(
         "px-6 py-10 md:px-9 md:py-12",
         delay && "border-l border-fog",
-        revealClassName(visible, delay, direction),
       )}
     >
       {/* tabular-nums keeps the figure from jittering as digits tick over. */}
@@ -52,15 +47,24 @@ function StatItem({
 }
 
 export default function Stats({ items }: { items: Stat[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const visible = useRevealVisible(ref);
+
   return (
     <div className="bg-stone px-6 py-20 md:px-15">
-      <div className="grid grid-cols-2 md:grid-cols-4">
+      <div
+        ref={ref}
+        className={cn(
+          "grid grid-cols-2 md:grid-cols-4",
+          revealClassName(visible, undefined, "up"),
+        )}
+      >
         {items.map((stat, i) => (
           <StatItem
             key={stat.label}
             stat={stat}
             delay={delays[i]}
-            direction={i % 2 === 0 ? "left" : "right"}
+            active={visible}
           />
         ))}
       </div>

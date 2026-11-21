@@ -95,25 +95,21 @@ export default function HomePage() {
 
       <section className="bg-paper pt-25 pb-20">
         <div className="px-6 md:px-15">
-          <Reveal as="p" direction="left" className={eyebrowClass}>
+          <Reveal as="p" direction="up" className={eyebrowClass}>
             Selected Works
           </Reveal>
           <Reveal
             as="h2"
             className={sectionTitleClass}
             delay={1}
-            direction="right"
+            direction="up"
           >
             Recent
             <br />
             Projects
           </Reveal>
         </div>
-        <Reveal
-          delay={2}
-          direction="left"
-          className="home-image-reveal"
-        >
+        <Reveal delay={2} direction="up" className="home-image-reveal">
           <Carousel items={carouselItems} />
         </Reveal>
       </section>
@@ -125,7 +121,7 @@ export default function HomePage() {
       >
         <Reveal
           as="div"
-          direction="left"
+          direction="up"
           className="home-image-reveal group relative h-115 overflow-hidden"
         >
           <OrientationImage
@@ -141,14 +137,14 @@ export default function HomePage() {
         </Reveal>
 
         <div>
-          <Reveal as="p" direction="right" className={eyebrowClass}>
+          <Reveal as="p" direction="up" className={eyebrowClass}>
             About SRI ATELIER
           </Reveal>
           <Reveal
             as="h2"
             className={sectionTitleClass}
             delay={1}
-            direction="right"
+            direction="up"
           >
             Design is not
             <br />
@@ -160,7 +156,7 @@ export default function HomePage() {
             as="p"
             className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
             delay={2}
-            direction="left"
+            direction="up"
           >
             We are a Chennai-based architecture and design studio with over five
             years of practice. Our work spans residential, commercial, and
@@ -171,12 +167,12 @@ export default function HomePage() {
             as="p"
             className="mb-5 text-[1.05rem] leading-[1.9] text-ash"
             delay={3}
-            direction="right"
+            direction="up"
           >
             Every project begins with listening — to the site, the client, the
             light, and the land.
           </Reveal>
-          <Reveal as="div" delay={4} direction="right">
+          <Reveal as="div" delay={4} direction="up">
             <Link
               href="/about"
               className="inline-flex items-center gap-3 border-b border-ink pb-0.5 text-[0.75rem] uppercase tracking-[0.15em] text-ink transition-all duration-300 hover:gap-5 hover:border-terracotta hover:text-terracotta"
@@ -189,7 +185,7 @@ export default function HomePage() {
 
       <Stats items={stats} />
 
-      <Reveal direction="left">
+      <Reveal direction="up">
         <LogoMarquee items={clients} />
       </Reveal>
 
@@ -234,7 +230,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-[1] bg-[rgb(42_38_34/45%)]" />
         <Reveal
           as="div"
-          direction="left"
+          direction="up"
           className="liquid-quote-reveal relative z-[2] px-10 text-center text-paper"
         >
           <svg
@@ -326,14 +322,14 @@ export default function HomePage() {
       </Reveal>
 
       <section className="px-6 py-10 md:px-15">
-        <Reveal as="p" direction="left" className={eyebrowClass}>
+        <Reveal as="p" direction="up" className={eyebrowClass}>
           Portfolio
         </Reveal>
         <Reveal
           as="h2"
           className={sectionTitleClass}
           delay={1}
-          direction="right"
+          direction="up"
         >
           Featured
           <br />
@@ -345,8 +341,8 @@ export default function HomePage() {
               key={project.slug}
               project={project}
               delay={featuredDelays[i]}
-              direction={i % 2 === 0 ? "left" : "right"}
-              animateImageOnReveal
+              direction="up"
+              popupImageOnReveal
             />
           ))}
         </div>
@@ -356,11 +352,11 @@ export default function HomePage() {
         id="process"
         className={cn(
           sectionPadding,
-          "relative isolate scroll-mt-24 overflow-hidden bg-mist"
+          "relative isolate scroll-mt-24 overflow-hidden bg-mist",
         )}
       >
         <Image
-          src="/process-background-3.png"
+          src="/process.png"
           alt=""
           fill
           sizes="100vw"
@@ -387,20 +383,20 @@ export default function HomePage() {
       </section>
 
       <section className="bg-paper px-6 py-30 md:px-15">
-        <Reveal as="p" direction="left" className={eyebrowClass}>
+        <Reveal as="p" direction="up" className={eyebrowClass}>
           In Their Words
         </Reveal>
         <Reveal
           as="h2"
           className={sectionTitleClass}
           delay={1}
-          direction="right"
+          direction="up"
         >
           Client
           <br />
           Stories
         </Reveal>
-        <Reveal delay={2} direction="right">
+        <Reveal delay={2} direction="up">
           <TestimonialCarousel items={testimonials} />
         </Reveal>
       </section>
@@ -422,13 +418,12 @@ export default function HomePage() {
           className="
       pointer-events-none
       absolute
-      top-1/2
+      top-6
       left-1/2
       z-0
       w-[80vw]
       max-w-[1100px]
       -translate-x-1/2
-      -translate-y-1/2
       opacity-[0.06]
     "
         />
@@ -436,7 +431,7 @@ export default function HomePage() {
         <div className="relative z-[1]">
           <Reveal
             as="h2"
-            direction="left"
+            direction="up"
             className="mb-12 font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light italic leading-[1.1] text-ink"
           >
             Ready to
@@ -446,7 +441,7 @@ export default function HomePage() {
             extraordinary?
           </Reveal>
 
-          <Reveal as="div" delay={1} direction="right">
+          <Reveal as="div" delay={1} direction="up">
             <ContactTrigger>
               <Button variant="accent">Contact →</Button>
             </ContactTrigger>
@@ -454,7 +449,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <Reveal direction="right">
+      <Reveal direction="up">
         <Footer />
       </Reveal>
     </>

@@ -21,7 +21,6 @@ const columns: {
     links: [
       { href: "/about", label: "Who We Are" },
       { href: "/projects", label: "Our Projects" },
-      { href: "/about", label: "Our Team" },
     ],
   },
   {

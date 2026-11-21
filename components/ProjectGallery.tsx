@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { MouseEvent } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 import OrientationImage from "@/components/OrientationImage";
 import {
@@ -76,8 +76,8 @@ function useSelectedIndex(api: CarouselApi) {
 }
 
 /**
- * The project's photos as a swipeable hero, with arrows, a counter and an
- * expand button that opens the same set full screen.
+ * The project's photos as a swipeable hero with a selectable thumbnail grid
+ * below the project description and a full-screen viewer.
  *
  * The full-screen view starts on the photo the hero is showing, and hands its
  * position back on close, so the two never disagree. With a single photo the
@@ -86,19 +86,25 @@ function useSelectedIndex(api: CarouselApi) {
 export default function ProjectGallery({
   images,
   name,
+  children,
 }: {
   images: string[];
   name: string;
+  children: ReactNode;
 }) {
   const [api, setApi] = useState<CarouselApi>();
   const index = useSelectedIndex(api);
   const [open, setOpen] = useState(false);
+  const [startIndex, setStartIndex] = useState<number | null>(null);
   const [viewerApi, setViewerApi] = useState<CarouselApi>();
   const viewerIndex = useSelectedIndex(viewerApi);
   const several = images.length > 1;
 
   const close = (next: boolean) => {
-    if (!next && viewerApi) api?.scrollTo(viewerApi.selectedScrollSnap(), true);
+    if (!next) {
+      if (viewerApi) api?.scrollTo(viewerApi.selectedScrollSnap(), true);
+      setStartIndex(null);
+    }
     setOpen(next);
   };
 
@@ -115,7 +121,10 @@ export default function ProjectGallery({
               <button
                 type="button"
                 aria-label={`View ${name}, photo ${i + 1} full screen`}
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setStartIndex(index);
+                  setOpen(true);
+                }}
                 className="absolute inset-0 z-[1]"
               >
                 <OrientationImage
@@ -153,6 +162,51 @@ export default function ProjectGallery({
 
       </Carousel>
 
+      {children}
+
+      {several && (
+        <section
+          aria-label={`${name} project gallery`}
+          className="px-6 pb-12 md:px-15 md:pb-15"
+        >
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <h2 className="font-display text-2xl">Project gallery</h2>
+            <span className="text-micro tracking-[0.15em] text-ash">
+              {String(images.length).padStart(2, "0")} PHOTOS
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {images.map((src, i) => (
+              <button
+                key={`${src}-${i}`}
+                type="button"
+                aria-label={`Open photo ${i + 1} of ${images.length} full screen`}
+                aria-pressed={index === i}
+                onClick={() => {
+                  api?.scrollTo(i, true);
+                  setStartIndex(i);
+                  setOpen(true);
+                }}
+                className={`group relative aspect-[4/3] overflow-hidden border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta ${
+                  index === i ? "border-terracotta" : "border-fog"
+                }`}
+              >
+                <OrientationImage
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1280px) 16vw, (min-width: 768px) 24vw, 48vw"
+                  className="transition-transform duration-500 ease-forma group-hover:scale-105"
+                />
+                <span className="absolute bottom-2 left-2 bg-ink/70 px-2 py-1 text-micro tracking-[0.12em] text-paper">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       <Dialog open={open} onOpenChange={close}>
         <DialogContent
           showCloseButton={false}
@@ -166,7 +220,7 @@ export default function ProjectGallery({
           <Carousel
             className="group/carousel h-full"
             setApi={setViewerApi}
-            opts={{ loop: true, startIndex: index }}
+            opts={{ loop: true, startIndex: startIndex ?? index }}
           >
             <CarouselContent className="ml-0 h-dvh">
               {images.map((src, i) => (
