@@ -3,21 +3,20 @@ import Image from "next/image";
 
 import Reveal from "@/components/Reveal";
 import ValueCard from "@/components/ValueCard";
-import TeamCard from "@/components/TeamCard";
+import PracticeMap from "@/components/PracticeMap";
 import Footer from "@/components/Footer";
 import { ContactTrigger } from "@/components/ContactDialog";
 import { Button } from "@/components/ui/button";
 import { eyebrowClass, sectionTitleClass } from "@/components/ui/typography";
-import { values, team } from "@/lib/data";
+import { values } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Sixteen years of architecture and interior design practice across South India — the story, principles, and team behind SRI ATELIER.",
+    "Sixteen years of architecture and interior design practice across South India — the story and principles behind SRI ATELIER.",
 };
 
 const valueDelays = [undefined, 1, 2, 3] as const;
-const teamDelays = [undefined, 1, 2, 3] as const;
 
 export default function AboutPage() {
   return (
@@ -84,19 +83,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="px-6 py-25 md:px-15">
-        <Reveal as="p" className={eyebrowClass}>
-          The People
-        </Reveal>
-        <Reveal as="h2" className={sectionTitleClass} delay={1}>
-          Our Team
-        </Reveal>
-        <div className="mt-13 grid grid-cols-2 gap-0.5 md:grid-cols-4">
-          {team.map((member, i) => (
-            <TeamCard key={member.name} member={member} delay={teamDelays[i]} />
-          ))}
-        </div>
-      </div>
+      <PracticeMap />
 
       <div className="flex flex-col items-center justify-between gap-8 bg-mist px-6 py-25 md:flex-row md:gap-0 md:px-15">
         <div>

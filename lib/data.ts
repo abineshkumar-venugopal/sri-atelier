@@ -45,12 +45,9 @@ export const projects: Project[] = [
     description:
       "A commercial hospitality project shaped around volume, shade, and a strong street presence.",
     image:
-      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
+      "/gallery-2/commercial/exterior/amutha surabi resto bar/photo_2025-11-11_19-56-09.jpg",
     thumb:
-      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
-    gallery: [
-      "/gallery/commercial/exterior/amutha-surabi-resto-bar/front-elevation.jpg",
-    ],
+      "/gallery-2/commercial/exterior/amutha surabi resto bar/photo_2025-11-11_19-56-09.jpg",
   },
   {
     slug: "murugan-hospital",
@@ -61,9 +58,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A clinical commercial building designed for clarity, access, and daily ease of movement.",
-    image: "/gallery/commercial/exterior/murugan-hospital/facade.png",
-    thumb: "/gallery/commercial/exterior/murugan-hospital/facade.png",
-    gallery: ["/gallery/commercial/exterior/murugan-hospital/facade.png"],
+    image:
+      "/gallery-2/commercial/exterior/murugan hospital/ChatGPT Image Sep 29, 2026, 01_59_43 PM.png",
+    thumb:
+      "/gallery-2/commercial/exterior/murugan hospital/ChatGPT Image Sep 29, 2026, 01_59_43 PM.png",
   },
   {
     slug: "vardha-resort",
@@ -74,11 +72,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A hospitality exterior project with a layered arrival experience and a softened landscape edge.",
-    image: "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
-    thumb: "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
+    image: "/gallery-2/commercial/exterior/vardha resort/elevation.png",
+    thumb: "/gallery-2/commercial/exterior/vardha resort/elevation.png",
     gallery: [
-      "/gallery/commercial/exterior/vardha-resort/elevation.jpg",
-      "/gallery/commercial/exterior/vardha-resort/gate.jpg",
+      "/gallery-2/commercial/exterior/vardha resort/gate.png",
     ],
   },
   {
@@ -91,12 +88,9 @@ export const projects: Project[] = [
     description:
       "A hospitality interior shaped by warmth, rhythm, and a strong visual identity.",
     image:
-      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
+      "/gallery-2/commercial/interior/amudhasurabi  cafe/amudhasurabi cafe render.png",
     thumb:
-      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
-    gallery: [
-      "/gallery/commercial/interior/amudha-surabi-cafe/interior-render.png",
-    ],
+      "/gallery-2/commercial/interior/amudhasurabi  cafe/amudhasurabi cafe render.png",
   },
   {
     slug: "deva-residence-rain-bownagar",
@@ -107,13 +101,12 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A residential exterior shaped by a strong front elevation, light, and contextual materiality.",
-    image:
-      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
-    thumb:
-      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
+    image: "/gallery-2/residential/exterior/deva residence rain bownagar/1.jpg",
+    thumb: "/gallery-2/residential/exterior/deva residence rain bownagar/1.jpg",
     gallery: [
-      "/gallery/residential/exterior/deva-residence-rain-bownagar/front-view.jpg",
-      "/gallery/residential/exterior/deva-residence-rain-bownagar/side-view.jpg",
+      "/gallery-2/residential/exterior/deva residence rain bownagar/2.jpg",
+      "/gallery-2/residential/exterior/deva residence rain bownagar/3.jpg",
+      "/gallery-2/residential/exterior/deva residence rain bownagar/4.jpg",
     ],
   },
   {
@@ -125,12 +118,14 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A modern residence harmonised with the street edge and a warm, tropical palette.",
-    image: "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
-    thumb: "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
+    image:
+      "/gallery-2/residential/exterior/guru nagar residence/photo_2025-12-26_19-40-05.jpg",
+    thumb:
+      "/gallery-2/residential/exterior/guru nagar residence/photo_2025-12-26_19-40-05.jpg",
     gallery: [
-      "/gallery/residential/exterior/guru-nagar-residence/front-view.jpg",
-      "/gallery/residential/exterior/guru-nagar-residence/rear-view.jpg",
-      "/gallery/residential/exterior/guru-nagar-residence/garden-view.jpg",
+      "/gallery-2/residential/exterior/guru nagar residence/photo_2025-12-26_19-40-05 (2).jpg",
+      "/gallery-2/residential/exterior/guru nagar residence/photo_2025-12-26_19-40-05 (3).jpg",
+      "/gallery-2/residential/exterior/guru nagar residence/photo_2025-12-26_19-40-05 (4).jpg",
     ],
   },
   {
@@ -142,13 +137,16 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A residence refined through calm interiors, layered textures, and naturally lit living spaces.",
-    image: "/gallery/residential/interior/essai-residence/living-room.png",
-    thumb: "/gallery/residential/interior/essai-residence/living-room.png",
+    image: "/gallery-2/residential/interior/essai residence/1.png",
+    thumb: "/gallery-2/residential/interior/essai residence/1.png",
     gallery: [
-      "/gallery/residential/interior/essai-residence/living-room.png",
-      "/gallery/residential/interior/essai-residence/dining.png",
-      "/gallery/residential/interior/essai-residence/bedroom.png",
-      "/gallery/residential/interior/essai-residence/study.png",
+      "/gallery-2/residential/interior/essai residence/2.png",
+      "/gallery-2/residential/interior/essai residence/3.png",
+      "/gallery-2/residential/interior/essai residence/4.png",
+      "/gallery-2/residential/interior/essai residence/5.png",
+      "/gallery-2/residential/interior/essai residence/6.png",
+      "/gallery-2/residential/interior/essai residence/7.png",
+      "/gallery-2/residential/interior/essai residence/8.png",
     ],
   },
   {
@@ -160,11 +158,10 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "An outdoor living experience designed for green relief, shade, and relaxed everyday use.",
-    image: "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
-    thumb: "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
+    image: "/gallery-2/residential/interior/terrace garden/photo_2025-11-11_19-56-09 (2).jpg",
+    thumb: "/gallery-2/residential/interior/terrace garden/photo_2025-11-11_19-56-09 (2).jpg",
     gallery: [
-      "/gallery/residential/interior/terrace-garden/terrace-main.jpg",
-      "/gallery/residential/interior/terrace-garden/terrace-details.jpg",
+      "/gallery-2/residential/interior/terrace garden/photo_2025-11-11_19-56-09 (6).jpg",
     ],
   },
   {
@@ -177,11 +174,16 @@ export const projects: Project[] = [
     description:
       "A family living space brought together through a measured material palette and practical comfort.",
     image:
-      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/hall/3_PDFsam_ram kumar.jpg",
     thumb:
-      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/hall/3_PDFsam_ram kumar.jpg",
     gallery: [
-      "/gallery/residential/interior/ram-kumar-residence/hall/living-hall.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/hall/4_PDFsam_ram kumar.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/hall/5_PDFsam_ram kumar.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/hall/6_PDFsam_ram kumar.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/room/3_5 - Photo.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/room/3_6 - Photo.jpg",
+      "/gallery-2/residential/interior/ram kumar residence/room/3_7 - Photo.jpg",
     ],
   },
   {
@@ -193,12 +195,184 @@ export const projects: Project[] = [
     year: "2025",
     description:
       "A residence where the day-view volume and landscape framing establish the overall character.",
-    image: "/gallery/residential/exterior/villa-residence/day-view.png",
-    thumb: "/gallery/residential/exterior/villa-residence/day-view.png",
+    image: "/gallery-2/residential/exterior/villa residence/option 1 day view.png",
+    thumb: "/gallery-2/residential/exterior/villa residence/option 1 day view.png",
     gallery: [
-      "/gallery/residential/exterior/villa-residence/day-view.png",
-      "/gallery/residential/exterior/villa-residence/evening-view.png",
+      "/gallery-2/residential/exterior/villa residence/option 2 day view.png",
     ],
+  },
+  {
+    slug: "club-mahindra",
+    name: "Club Mahindra",
+    location: "Tamil Nadu",
+    category: "interior",
+    sector: "commercial",
+    year: "2025",
+    description:
+      "Commercial interiors developed across cabins, conference rooms, and work stations with a consistent hospitality-focused material language.",
+    image:
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_10 - Photo.jpg",
+    thumb:
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_10 - Photo.jpg",
+    gallery: [
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_11 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_12 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_13 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_15 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_16 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_17 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/1_18 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/2_1 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/cabins/2_2 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_1 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_2 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_3 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_4 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_5 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 1/1_6 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 2/1_2 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 2/1_3 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 2/1_4 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 2/1_5 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/conference room/option 2/1_6 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 1/1_14 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 1/1_7 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 1/1_8 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 1/1_9 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_3 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_4 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_5 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_6 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_7 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_8 - Photo.jpg",
+      "/gallery-2/commercial/interior/club mhindra/work station/work staion 2/2_9 - Photo.jpg",
+    ],
+  },
+  {
+    slug: "cazy-st-french-elevation",
+    name: "Cazy St French Elevation",
+    location: "Tamil Nadu",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A French-inspired residential elevation composed around balcony proportions, classical detailing, and a balanced facade.",
+    image:
+      "/gallery-2/residential/exterior/cazy st french elevation/gazar st front elevation.png",
+    thumb:
+      "/gallery-2/residential/exterior/cazy st french elevation/gazar st front elevation.png",
+    gallery: [
+      "/gallery-2/residential/exterior/cazy st french elevation/gazar st front elevation 2.png",
+      "/gallery-2/residential/exterior/cazy st french elevation/gazar st balcony.png",
+    ],
+  },
+  {
+    slug: "doctor-villa-redyarpallayam",
+    name: "Doctor Villa, Redyarpallayam",
+    location: "Redyarpallayam",
+    category: "exterior",
+    sector: "residential",
+    year: "2026",
+    description:
+      "A contemporary villa exterior resolved for a clear street elevation and a calm, composed day-view presence.",
+    image:
+      "/gallery-2/residential/exterior/doctor villa redyarpallayam/day render.png",
+    thumb:
+      "/gallery-2/residential/exterior/doctor villa redyarpallayam/day render.png",
+  },
+  {
+    slug: "guna-residence",
+    name: "Guna Residence",
+    location: "Tamil Nadu",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A modern residential facade with strong volumetric balance, filtered shade, and a restrained material palette.",
+    image:
+      "/gallery-2/residential/exterior/guna residence/photo_2025-11-11_19-56-09 (5).jpg",
+    thumb:
+      "/gallery-2/residential/exterior/guna residence/photo_2025-11-11_19-56-09 (5).jpg",
+  },
+  {
+    slug: "hari-residence",
+    name: "Hari Residence",
+    location: "Tamil Nadu",
+    category: "exterior",
+    sector: "residential",
+    year: "2026",
+    description:
+      "A sculptural contemporary residence shaped by generous openings, layered planes, and confident facade geometry.",
+    image:
+      "/gallery-2/residential/exterior/hari  residence/ChatGPT Image Jul 6, 2026, 01_58_54 AM.png",
+    thumb:
+      "/gallery-2/residential/exterior/hari  residence/ChatGPT Image Jul 6, 2026, 01_58_54 AM.png",
+  },
+  {
+    slug: "mahavar-nagar-residence",
+    name: "Mahavar Nagar Residence",
+    location: "Lawspet",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A Lawspet residence presented through two facade studies with contrasting light, massing, and framing.",
+    image:
+      "/gallery-2/residential/exterior/mahavar nagar residence at lawspet/day view (2).png",
+    thumb:
+      "/gallery-2/residential/exterior/mahavar nagar residence at lawspet/day view (2).png",
+    gallery: [
+      "/gallery-2/residential/exterior/mahavar nagar residence at lawspet/DAY VIEW (3).png",
+    ],
+  },
+  {
+    slug: "mailam-elevation",
+    name: "Mailam Elevation",
+    location: "Mailam",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "A collection of residential facade directions exploring glass balconies, neoclassical proportions, steel railings, and tropical forms.",
+    image:
+      "/gallery-2/residential/exterior/mailam elevation/Modern Glass-Balcony Residency at Twilight.png",
+    thumb:
+      "/gallery-2/residential/exterior/mailam elevation/Modern Glass-Balcony Residency at Twilight.png",
+    gallery: [
+      "/gallery-2/residential/exterior/mailam elevation/Modern Neoclassical Residency at Sunset (1).png",
+      "/gallery-2/residential/exterior/mailam elevation/Modern Residence with Stainless Steel Railings.png",
+      "/gallery-2/residential/exterior/mailam elevation/Modern Tropical Residence Exterior (1).png",
+    ],
+  },
+  {
+    slug: "essai-residence-exterior",
+    name: "Essai Residence Exterior",
+    location: "Chennai",
+    category: "exterior",
+    sector: "residential",
+    year: "2025",
+    description:
+      "The exterior expression of Essai Residence, with layered volumes and a measured contemporary facade.",
+    image: "/gallery-2/residential/exterior/essai residence/1.png",
+    thumb: "/gallery-2/residential/exterior/essai residence/1.png",
+    gallery: [
+      "/gallery-2/residential/exterior/essai residence/2.png",
+      "/gallery-2/residential/exterior/essai residence/3.png",
+    ],
+  },
+  {
+    slug: "ram-kumar-residence-exterior",
+    name: "Ram Kumar Residence Exterior",
+    location: "Chennai",
+    category: "exterior",
+    sector: "residential",
+    year: "2026",
+    description:
+      "A residential exterior developed around the site's proportions, opening rhythm, and a clear front elevation.",
+    image:
+      "/gallery-2/residential/exterior/ram kumar residence/WhatsApp Image 2026-11-13 at 10.46.01 PM.jpeg",
+    thumb:
+      "/gallery-2/residential/exterior/ram kumar residence/WhatsApp Image 2026-11-13 at 10.46.01 PM.jpeg",
   },
 ];
 
