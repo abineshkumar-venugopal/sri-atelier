@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import AutoScroll from "embla-carousel-auto-scroll";
 
 import OrientationImage from "@/components/OrientationImage";
@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/carousel";
 import CarouselArrow from "@/components/ui/carousel-arrow";
 import ProjectHoverDetails from "@/components/ProjectHoverDetails";
+import { useRevealVisible } from "@/lib/useReveal";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { Project } from "@/lib/data";
+
+const AUTO_SCROLL_REVEAL_DELAY_MS = 1600;
 
 /**
  * Autoplay advances a slide at a time with a pause between, which reads as a
@@ -28,6 +31,8 @@ import type { Project } from "@/lib/data";
 export default function Carousel({ items }: { items: Project[] }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [api, setApi] = useState<CarouselApi>();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const visible = useRevealVisible(rootRef);
 
   // Memoised: a fresh plugins array on every render would re-initialise embla.
   const plugins = useMemo(
@@ -38,12 +43,23 @@ export default function Carousel({ items }: { items: Project[] }) {
             AutoScroll({
               speed: 2.0,
               startDelay: 0,
+              playOnInit: false,
               stopOnInteraction: false,
               stopOnMouseEnter: true,
             }),
           ],
     [prefersReducedMotion],
   );
+
+  useEffect(() => {
+    if (!visible || !api || prefersReducedMotion) return;
+
+    const timer = window.setTimeout(() => {
+      api.plugins().autoScroll?.play();
+    }, AUTO_SCROLL_REVEAL_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [api, prefersReducedMotion, visible]);
 
   /**
    * Auto-scroll drives the track every frame, so a bare scrollPrev/scrollNext
@@ -63,6 +79,7 @@ export default function Carousel({ items }: { items: Project[] }) {
 
   return (
     <CarouselRoot
+      ref={rootRef}
       className="group/carousel relative"
       setApi={setApi}
       opts={{ align: "start", loop: true }}

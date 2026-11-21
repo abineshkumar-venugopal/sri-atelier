@@ -9,30 +9,22 @@ export default function ServiceMarque({ items }: { items: Service[] }) {
   return (
     <div className="overflow-hidden border-y border-mist bg-paper py-8 [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] md:py-10">
       <ul
-        // Inline so it overrides the duration inside the animate-marquee shorthand.
         style={{ animationDuration: `${LOOP_SECONDS}s` }}
         className="flex w-max animate-marquee items-center motion-reduce:animate-none"
       >
         {track.map((service, i) => (
           <li
             key={`${service.name}-${i}`}
-            // Only the first copy is announced; the rest are a visual loop.
             aria-hidden={i >= items.length}
             className="flex shrink-0 items-center"
           >
             <span
-              // Pattern counted within each copy, so both copies match and the
-              // loop stays seamless even with an odd number of services.
               className={cn(
                 "px-7 font-display text-[clamp(1.75rem,3.5vw,3rem)] leading-none font-bold whitespace-nowrap md:px-10",
                 (i % items.length) % 2 === 0
                   ? "text-ash/60"
                   : "italic text-terracotta/75",
               )}
-              style={{
-                textShadow:
-                  "0 0 0 rgba(42,38,34,0.18), 1px 1px 0 rgba(42,38,34,0.18), 2px 2px 0 rgba(42,38,34,0.16), 3px 3px 0 rgba(42,38,34,0.14), 4px 4px 0 rgba(42,38,34,0.12), 6px 6px 0 rgba(42,38,34,0.1), 10px 10px 18px rgba(42,38,34,0.14)",
-              }}
             >
               {service.name}
             </span>
