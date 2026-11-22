@@ -23,7 +23,7 @@ export function useRevealVisible(ref: RefObject<HTMLElement | null>) {
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.12 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -54,7 +54,7 @@ export type RevealDirection = "up" | "left" | "right";
 export function revealClassName(
   visible: boolean,
   delay?: 1 | 2 | 3 | 4,
-  direction: RevealDirection = "up"
+  direction: RevealDirection = "up",
 ) {
   const startPosition =
     direction === "up"
@@ -66,8 +66,10 @@ export function revealClassName(
     direction === "up" ? "translate-y-0" : "translate-x-0";
 
   return cn(
-    "transition-[opacity,transform,translate] duration-800 ease-forma",
-    visible ? cn(visiblePosition, "opacity-100") : cn(startPosition, "opacity-0"),
-    delay && DELAY_CLASSNAMES[delay]
+    "transition-[opacity,transform,translate] duration-1500 ease-forma",
+    visible
+      ? cn(visiblePosition, "opacity-100")
+      : cn(startPosition, "opacity-0"),
+    delay && DELAY_CLASSNAMES[delay],
   );
 }
